@@ -23,7 +23,7 @@
             {{ session('success') }}
         </div>
     @endif
-    
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -46,12 +46,15 @@
                                     <th>Featured</th>
                                     <th>Approved</th>
                                     <th>Created At</th>
-                                    <th width="80">Action</th>
+                                    @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                                        <th width="80">Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($testimonies as $index => $testimony)
-                                    <tr data-href="{{ route('dashboard.testimonies.show', $testimony->id) }}" style="cursor: pointer;">
+                                    <tr data-href="{{ route('dashboard.testimonies.show', $testimony->id) }}"
+                                        style="cursor: pointer;">
                                         <td>{{ $testimonies->firstItem() + $index }}</td>
                                         <td>{{ $testimony->testifier_name }}</td>
                                         <td>{{ $testimony->title }}</td>
@@ -70,34 +73,43 @@
                                             @endif
                                         </td>
                                         <td>{{ $testimony->created_at->format('d M, Y') }}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                                    <i class="fas fa-bars"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('dashboard.testimonies.show', $testimony->id) }}">
-                                                            View
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('dashboard.testimonies.edit', $testimony->id) }}">
-                                                            Edit
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <form method="POST" action="{{ route('dashboard.testimonies.destroy', $testimony->id) }}" onsubmit="return confirm('Are you sure you want to delete this testimony?')">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item text-danger">
-                                                                Delete
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
+                                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-light dropdown-toggle" type="button"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="fas fa-bars"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('dashboard.testimonies.show', $testimony->id) }}">
+                                                                View
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('dashboard.testimonies.edit', $testimony->id) }}">
+                                                                Edit
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <form method="POST"
+                                                                action="{{ route('dashboard.testimonies.destroy', $testimony->id) }}"
+                                                                onsubmit="return confirm('Are you sure you want to delete this testimony?')">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="dropdown-item text-danger">
+                                                                    Delete
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        @endif
+
                                     </tr>
                                 @empty
                                     <tr>
@@ -122,8 +134,7 @@
                                             </li>
                                         @else
                                             <li class="page-item">
-                                                <a class="page-link"
-                                                    href="{{ $testimonies->previousPageUrl() }}">
+                                                <a class="page-link" href="{{ $testimonies->previousPageUrl() }}">
                                                     Prev
                                                 </a>
                                             </li>
@@ -135,10 +146,12 @@
                                                 <li class="page-item active">
                                                     <span class="page-link">{{ $i }}</span>
                                                 </li>
-                                            @elseif($i == 1 || $i == $testimonies->lastPage() || ($i >= $testimonies->currentPage() - 2 && $i <= $testimonies->currentPage() + 2))
+                                            @elseif(
+                                                $i == 1 ||
+                                                    $i == $testimonies->lastPage() ||
+                                                    ($i >= $testimonies->currentPage() - 2 && $i <= $testimonies->currentPage() + 2))
                                                 <li class="page-item">
-                                                    <a class="page-link"
-                                                        href="{{ $testimonies->url($i) }}">
+                                                    <a class="page-link" href="{{ $testimonies->url($i) }}">
                                                         {{ $i }}
                                                     </a>
                                                 </li>
@@ -152,8 +165,7 @@
                                         {{-- Next --}}
                                         @if ($testimonies->hasMorePages())
                                             <li class="page-item">
-                                                <a class="page-link"
-                                                    href="{{ $testimonies->nextPageUrl() }}">
+                                                <a class="page-link" href="{{ $testimonies->nextPageUrl() }}">
                                                     Next
                                                 </a>
                                             </li>
@@ -175,9 +187,9 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('#testimonies-table tbody tr[data-href]').forEach(row => {
-            row.addEventListener('click', function (event) {
+            row.addEventListener('click', function(event) {
                 // Stop propagation if the click is on a dropdown, button, or link inside the action cell
                 if (event.target.closest('.dropdown, .btn, a')) {
                     return;
@@ -189,9 +201,9 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('#testimonies-table tbody tr[data-href]').forEach(row => {
-            row.addEventListener('click', function (event) {
+            row.addEventListener('click', function(event) {
                 // Stop propagation if the click is on a dropdown, button, or link inside the action cell
                 if (event.target.closest('.dropdown, .btn, a')) {
                     return;

@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         // Admin
         User::create([
             'name' => 'System Admin',
-            'email' => 'admin@goalsparish.org',
+            'email' => 'admin@rccggoalsparish.com',
             'password' => Hash::make('password'),
             'role' => UserRole::ADMIN,
             'status' => UserStatus::ACTIVE,
@@ -27,8 +27,8 @@ class UserSeeder extends Seeder
 
         // Pastor
         User::create([
-            'name' => 'Senior Pastor',
-            'email' => 'pastor@goalsparish.org',
+            'name' => 'Zonal Pastor',
+            'email' => 'zonal-pastor@rccggoalsparish.com',
             'password' => Hash::make('password'),
             'role' => UserRole::PASTOR,
             'status' => UserStatus::ACTIVE,
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
         // Editor
         User::create([
             'name' => 'Content Editor',
-            'email' => 'editor@goalsparish.org',
+            'email' => 'editor@rccggoalsparish.com',
             'password' => Hash::make('password'),
             'role' => UserRole::EDITOR,
             'status' => UserStatus::ACTIVE,
@@ -46,13 +46,10 @@ class UserSeeder extends Seeder
         // Media
         User::create([
             'name' => 'Media Manager',
-            'email' => 'media@goalsparish.org',
+            'email' => 'media@rccggoalsparish.com',
             'password' => Hash::make('password'),
             'role' => UserRole::MEDIA,
             'status' => UserStatus::ACTIVE,
         ]);
-
-        // Generate extra users for testing
-        User::factory(10)->create();
     }
 }

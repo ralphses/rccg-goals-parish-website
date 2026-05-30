@@ -9,7 +9,9 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="card-title">Sermon Details</div>
                         <div>
+                              @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
                             <a href="{{ route('dashboard.sermons.edit', $sermon) }}" class="btn btn-primary">Edit</a>
+                            @endif
                             <a href="{{ route('dashboard.sermons.index') }}" class="btn btn-secondary">Back</a>
                         </div>
                     </div>

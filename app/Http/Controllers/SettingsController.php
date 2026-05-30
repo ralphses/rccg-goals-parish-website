@@ -108,6 +108,10 @@ class SettingsController extends Controller
 
     public function updateYearlyDetails(Request $request)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to update yearly details.');
+        }
+
         $validatedData = $request->validate([
             'current_year' => 'required|integer',
             'year_theme' => 'required|string|max:255',

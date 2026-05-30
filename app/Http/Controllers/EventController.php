@@ -44,6 +44,10 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to create an event.');
+        }
+        
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -62,8 +66,7 @@ class EventController extends Controller
 
         Event::create($validated);
 
-        return redirect()->route('dashboard.events.index')
-            ->with('success', 'Event created successfully.');
+        return redirect()->route('dashboard.events.index')->with('success', 'Event created successfully.');
     }
 
     public function show(Event $event)
@@ -73,6 +76,9 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to edit this event.');
+        }
         $departments = Department::all();
         $statuses = EventStatus::cases();
         return view('dashboard.events.edit', compact('event', 'departments', 'statuses'));
@@ -80,6 +86,9 @@ class EventController extends Controller
 
     public function update(Request $request, Event $event)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to update this event.');
+        }
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',

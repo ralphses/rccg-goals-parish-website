@@ -10,7 +10,9 @@
                             <h3 class="fw-bold mb-0">Events</h3>
                             <small class="text-muted">List of all events</small>
                         </div>
-                        <a href="{{ route('dashboard.events.create') }}" class="btn btn-primary">Create Event</a>
+                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                            <a href="{{ route('dashboard.events.create') }}" class="btn btn-primary">Create Event</a>
+                        @endif
                     </div>
                     {{-- Session Messages --}}
                     @if (session('success'))
@@ -124,32 +126,32 @@
                                                                 View
                                                             </a>
                                                         </li>
+                                                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                                                            <li>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('dashboard.events.edit', $event->id) }}">
+                                                                    Edit
+                                                                </a>
+                                                            </li>
 
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('dashboard.events.edit', $event->id) }}">
-                                                                Edit
-                                                            </a>
-                                                        </li>
+                                                            <li>
+                                                                <hr class="dropdown-divider">
+                                                            </li>
 
-                                                        <li>
-                                                            <hr class="dropdown-divider">
-                                                        </li>
+                                                            <li>
+                                                                <form method="POST"
+                                                                    action="{{ route('dashboard.events.destroy', $event->id) }}"
+                                                                    onsubmit="return confirm('Are you sure you want to delete this event?')">
+                                                                    @csrf
+                                                                    @method('DELETE')
 
-                                                        <li>
-                                                            <form method="POST"
-                                                                action="{{ route('dashboard.events.destroy', $event->id) }}"
-                                                                onsubmit="return confirm('Are you sure you want to delete this event?')">
-                                                                @csrf
-                                                                @method('DELETE')
+                                                                    <button class="dropdown-item text-danger">
+                                                                        Delete
+                                                                    </button>
 
-                                                                <button class="dropdown-item text-danger">
-                                                                    Delete
-                                                                </button>
-
-                                                            </form>
-                                                        </li>
-
+                                                                </form>
+                                                            </li>
+                                                        @endif
                                                     </ul>
 
                                                 </div>

@@ -154,80 +154,101 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Yearly Details</div>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('settings.yearly-details.update') }}">
-                            @csrf
-                            @method('patch')
+                @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yearly Details</div>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('settings.yearly-details.update') }}">
+                                @csrf
+                                @method('patch')
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="current_year">Current Year</label>
-                                        <select class="form-control" id="current_year" name="current_year" required>
-                                            @foreach($settings['years'] as $year)
-                                                <option value="{{ $year }}" {{ old('current_year', $settings['yearlyDetail']->current_year) == $year ? 'selected' : '' }}>{{ $year }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="current_year">Current Year</label>
+                                            <select class="form-control" id="current_year" name="current_year"
+                                                required>
+                                                @foreach ($settings['years'] as $year)
+                                                    <option value="{{ $year }}"
+                                                        {{ old('current_year', $settings['yearlyDetail']->current_year) == $year ? 'selected' : '' }}>
+                                                        {{ $year }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="current_month">Current Month</label>
+                                            <select class="form-control" id="current_month" name="current_month"
+                                                required>
+                                                @foreach ($settings['months'] as $month)
+                                                    <option value="{{ $month }}"
+                                                        {{ old('current_month', $settings['yearlyDetail']->current_month) == $month ? 'selected' : '' }}>
+                                                        {{ $month }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="year_theme">Year Theme</label>
+                                            <input type="text" class="form-control" id="year_theme" name="year_theme"
+                                                value="{{ old('year_theme', $settings['yearlyDetail']->year_theme) }}"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="year_scripture">Year Scripture</label>
+                                            <input type="text" class="form-control" id="year_scripture"
+                                                name="year_scripture"
+                                                value="{{ old('year_scripture', $settings['yearlyDetail']->year_scripture) }}"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="year_scripture_content">Year Scripture Content</label>
+                                            <textarea class="form-control" id="year_scripture_content" name="year_scripture_content" rows="3">{{ old('year_scripture_content', $settings['yearlyDetail']->year_scripture_content) }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="current_month_theme">Current Month Theme</label>
+                                            <input type="text" class="form-control" id="current_month_theme"
+                                                name="current_month_theme"
+                                                value="{{ old('current_month_theme', $settings['yearlyDetail']->current_month_theme) }}"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="current_month_scripture">Current Month Scripture</label>
+                                            <input type="text" class="form-control" id="current_month_scripture"
+                                                name="current_month_scripture"
+                                                value="{{ old('current_month_scripture', $settings['yearlyDetail']->current_month_scripture) }}"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="current_month_scripture_content">Current Month Scripture
+                                                Content</label>
+                                            <textarea class="form-control" id="current_month_scripture_content" name="current_month_scripture_content"
+                                                rows="3">{{ old('current_month_scripture_content', $settings['yearlyDetail']->current_month_scripture_content) }}</textarea>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="current_month">Current Month</label>
-                                        <select class="form-control" id="current_month" name="current_month" required>
-                                            @foreach($settings['months'] as $month)
-                                                <option value="{{ $month }}" {{ old('current_month', $settings['yearlyDetail']->current_month) == $month ? 'selected' : '' }}>{{ $month }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="year_theme">Year Theme</label>
-                                        <input type="text" class="form-control" id="year_theme" name="year_theme" value="{{ old('year_theme', $settings['yearlyDetail']->year_theme) }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="year_scripture">Year Scripture</label>
-                                        <input type="text" class="form-control" id="year_scripture" name="year_scripture" value="{{ old('year_scripture', $settings['yearlyDetail']->year_scripture) }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="year_scripture_content">Year Scripture Content</label>
-                                        <textarea class="form-control" id="year_scripture_content" name="year_scripture_content" rows="3">{{ old('year_scripture_content', $settings['yearlyDetail']->year_scripture_content) }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="current_month_theme">Current Month Theme</label>
-                                        <input type="text" class="form-control" id="current_month_theme" name="current_month_theme" value="{{ old('current_month_theme', $settings['yearlyDetail']->current_month_theme) }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="current_month_scripture">Current Month Scripture</label>
-                                        <input type="text" class="form-control" id="current_month_scripture" name="current_month_scripture" value="{{ old('current_month_scripture', $settings['yearlyDetail']->current_month_scripture) }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="current_month_scripture_content">Current Month Scripture Content</label>
-                                        <textarea class="form-control" id="current_month_scripture_content" name="current_month_scripture_content" rows="3">{{ old('current_month_scripture_content', $settings['yearlyDetail']->current_month_scripture_content) }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="card-action">
-                                <button type="submit" class="btn btn-primary">Update Yearly Details</button>
-                            </div>
-                        </form>
+                                <div class="card-action">
+                                    <button type="submit" class="btn btn-primary">Update Yearly Details</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>

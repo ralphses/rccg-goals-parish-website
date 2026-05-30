@@ -106,39 +106,47 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('dashboard.media.index') }}">
-                                <i class="fas fa-photo-video"></i>
-                                <p>Media</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
                             <a href="{{ route('dashboard.testimonies.index') }}">
                                 <i class="fas fa-heart"></i>
                                 <p>Testimonies</p>
                             </a>
                         </li>
 
-                         <li class="nav-item">
+                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor() || auth()->user()->isMedia())
+                        <li class="nav-item">
                             <a href="{{ route('dashboard.announcements.index') }}">
                                 <i class="fas fa-bell"></i>
                                 <p>Announcements</p>
                             </a>
                         </li>
+                        @endif
 
+                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor() || auth()->user()->isMedia() || auth()->user()->isEditor())
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard.media.index') }}">
+                                <i class="fas fa-photo-video"></i>
+                                <p>Media</p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor() || auth()->user()->isMedia())
                         <li class="nav-item">
                             <a href="{{ route('dashboard.stream.index') }}">
                                 <i class="fas fa-video"></i>
                                 <p>Stream</p>
                             </a>
                         </li>
+                        @endif
 
+                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
                         <li class="nav-item">
                             <a href="{{ route('dashboard.users.index') }}">
                                 <i class="fas fa-users"></i>
                                 <p>Users</p>
                             </a>
                         </li>
+                        @endif
 
                         <li class="nav-item">
                             <a href="{{ route('settings.index') }}">

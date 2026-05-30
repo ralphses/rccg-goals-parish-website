@@ -8,7 +8,9 @@
                     <!-- Card Header -->
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="card-title">Sermons</div>
-                        <a href="{{ route('dashboard.sermons.create') }}" class="btn btn-primary">Create Sermon</a>
+                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                            <a href="{{ route('dashboard.sermons.create') }}" class="btn btn-primary">Create Sermon</a>
+                        @endif
                     </div>
 
                     {{-- Session Messages --}}
@@ -126,32 +128,32 @@
                                                                 View
                                                             </a>
                                                         </li>
+                                                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                                                            <li>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('dashboard.sermons.edit', $sermon) }}">
+                                                                    Edit
+                                                                </a>
+                                                            </li>
 
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('dashboard.sermons.edit', $sermon) }}">
-                                                                Edit
-                                                            </a>
-                                                        </li>
+                                                            <li>
+                                                                <hr class="dropdown-divider">
+                                                            </li>
 
-                                                        <li>
-                                                            <hr class="dropdown-divider">
-                                                        </li>
+                                                            <li>
+                                                                <form method="POST"
+                                                                    action="{{ route('dashboard.sermons.destroy', $sermon) }}"
+                                                                    onsubmit="return confirm('Are you sure you want to delete this sermon?')">
+                                                                    @csrf
+                                                                    @method('DELETE')
 
-                                                        <li>
-                                                            <form method="POST"
-                                                                action="{{ route('dashboard.sermons.destroy', $sermon) }}"
-                                                                onsubmit="return confirm('Are you sure you want to delete this sermon?')">
-                                                                @csrf
-                                                                @method('DELETE')
+                                                                    <button class="dropdown-item text-danger">
+                                                                        Delete
+                                                                    </button>
 
-                                                                <button class="dropdown-item text-danger">
-                                                                    Delete
-                                                                </button>
-
-                                                            </form>
-                                                        </li>
-
+                                                                </form>
+                                                            </li>
+                                                        @endif
                                                     </ul>
 
                                                 </div>

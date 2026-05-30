@@ -40,13 +40,20 @@ class DepartmentController extends Controller
 
     public function edit(Department $department)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to edit this department.');
+        }
         return view('dashboard.departments.edit', compact('department'));
     }
 
     public function update(Request $request, Department $department)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to update this department.');
+        }
+
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:departments,name,' . $department->id,
             'description' => 'nullable|string',
             'status' => 'required|in:active,inactive',
         ]);
@@ -63,6 +70,10 @@ class DepartmentController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to create a department.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:departments,name',
             'description' => 'nullable|string',

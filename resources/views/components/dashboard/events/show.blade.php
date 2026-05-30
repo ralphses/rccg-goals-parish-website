@@ -14,9 +14,11 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="card-title">Event Details</div>
                         <div>
+                                @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
                             <a href="{{ route('dashboard.events.edit', $event->id) }}" class="btn btn-primary">
                                 Edit
                             </a>
+                            @endif
                             <a href="{{ route('dashboard.events.index') }}" class="btn btn-light">
                                 Back
                             </a>

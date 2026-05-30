@@ -56,6 +56,10 @@ class SermonController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to create a sermon.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -107,6 +111,9 @@ class SermonController extends Controller
      */
     public function edit(Sermon $sermon)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to edit this sermon.');
+        }
         $speakers = User::where('role', 'pastor')->get();
         $statuses = SermonStatus::cases();
 
@@ -118,6 +125,9 @@ class SermonController extends Controller
      */
     public function update(Request $request, Sermon $sermon)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to update this sermon.');
+        }
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',

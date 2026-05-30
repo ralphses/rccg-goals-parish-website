@@ -445,12 +445,8 @@
                             </div>
                         </div>
                     @empty
-                        <div class="causes-one__single">
-                            <div class="causes-one__content-box">
-                                <div class="causes-one__content text-center">
-                                    <p>No recent sermons available. Please check back later.</p>
-                                </div>
-                            </div>
+                        <div class="text-center">
+                            <p>No recent sermons are available at the moment. Please check back later.</p>
                         </div>
                     @endforelse
 

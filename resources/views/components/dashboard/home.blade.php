@@ -12,7 +12,10 @@
                 <h6 class="op-7 mb-2">Here's a snapshot of your church community.</h6>
             </div>
             <div class="ms-md-auto py-2 py-md-0">
+                              @if (auth()->user()->isMedia() || auth()->user()->isPastor())
+
                 <a href="{{ route('dashboard.stream.index') }}" class="btn btn-round" style="background-color: #FF0000; color: white;">Manage Streams</a>
+                @endif
                 <a href="{{ route('settings.index') }}" class="btn btn-primary btn-round">Manage Settings</a>
             </div>
         </div>

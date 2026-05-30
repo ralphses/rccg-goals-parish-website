@@ -44,9 +44,9 @@ class TestimonyController extends Controller
             'testifier_phone' => 'nullable|string',
             'announcement_type' => 'required|in:' . implode(',', array_map(fn($case) => $case->value, TestimonyAnnouncementType::cases())),
             'file' => 'required_if:announcement_type,video,audio|nullable|file|mimes:jpeg,png,jpg,gif,svg,mp4,mov,ogg,qt,mp3,wav|max:20480', // max 20MB
-            'is_featured' => 'boolean',
-            'is_approved' => 'boolean',
-            'announce_in_service' => 'boolean',
+            'is_featured' => 'nullable|boolean',
+            'is_approved' => 'nullable|boolean',
+            'announce_in_service' => 'nullable|boolean',
         ]);
 
         $testimony = Testimony::create($request->except('file'));

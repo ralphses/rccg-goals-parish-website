@@ -103,6 +103,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                              @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
                         
                         <div class="row">
                             <div class="col-md-4">
@@ -130,6 +131,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                         <div class="card-action">
                             <button type="submit" class="btn btn-success">Add Testimony</button>
                             <a href="{{ route('dashboard.testimonies.index') }}" class="btn btn-danger">Cancel</a>

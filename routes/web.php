@@ -14,6 +14,7 @@ use App\Http\Controllers\GuestViewController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StreamController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
@@ -47,11 +48,13 @@ Route::get("/media", [GuestViewController::class, 'media'])->name('media');
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
 
     // Add this inside the 'auth' middleware group for the dashboard
-    Route::get('/stream', [StreamController::class, 'index'])->name('dashboard.stream.index');
-    Route::patch('/stream', [StreamController::class, 'update'])->name('dashboard.stream.update');
+    Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->group(function () {
+        Route::get('/stream', [StreamController::class, 'index'])->name('dashboard.stream.index');
+        Route::patch('/stream', [StreamController::class, 'update'])->name('dashboard.stream.update');
+    });
 
     // USERS ROUTES
-    Route::prefix("users")->group(function () {
+    Route::middleware([RoleMiddleware::class . ':admin,pastor'])->prefix("users")->group(function () {
 
         Route::resource('', UserController::class)
             ->parameters(['' => 'user'])
@@ -138,7 +141,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
 
     // MEDIA ROUTES
-    Route::prefix("media")->group(function () {
+    Route::middleware([RoleMiddleware::class . ':admin,pastor,media,editor'])->prefix("media")->group(function () {
 
         Route::resource('', MediaController::class)
             ->parameters(['' => 'media'])
@@ -175,7 +178,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
 
     // ANNOUNCEMENTS ROUTES
-    Route::prefix("announcements")->group(function () {
+    Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->prefix("announcements")->group(function () {
 
         Route::resource('', AnnouncementController::class)
             ->parameters(['' => 'announcement'])

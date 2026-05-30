@@ -8,7 +8,10 @@
                     <!-- Card Header -->
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="card-title">Departments</div>
-                        <a href="{{ route('dashboard.departments.create') }}" class="btn btn-primary">Create Department</a>
+                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                            <a href="{{ route('dashboard.departments.create') }}" class="btn btn-primary">Create
+                                Department</a>
+                        @endif
                     </div>
 
                     {{-- Session Messages --}}
@@ -111,32 +114,32 @@
                                                                 View
                                                             </a>
                                                         </li>
+                                                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                                                            <li>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('dashboard.departments.edit', $department->id) }}">
+                                                                    Edit
+                                                                </a>
+                                                            </li>
 
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('dashboard.departments.edit', $department->id) }}">
-                                                                Edit
-                                                            </a>
-                                                        </li>
+                                                            <li>
+                                                                <hr class="dropdown-divider">
+                                                            </li>
 
-                                                        <li>
-                                                            <hr class="dropdown-divider">
-                                                        </li>
+                                                            <li>
+                                                                <form method="POST"
+                                                                    action="{{ route('dashboard.departments.destroy', $department) }}"
+                                                                    onsubmit="return confirm('Are you sure you want to delete this department?')">
+                                                                    @csrf
+                                                                    @method('DELETE')
 
-                                                        <li>
-                                                            <form method="POST"
-                                                                action="{{ route('dashboard.departments.destroy', $department) }}"
-                                                                onsubmit="return confirm('Are you sure you want to delete this department?')">
-                                                                @csrf
-                                                                @method('DELETE')
+                                                                    <button class="dropdown-item text-danger">
+                                                                        Delete
+                                                                    </button>
 
-                                                                <button class="dropdown-item text-danger">
-                                                                    Delete
-                                                                </button>
-
-                                                            </form>
-                                                        </li>
-
+                                                                </form>
+                                                            </li>
+                                                        @endif
                                                     </ul>
 
                                                 </div>
