@@ -26,7 +26,7 @@ class GuestViewController extends Controller
         $sermons = Sermon::latest()->take(3)->get();
         $galleries = Media::where(['category' => MediaCategory::CHURCH_GALLERY, 'media_type' => 'image'])->latest()->take(6)->get();
         // dd($galleries);
-        $events = Event::where('date', '>=', now())->orderBy('date', 'asc')->take(3)->get();
+        $events = Event::where('event_date', '>=', now())->orderBy('event_date', 'asc')->take(3)->get();
         return view('guest.home', compact('theme', 'stream', 'testimonies', 'sermons', 'galleries', 'events'));
     }
 
