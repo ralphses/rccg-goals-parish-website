@@ -1,8 +1,8 @@
 @include('components.dashboard.partials.form-shell')
 
 <x-app-layout title="Stream Settings">
-    <div class="container">
-        <div class="page-inner">
+    <div class="container-fluid px-0">
+        <div class="page-inner stream-page-shell">
             <div class="dashboard-form-shell">
                 <div class="dashboard-form-hero card mb-4">
                     <div class="card-body p-4 p-lg-5">
@@ -111,6 +111,25 @@
     </div>
 
     @push('scripts')
+        <style>
+            .stream-page-shell {
+                width: 100%;
+                max-width: none;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .stream-page-shell .dashboard-form-shell {
+                padding-left: 0;
+            }
+
+            @media (max-width: 991.98px) {
+                .stream-page-shell {
+                    padding-left: 12px;
+                    padding-right: 12px;
+                }
+            }
+        </style>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const youtubeUrlInput = document.getElementById('youtube_url');

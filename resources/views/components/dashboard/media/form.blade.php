@@ -453,6 +453,27 @@
                                     </div>
                                 </div>
 
+                                <div class="media-upload-progress d-none mb-4" data-upload-progress>
+                                    <div class="media-upload-progress__head">
+                                        <div>
+                                            <strong data-upload-progress-label>Preparing upload...</strong>
+                                            <p class="mb-0 text-muted small">Please keep this page open while your file is uploading.</p>
+                                        </div>
+                                        <span class="media-upload-progress__percent" data-upload-progress-percent>0%</span>
+                                    </div>
+                                    <div class="progress media-upload-progress__bar-wrap">
+                                        <div
+                                            class="progress-bar progress-bar-striped progress-bar-animated"
+                                            role="progressbar"
+                                            style="width: 0%;"
+                                            aria-valuenow="0"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                            data-upload-progress-bar
+                                        ></div>
+                                    </div>
+                                </div>
+
                                 <div class="row align-items-center">
                                     <div class="col-lg-7">
                                         <div class="media-public-toggle">
@@ -515,6 +536,11 @@
         .cropper-state { min-height: 24px; font-weight: 500; }
         .media-public-toggle { padding: 16px 18px; border-radius: 16px; background: #f8fafc; border: 1px solid #e2e8f0; }
         .media-submit-button { min-width: 190px; border-radius: 12px; box-shadow: 0 12px 20px rgba(37, 99, 235, 0.18); }
+        .media-upload-progress { padding: 16px 18px; border-radius: 18px; border: 1px solid #dbeafe; background: linear-gradient(180deg, #eff6ff 0%, #f8fbff 100%); }
+        .media-upload-progress__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+        .media-upload-progress__percent { font-size: 1rem; font-weight: 700; color: #1d4ed8; min-width: 52px; text-align: right; }
+        .media-upload-progress__bar-wrap { height: 14px; border-radius: 999px; background: rgba(37, 99, 235, 0.12); overflow: hidden; }
+        .media-upload-progress__bar-wrap .progress-bar { background: linear-gradient(90deg, #2563eb 0%, #0ea5e9 100%); }
         .you-tube-panel { margin-top: 24px; padding: 18px; border-radius: 18px; background: linear-gradient(180deg, #fff 0%, #fff8f4 100%); border: 1px solid #fde3d3; }
         .you-tube-panel__head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
         .shorts-guidance, .video-meta-box { padding: 14px 16px; border-radius: 14px; background: #fff; border: 1px solid #f6d2bb; }
@@ -546,8 +572,13 @@
             const hiddenWidth = form.querySelector('[data-video-width]');
             const hiddenHeight = form.querySelector('[data-video-height]');
             const youtubeConnected = form.dataset.youtubeConnected === 'true';
+            const progressWrapper = form.querySelector('[data-upload-progress]');
+            const progressBar = form.querySelector('[data-upload-progress-bar]');
+            const progressLabel = form.querySelector('[data-upload-progress-label]');
+            const progressPercent = form.querySelector('[data-upload-progress-percent]');
             const targetWidth = 1600;
             const targetHeight = 1200;
+            let isSubmitting = false;
 
             class FixedRatioCropper {
                 constructor(type) {
@@ -811,11 +842,34 @@
             }
 
             function updateSubmitState() {
+                if (isSubmitting) {
+                    submitButton.disabled = true;
+                    return;
+                }
                 const selectedType = mediaTypeSelect.value;
                 let disabled = false;
                 if (selectedType === 'image' && !imageCropper.isReady()) disabled = true;
                 if (selectedType === 'video' && !videoCropper.isReady()) disabled = true;
                 submitButton.disabled = disabled;
+            }
+
+            function setUploadProgress(percent, label) {
+                if (!progressWrapper || !progressBar || !progressPercent || !progressLabel) return;
+                const bounded = Math.max(0, Math.min(100, Math.round(percent)));
+                progressWrapper.classList.remove('d-none');
+                progressBar.style.width = `${bounded}%`;
+                progressBar.setAttribute('aria-valuenow', `${bounded}`);
+                progressPercent.textContent = `${bounded}%`;
+                progressLabel.textContent = label;
+            }
+
+            function resetUploadState() {
+                isSubmitting = false;
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = `<i class="fas fa-cloud-upload-alt me-2"></i>{{ $submitLabel }}`;
+                }
+                updateSubmitState();
             }
 
             typeChips.forEach((chip) => {
@@ -841,6 +895,69 @@
             });
             youtubeTitle?.addEventListener('input', () => {
                 youtubeTitle.dataset.autofill = youtubeTitle.value === mainTitle.value ? 'true' : 'false';
+            });
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (isSubmitting) return;
+
+                const selectedType = mediaTypeSelect.value;
+                if ((selectedType === 'image' && !imageCropper.isReady()) || (selectedType === 'video' && !videoCropper.isReady())) {
+                    updateSubmitState();
+                    return;
+                }
+
+                isSubmitting = true;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Uploading...';
+                setUploadProgress(0, 'Preparing upload...');
+
+                const xhr = new XMLHttpRequest();
+                xhr.open(form.method || 'POST', form.action, true);
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.setRequestHeader('Accept', 'text/html,application/xhtml+xml');
+
+                xhr.upload.addEventListener('progress', function (uploadEvent) {
+                    if (!uploadEvent.lengthComputable) {
+                        setUploadProgress(10, 'Uploading media...');
+                        return;
+                    }
+
+                    const percent = (uploadEvent.loaded / uploadEvent.total) * 100;
+                    setUploadProgress(percent, percent >= 100 ? 'Finalizing upload...' : 'Uploading media...');
+                });
+
+                xhr.addEventListener('load', function () {
+                    if (xhr.status >= 200 && xhr.status < 400) {
+                        setUploadProgress(100, 'Upload complete. Redirecting...');
+                        if (xhr.responseURL) {
+                            window.history.replaceState({}, '', xhr.responseURL);
+                        }
+                        document.open();
+                        document.write(xhr.responseText);
+                        document.close();
+                        return;
+                    }
+
+                    resetUploadState();
+                    setUploadProgress(0, 'Upload failed. Please try again.');
+                    progressWrapper?.classList.add('border', 'border-danger-subtle');
+                    alert('The upload could not be completed. Please review the form and try again.');
+                });
+
+                xhr.addEventListener('error', function () {
+                    resetUploadState();
+                    setUploadProgress(0, 'Network error while uploading.');
+                    progressWrapper?.classList.add('border', 'border-danger-subtle');
+                    alert('A network error interrupted the upload. Please try again.');
+                });
+
+                xhr.addEventListener('abort', function () {
+                    resetUploadState();
+                    setUploadProgress(0, 'Upload cancelled.');
+                });
+
+                xhr.send(new FormData(form));
             });
 
             if (videoPreview?.getAttribute('src')) detectVideoMetadata(videoPreview.getAttribute('src'));
