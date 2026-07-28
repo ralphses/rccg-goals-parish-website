@@ -3,14 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\YouTubeIntegration;
 use App\Models\YearlyDetail;
+use App\Services\CloudinaryUploadService;
+use App\Services\CroppedImageUploadService;
+use App\Services\YouTubeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class SettingsController extends Controller
 {
+    public function __construct(
+        private CloudinaryUploadService $cloudinaryUploadService,
+        private CroppedImageUploadService $croppedImageUploadService,
+        private YouTubeService $youTubeService
+    )
+    {
+    }
     /**
      * Display the settings page.
      *
@@ -42,6 +52,7 @@ class SettingsController extends Controller
             "yearlyDetail" => $yearlyDetail,
             "years" => $years,
             "months" => $months,
+            "youtubeIntegration" => YouTubeIntegration::query()->first(),
         ];
 
         return view('dashboard.settings.index', compact('settings'));
@@ -60,7 +71,8 @@ class SettingsController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:255',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'avatar_source' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'avatar_cropped' => 'nullable|string',
             'address' => 'nullable|string|max:255',
             'what_attracted_you' => 'nullable|string',
             'state_of_origin' => 'nullable|string|max:255',
@@ -70,14 +82,18 @@ class SettingsController extends Controller
             'birthday' => 'nullable|date',
         ]);
 
-        $data = $request->except('avatar');
+        $data = $request->except(['avatar_source', 'avatar_cropped']);
 
-        if ($request->hasFile('avatar')) {
-            // Delete old avatar if it exists
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
+        if ($request->hasFile('avatar_source')) {
+            $request->validate([
+                'avatar_cropped' => ['required', 'string'],
+            ]);
+
+            if ($user->avatar) {
+                $this->cloudinaryUploadService->deleteByUrl($user->avatar, 'image');
             }
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $this->croppedImageUploadService
+                ->storeFromDataUrl($request->string('avatar_cropped')->toString(), 'avatars', 'avatar', 'avatar_cropped')['url'];
         }
 
         $user->update($data);
@@ -127,5 +143,63 @@ class SettingsController extends Controller
         $yearlyDetail->update($validatedData);
 
         return redirect()->route('settings.index')->with('success', 'Yearly details updated successfully.');
+    }
+
+    public function connectYouTube(Request $request)
+    {
+        abort_unless($request->user()?->isAdmin(), 403);
+
+        $state = (string) str()->uuid();
+        $request->session()->put('youtube_oauth_state', $state);
+
+        return redirect()->away($this->youTubeService->authorizationUrl($state));
+    }
+
+    public function handleYouTubeCallback(Request $request)
+    {
+        abort_unless($request->user()?->isAdmin(), 403);
+
+        $expectedState = $request->session()->pull('youtube_oauth_state');
+
+        if (!$expectedState || $expectedState !== $request->string('state')->toString()) {
+            return redirect()->route('settings.index')->with('error', 'Unable to verify the YouTube connection request.');
+        }
+
+        if ($request->filled('error')) {
+            return redirect()->route('settings.index')->with('error', 'YouTube connection was not completed.');
+        }
+
+        $tokens = $this->youTubeService->exchangeCodeForTokens($request->string('code')->toString());
+        $channel = $this->youTubeService->fetchChannel($tokens['access_token']);
+
+        YouTubeIntegration::query()->updateOrCreate(
+            ['id' => optional(YouTubeIntegration::query()->first())->id ?? 1],
+            [
+                'channel_id' => $channel['channel_id'],
+                'channel_title' => $channel['channel_title'],
+                'channel_thumbnail_url' => $channel['channel_thumbnail_url'],
+                'access_token' => $tokens['access_token'],
+                'refresh_token' => $tokens['refresh_token'],
+                'token_expires_at' => now()->addSeconds($tokens['expires_in']),
+                'last_used_at' => now(),
+                'last_error' => null,
+                'connected_by' => $request->user()->id,
+            ]
+        );
+
+        return redirect()->route('settings.index')->with('success', 'YouTube channel connected successfully.');
+    }
+
+    public function disconnectYouTube(Request $request)
+    {
+        abort_unless($request->user()?->isAdmin(), 403);
+
+        $integration = YouTubeIntegration::query()->first();
+
+        if ($integration) {
+            $integration->delete();
+        }
+
+        return redirect()->route('settings.index')->with('success', 'YouTube channel disconnected successfully.');
     }
 }

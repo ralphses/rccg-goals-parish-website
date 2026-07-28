@@ -55,6 +55,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // USERS ROUTES
     Route::middleware([RoleMiddleware::class . ':admin,pastor'])->prefix("users")->group(function () {
+        Route::delete('/bulk-delete', [UserController::class, 'bulkDestroy'])
+            ->name('dashboard.users.bulk-destroy');
 
         Route::resource('', UserController::class)
             ->parameters(['' => 'user'])
@@ -84,6 +86,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // EVENTS ROUTES
     Route::prefix("events")->group(function () {
+        Route::delete('/bulk-delete', [EventController::class, 'bulkDestroy'])
+            ->name('dashboard.events.bulk-destroy');
 
         Route::resource('', EventController::class)
             ->parameters(['' => 'event'])
@@ -101,6 +105,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // DEPARTMENTS ROUTES
     Route::prefix("departments")->group(function () {
+        Route::delete('/bulk-delete', [DepartmentController::class, 'bulkDestroy'])
+            ->name('dashboard.departments.bulk-destroy');
 
         Route::resource('', DepartmentController::class)
             ->parameters(['' => 'department'])
@@ -118,6 +124,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // SERMONS ROUTES
     Route::prefix("sermons")->group(function () {
+        Route::delete('/bulk-delete', [SermonController::class, 'bulkDestroy'])
+            ->name('dashboard.sermons.bulk-destroy');
 
         Route::resource('', SermonController::class)
             ->parameters(['' => 'sermon'])
@@ -142,6 +150,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // MEDIA ROUTES
     Route::middleware([RoleMiddleware::class . ':admin,pastor,media,editor'])->prefix("media")->group(function () {
+        Route::delete('/bulk-delete', [MediaController::class, 'bulkDestroy'])
+            ->name('dashboard.media.bulk-destroy');
 
         Route::resource('', MediaController::class)
             ->parameters(['' => 'media'])
@@ -154,11 +164,18 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
                 'update' => 'dashboard.media.update',
                 'destroy' => 'dashboard.media.destroy'
             ]);
+
+        Route::post('/{media}/youtube/retry', [MediaController::class, 'retryYouTubePublish'])
+            ->name('dashboard.media.youtube.retry');
+        Route::post('/{media}/upload/retry', [MediaController::class, 'retryVideoUpload'])
+            ->name('dashboard.media.upload.retry');
     });
 
 
     // TESTIMONIES ROUTES
     Route::prefix("testimonies")->group(function () {
+        Route::delete('/bulk-delete', [TestimonyController::class, 'bulkDestroy'])
+            ->name('dashboard.testimonies.bulk-destroy');
 
         Route::resource('', TestimonyController::class)
             ->parameters(['' => 'testimony'])
@@ -179,6 +196,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // ANNOUNCEMENTS ROUTES
     Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->prefix("announcements")->group(function () {
+        Route::delete('/bulk-delete', [AnnouncementController::class, 'bulkDestroy'])
+            ->name('dashboard.announcements.bulk-destroy');
 
         Route::resource('', AnnouncementController::class)
             ->parameters(['' => 'announcement'])
@@ -212,6 +231,13 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::patch('/settings/yearly-details', [SettingsController::class, 'updateYearlyDetails'])
         ->name('settings.yearly-details.update');
 
+    Route::middleware([RoleMiddleware::class . ':admin'])->group(function () {
+        Route::get('/settings/youtube/connect', [SettingsController::class, 'connectYouTube'])
+            ->name('settings.youtube.connect');
+        Route::delete('/settings/youtube', [SettingsController::class, 'disconnectYouTube'])
+            ->name('settings.youtube.disconnect');
+    });
+
 
     Route::get('/', [DashboardController::class, 'index'])
         ->name('dashboard');
@@ -228,6 +254,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::middleware([RoleMiddleware::class . ':admin'])->group(function () {
+        Route::get('/integrations/youtube/callback', [SettingsController::class, 'handleYouTubeCallback'])
+            ->middleware('verified')
+            ->name('settings.youtube.callback');
+        Route::get('/dashboard/settings/youtube/callback', [SettingsController::class, 'handleYouTubeCallback'])
+            ->middleware('verified');
+    });
 });
 
 require __DIR__ . '/auth.php';

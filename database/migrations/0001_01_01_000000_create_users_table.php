@@ -24,7 +24,7 @@ return new class extends Migration
                 UserRole::PASTOR->value,
                 UserRole::MEMBER->value,
                 UserRole::MEDIA->value,
-            ])->default(UserRole::EDITOR->value);
+            ])->default(UserRole::MEMBER->value);
 
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable();

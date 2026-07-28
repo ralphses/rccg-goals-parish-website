@@ -6,5 +6,6 @@
     <x-dashboard.media.edit 
         :media="$media" 
         :categories="$categories" 
+        :youtube-connected="$youtubeConnected"
     /> 
 </x-app-layout>

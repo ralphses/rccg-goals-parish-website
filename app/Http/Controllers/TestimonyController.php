@@ -8,10 +8,13 @@ use App\Enums\TestimonyAnnouncementType;
 use App\Enums\MediaCategory;
 use App\Enums\MediaType;
 use App\Models\Media;
-use Illuminate\Support\Facades\Storage;
+use App\Services\CloudinaryUploadService;
 
 class TestimonyController extends Controller
 {
+    public function __construct(private CloudinaryUploadService $cloudinaryUploadService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -53,10 +56,12 @@ class TestimonyController extends Controller
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('media', $fileName, 'public');
-            $fileSize = $file->getSize();
             $mimeType = $file->getMimeType();
+            $uploaded = $this->cloudinaryUploadService->uploadFile(
+                $file,
+                'testimonies',
+                str_starts_with((string) $mimeType, 'video/') ? 'video' : (str_starts_with((string) $mimeType, 'audio/') ? 'raw' : 'image')
+            );
 
             $mediaType = match (true) {
                 str_starts_with($mimeType, 'image/') => MediaType::IMAGE,
@@ -67,9 +72,9 @@ class TestimonyController extends Controller
 
             $media = new Media([
                 'title' => $testimony->title,
-                'file_name' => $fileName,
-                'file_path' => $filePath,
-                'size' => $fileSize,
+                'file_name' => $uploaded['original_name'],
+                'file_path' => $uploaded['url'],
+                'size' => $uploaded['size'],
                 'media_type' => $mediaType,
                 'category' => MediaCategory::TESTIMONY,
                 'is_public' => true,
@@ -122,16 +127,19 @@ class TestimonyController extends Controller
             // Delete old media if it exists
             if ($testimony->media->isNotEmpty()) {
                 foreach ($testimony->media as $media) {
-                    Storage::disk('public')->delete($media->file_path);
+                    $resourceType = $media->media_type === MediaType::VIDEO ? 'video' : ($media->media_type === MediaType::AUDIO ? 'raw' : 'image');
+                    $this->cloudinaryUploadService->deleteByUrl($media->file_path, $resourceType);
                     $media->delete();
                 }
             }
 
             $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('media', $fileName, 'public');
-            $fileSize = $file->getSize();
             $mimeType = $file->getMimeType();
+            $uploaded = $this->cloudinaryUploadService->uploadFile(
+                $file,
+                'testimonies',
+                str_starts_with((string) $mimeType, 'video/') ? 'video' : (str_starts_with((string) $mimeType, 'audio/') ? 'raw' : 'image')
+            );
 
             $mediaType = match (true) {
                 str_starts_with($mimeType, 'image/') => MediaType::IMAGE,
@@ -142,9 +150,9 @@ class TestimonyController extends Controller
 
             $media = new Media([
                 'title' => $testimony->title,
-                'file_name' => $fileName,
-                'file_path' => $filePath,
-                'size' => $fileSize,
+                'file_name' => $uploaded['original_name'],
+                'file_path' => $uploaded['url'],
+                'size' => $uploaded['size'],
                 'media_type' => $mediaType,
                 'category' => MediaCategory::TESTIMONY,
                 'is_public' => true,
@@ -161,12 +169,41 @@ class TestimonyController extends Controller
      */
     public function destroy(Testimony $testimony)
     {
-        //
+        $this->deleteTestimonyRecord($testimony);
+
+        return redirect()->route('dashboard.testimonies.index')->with('success', 'Testimony deleted successfully.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'selected_ids' => ['required', 'array', 'min:1'],
+            'selected_ids.*' => ['integer', 'exists:testimonies,id'],
+        ]);
+
+        $testimonies = Testimony::with('media')->whereIn('id', $validated['selected_ids'])->get();
+
+        foreach ($testimonies as $testimony) {
+            $this->deleteTestimonyRecord($testimony);
+        }
+
+        return redirect()->route('dashboard.testimonies.index')->with('success', $testimonies->count() . ' testimony item(s) deleted successfully.');
     }
 
     public function approve(Testimony $testimony)
     {
         $testimony->update(['is_approved' => true]);
         return redirect()->route('dashboard')->with('success', 'Testimony approved successfully.');
+    }
+
+    private function deleteTestimonyRecord(Testimony $testimony): void
+    {
+        foreach ($testimony->media as $media) {
+            $resourceType = $media->media_type === MediaType::VIDEO ? 'video' : ($media->media_type === MediaType::AUDIO ? 'raw' : 'image');
+            $this->cloudinaryUploadService->deleteByUrl($media->file_path, $resourceType);
+            $media->delete();
+        }
+
+        $testimony->delete();
     }
 }

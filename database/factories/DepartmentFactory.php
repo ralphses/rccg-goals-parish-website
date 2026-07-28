@@ -21,8 +21,9 @@ class DepartmentFactory extends Factory
         return [
             'name' => fake()->company(),
             'description' => fake()->sentence(),
+            'image' => null,
             'leader_id' => null,
-            'status' => UserStatus::ACTIVE,
+            'status' => UserStatus::ACTIVE->value,
         ];
     }
 }

@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Enums\AnnouncementFrequency;
+use App\Enums\MediaType;
 use App\Models\Announcement;
 use App\Models\Media;
 use App\Models\User;
 use App\Models\AppNotification;
+use App\Services\CloudinaryUploadService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class AnnouncementController extends Controller
 {
+    public function __construct(private CloudinaryUploadService $cloudinaryUploadService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -61,13 +65,17 @@ class AnnouncementController extends Controller
 
         if ($request->hasFile('media')) {
             foreach ($request->file('media') as $file) {
-                $path = $file->store('announcements', 'public');
+                $uploaded = $this->cloudinaryUploadService->uploadFile(
+                    $file,
+                    'announcements',
+                    str_starts_with((string) $file->getMimeType(), 'video/') ? 'video' : 'image'
+                );
 
                 $announcement->media()->create([
                     'title' => $announcement->title,
                     'file_name' => $file->getClientOriginalName(),
-                    'file_path' => $path,
-                    'size' => $file->getSize(),
+                    'file_path' => $uploaded['url'],
+                    'size' => $uploaded['size'],
                     'media_type' => $this->getMediaType($file->getMimeType()),
                     'uploaded_by' => auth()->id(),
                 ]);
@@ -115,19 +123,24 @@ class AnnouncementController extends Controller
             // Delete old media if it exists
             if ($announcement->media->isNotEmpty()) {
                 foreach ($announcement->media as $media) {
-                    Storage::disk('public')->delete($media->file_path);
+                    $resourceType = $media->media_type === MediaType::VIDEO ? 'video' : 'image';
+                    $this->cloudinaryUploadService->deleteByUrl($media->file_path, $resourceType);
                     $media->delete();
                 }
             }
 
             foreach ($request->file('media') as $file) {
-                $path = $file->store('announcements', 'public');
+                $uploaded = $this->cloudinaryUploadService->uploadFile(
+                    $file,
+                    'announcements',
+                    str_starts_with((string) $file->getMimeType(), 'video/') ? 'video' : 'image'
+                );
 
                 $announcement->media()->create([
                     'title' => $announcement->title,
                     'file_name' => $file->getClientOriginalName(),
-                    'file_path' => $path,
-                    'size' => $file->getSize(),
+                    'file_path' => $uploaded['url'],
+                    'size' => $uploaded['size'],
                     'media_type' => $this->getMediaType($file->getMimeType())
                 ]);
             }
@@ -141,8 +154,24 @@ class AnnouncementController extends Controller
      */
     public function destroy(Announcement $announcement)
     {
-        $announcement->delete();
+        $this->deleteAnnouncementRecord($announcement);
         return redirect()->route('dashboard.announcements.index')->with('success', 'Announcement deleted successfully.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'selected_ids' => ['required', 'array', 'min:1'],
+            'selected_ids.*' => ['integer', 'exists:announcements,id'],
+        ]);
+
+        $announcements = Announcement::with('media')->whereIn('id', $validated['selected_ids'])->get();
+
+        foreach ($announcements as $announcement) {
+            $this->deleteAnnouncementRecord($announcement);
+        }
+
+        return redirect()->route('dashboard.announcements.index')->with('success', $announcements->count() . ' announcement(s) deleted successfully.');
     }
 
     public function approve(Announcement $announcement)
@@ -171,5 +200,16 @@ class AnnouncementController extends Controller
         }
 
         return 'document';
+    }
+
+    private function deleteAnnouncementRecord(Announcement $announcement): void
+    {
+        foreach ($announcement->media as $media) {
+            $resourceType = $media->media_type === MediaType::VIDEO ? 'video' : 'image';
+            $this->cloudinaryUploadService->deleteByUrl($media->file_path, $resourceType);
+            $media->delete();
+        }
+
+        $announcement->delete();
     }
 }

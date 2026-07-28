@@ -92,7 +92,7 @@ class GuestViewController extends Controller
 
     public function departments(Request $request)
     {
-        $query = \App\Models\Department::query();
+        $query = \App\Models\Department::with('leader');
 
         // Search logic
         if ($request->filled('query')) {
@@ -121,6 +121,8 @@ class GuestViewController extends Controller
 
     public function department(\App\Models\Department $department)
     {
+        $department->load('leader');
+
         return view('guest.department', compact('department'));
     }
 

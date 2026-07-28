@@ -10,10 +10,17 @@ use Illuminate\Support\Str;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Constants\Constants;
-use Illuminate\Support\Facades\Storage;
+use App\Services\CloudinaryUploadService;
+use App\Services\CroppedImageUploadService;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private CloudinaryUploadService $cloudinaryUploadService,
+        private CroppedImageUploadService $croppedImageUploadService
+    )
+    {
+    }
     /**
      * Display a listing of users
      */
@@ -68,7 +75,8 @@ class UserController extends Controller
             'email'                 => ['required', 'email', 'unique:users,email'],
             'role'                  => ['required', 'in:' . implode(',', array_map(fn($case) => $case->value, UserRole::cases()))],
             'phone'                 => ['nullable', 'string'],
-            'avatar'                => ['nullable', 'image', 'max:2048'], // optional, max 2MB
+            'avatar_source'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:10240'],
+            'avatar_cropped'        => ['nullable', 'string'],
             'address'               => ['nullable', 'string', 'max:255'],
             'status'                => ['required', 'in:' . implode(',', array_map(fn($case) => $case->value, UserStatus::cases()))],
             'departments'           => ['nullable', 'array'],
@@ -83,10 +91,14 @@ class UserController extends Controller
             'can_login'             => ['required', 'boolean']
         ]);
 
-        // Handle avatar upload if present
         $avatarPath = null;
-        if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        if ($request->hasFile('avatar_source')) {
+            $request->validate([
+                'avatar_cropped' => ['required', 'string'],
+            ]);
+
+            $avatarPath = $this->croppedImageUploadService
+                ->storeFromDataUrl($request->string('avatar_cropped')->toString(), 'avatars', 'avatar', 'avatar_cropped')['url'];
         }
 
         // Generate default password
@@ -159,7 +171,8 @@ class UserController extends Controller
             'email'                 => ['required', 'email', 'unique:users,email,' . $user->id],
             'role'                  => ['required', 'in:' . implode(',', array_map(fn($case) => $case->value, UserRole::cases()))],
             'phone'                 => ['nullable', 'string'],
-            'avatar'                => ['nullable', 'image', 'max:2048'],
+            'avatar_source'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:10240'],
+            'avatar_cropped'        => ['nullable', 'string'],
             'address'               => ['nullable', 'string', 'max:255'],
             'status'                => ['required', 'in:' . implode(',', array_map(fn($case) => $case->value, UserStatus::cases()))],
             'departments'           => ['nullable', 'array'],
@@ -174,14 +187,18 @@ class UserController extends Controller
             'can_login'             => ['required', 'boolean']
         ]);
 
-        $data = $request->except(['avatar', 'departments']);
+        $data = $request->except(['avatar_source', 'avatar_cropped', 'departments']);
 
-        if ($request->hasFile('avatar')) {
-            // Delete old avatar if it exists
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
+        if ($request->hasFile('avatar_source')) {
+            $request->validate([
+                'avatar_cropped' => ['required', 'string'],
+            ]);
+
+            if ($user->avatar) {
+                $this->cloudinaryUploadService->deleteByUrl($user->avatar, 'image');
             }
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $this->croppedImageUploadService
+                ->storeFromDataUrl($request->string('avatar_cropped')->toString(), 'avatars', 'avatar', 'avatar_cropped')['url'];
         }
 
         $user->update($data);
@@ -217,16 +234,44 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($user->isAdmin()) {
+        if (! $this->deleteUserRecord($user)) {
             return redirect()
                 ->route('dashboard.users.index')
                 ->with('error', 'Admin users cannot be deleted');
         }
-        $user->delete();
 
         return redirect()
             ->route('dashboard.users.index')
             ->with('success', 'User deleted successfully');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'selected_ids' => ['required', 'array', 'min:1'],
+            'selected_ids.*' => ['integer', 'exists:users,id'],
+        ]);
+
+        $users = User::whereIn('id', $validated['selected_ids'])->get();
+        $deletedCount = 0;
+        $skippedAdmins = 0;
+
+        foreach ($users as $user) {
+            if ($this->deleteUserRecord($user)) {
+                $deletedCount++;
+            } else {
+                $skippedAdmins++;
+            }
+        }
+
+        $message = "{$deletedCount} user(s) deleted successfully.";
+        if ($skippedAdmins > 0) {
+            $message .= " {$skippedAdmins} admin user(s) were skipped.";
+        }
+
+        return redirect()
+            ->route('dashboard.users.index')
+            ->with($deletedCount > 0 ? 'success' : 'error', $deletedCount > 0 ? $message : 'Selected users could not be deleted.');
     }
 
     /**
@@ -257,5 +302,20 @@ class UserController extends Controller
     public function message(User $user)
     {
         return view('dashboard.users.message', compact('user'));
+    }
+
+    private function deleteUserRecord(User $user): bool
+    {
+        if ($user->isAdmin()) {
+            return false;
+        }
+
+        if ($user->avatar) {
+            $this->cloudinaryUploadService->deleteByUrl($user->avatar, 'image');
+        }
+
+        $user->delete();
+
+        return true;
     }
 }

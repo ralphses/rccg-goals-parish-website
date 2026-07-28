@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\SermonAttachment;
-use Illuminate\Http\Request;
+use App\Services\CloudinaryUploadService;
 
 class SermonAttachmentController extends Controller
 {
+    public function __construct(private CloudinaryUploadService $cloudinaryUploadService)
+    {
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(SermonAttachment $attachment)
     {
-        // Delete the file from storage
-        if (file_exists(public_path($attachment->file_path))) {
-            unlink(public_path($attachment->file_path));
-        }
+        $this->cloudinaryUploadService->deleteByUrl($attachment->file_path, 'raw');
 
         $attachment->delete();
 

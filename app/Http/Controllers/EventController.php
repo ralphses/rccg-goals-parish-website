@@ -5,10 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Enums\EventStatus;
 use App\Models\Event;
+use App\Services\CloudinaryUploadService;
+use App\Services\CroppedImageUploadService;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    public function __construct(
+        private CloudinaryUploadService $cloudinaryUploadService,
+        private CroppedImageUploadService $croppedImageUploadService
+    )
+    {
+    }
     public function index(Request $request)
     {
         $query = Event::query();
@@ -53,16 +61,24 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'event_date' => 'required|date',
             'location' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_source' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'image_cropped' => 'nullable|string',
             'status' => 'required|in:upcoming,ongoing,past,cancelled',
             'department_id' => 'nullable|exists:departments,id',
             'video_link' => 'nullable|url',
             'description_heading' => 'nullable|string|max:255',
         ]);
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('events', 'public');
+        if ($request->hasFile('image_source')) {
+            $request->validate([
+                'image_cropped' => ['required', 'string'],
+            ]);
+
+            $validated['image'] = $this->croppedImageUploadService
+                ->storeFromDataUrl($request->string('image_cropped')->toString(), 'events', 'event-image', 'image_cropped')['url'];
         }
+
+        unset($validated['image_source'], $validated['image_cropped']);
 
         Event::create($validated);
 
@@ -94,13 +110,27 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'event_date' => 'required|date',
             'location' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_source' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'image_cropped' => 'nullable|string',
+            'status' => 'required|in:upcoming,ongoing,past,cancelled',
+            'department_id' => 'nullable|exists:departments,id',
+            'video_link' => 'nullable|url',
+            'description_heading' => 'nullable|string|max:255',
         ]);
 
-        $data = $request->all();
+        $data = $request->except(['image_source', 'image_cropped']);
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('events', 'public');
+        if ($request->hasFile('image_source')) {
+            $request->validate([
+                'image_cropped' => ['required', 'string'],
+            ]);
+
+            if ($event->image) {
+                $this->cloudinaryUploadService->deleteByUrl($event->image, 'image');
+            }
+
+            $data['image'] = $this->croppedImageUploadService
+                ->storeFromDataUrl($request->string('image_cropped')->toString(), 'events', 'event-image', 'image_cropped')['url'];
         }
 
         $event->update($data);
@@ -111,9 +141,35 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        $event->delete();
+        $this->deleteEventRecord($event);
 
         return redirect()->route('dashboard.events.index')
             ->with('success', 'Event deleted successfully.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'selected_ids' => ['required', 'array', 'min:1'],
+            'selected_ids.*' => ['integer', 'exists:events,id'],
+        ]);
+
+        $events = Event::whereIn('id', $validated['selected_ids'])->get();
+
+        foreach ($events as $event) {
+            $this->deleteEventRecord($event);
+        }
+
+        return redirect()->route('dashboard.events.index')
+            ->with('success', $events->count() . ' event(s) deleted successfully.');
+    }
+
+    private function deleteEventRecord(Event $event): void
+    {
+        if ($event->image) {
+            $this->cloudinaryUploadService->deleteByUrl($event->image, 'image');
+        }
+
+        $event->delete();
     }
 }

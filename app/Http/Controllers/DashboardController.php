@@ -44,16 +44,13 @@ class DashboardController extends Controller
 
         $profileCompletion = (count($profileFields) > 0) ? ($filledFields / count($profileFields)) * 100 : 0;
 
-        $latestAnnouncement = Announcement::where(['is_approved' => false, 'is_active' => true])->latest()->first();
-        // dd($latestAnnouncement);
-
         $dashboard = [
             "user" => $user,
             "yearlyDetail" => $yearlyDetail,
             "profileCompletion" => round($profileCompletion),
-            "upcomingEvents" => Event::where('date', '>=', now())->orderBy('date', 'asc')->take(3)->get(),
-            "latestSermon" => Sermon::latest()->first(),
-            "latestAnnouncement" => Announcement::where('status', 'pending')->latest()->first(),
+            "upcomingEvents" => Event::where('event_date', '>=', now())->orderBy('event_date', 'asc')->take(3)->get(),
+            "latestSermon" => Sermon::with('speaker')->latest()->first(),
+            "latestAnnouncement" => Announcement::where('is_approved', false)->where('is_active', true)->latest()->first(),
             "latestTestimonies" => Testimony::where('is_approved', false)->latest()->take(3)->get(),
             "latestUser" => User::latest()->first(),
             "latestMedia" => Media::latest()->take(5)->get(),

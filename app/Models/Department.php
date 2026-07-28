@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Support\MediaUrl;
 
 class Department extends Model
 {
@@ -12,6 +13,7 @@ class Department extends Model
     protected $fillable = [
         'name',
         'description',
+        'image',
         'leader_id',
         'status',
     ];
@@ -36,5 +38,10 @@ class Department extends Model
     public function events()
     {
         return $this->hasMany(Event::class);
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        return MediaUrl::toPublicUrl($this->image);
     }
 }
