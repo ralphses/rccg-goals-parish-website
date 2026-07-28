@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Enums\YouTubePublishStatus;
+use App\enums\YouTubePublishStatus;
 use App\Models\Media;
 use App\Models\YouTubeIntegration;
 use App\Support\MediaUrl;

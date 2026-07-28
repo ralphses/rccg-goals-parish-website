@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Enums\UserRole;
+use App\enums\UserRole;
 use App\Models\User;
 use App\Models\YouTubeIntegration;
 use Illuminate\Foundation\Testing\RefreshDatabase;

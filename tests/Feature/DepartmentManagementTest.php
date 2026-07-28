@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Enums\UserRole;
+use App\enums\UserRole;
 use App\Models\Department;
 use App\Models\User;
 use App\Support\MediaUrl;

@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use App\Enums\AnnouncementFrequency;
+use App\enums\AnnouncementFrequency;
 use App\Models\User;
 
 /**

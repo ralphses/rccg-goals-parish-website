@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\MediaCategory;
+use App\enums\MediaCategory;
 use App\Models\YearlyDetail;
 use App\Models\Stream;
 use App\Models\Testimony;

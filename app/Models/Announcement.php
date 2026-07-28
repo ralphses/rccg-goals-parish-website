@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\AnnouncementFrequency;
+use App\enums\AnnouncementFrequency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

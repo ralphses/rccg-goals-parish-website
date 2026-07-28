@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\TestimonyAnnouncementType;
+use App\enums\TestimonyAnnouncementType;
 use App\Models\Testimony;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

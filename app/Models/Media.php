@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Enums\MediaCategory;
-use App\Enums\MediaUploadStatus;
-use App\Enums\MediaType;
-use App\Enums\YouTubePublishStatus;
-use App\Enums\YouTubeVideoFormat;
+use App\enums\MediaCategory;
+use App\enums\MediaUploadStatus;
+use App\enums\MediaType;
+use App\enums\YouTubePublishStatus;
+use App\enums\YouTubeVideoFormat;
 use App\Support\MediaUrl;
 use Illuminate\Support\Str;
 

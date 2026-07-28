@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\MediaCategory;
-use App\Enums\MediaType;
-use App\Enums\MediaUploadStatus;
+use App\enums\MediaCategory;
+use App\enums\MediaType;
+use App\enums\MediaUploadStatus;
 use App\Models\Sermon;
 use App\Models\Media;
 use App\Models\User;
-use App\Enums\SermonStatus;
+use App\enums\SermonStatus;
 use App\Models\SermonAttachment;
 use App\Services\CloudinaryUploadService;
 use App\Services\CroppedImageUploadService;

@@ -14,7 +14,7 @@
                 @error('media.*')<div class="text-danger mt-1">{{ $message }}</div>@enderror
                 <div id="media-preview" class="mt-3 d-flex flex-wrap gap-2"></div>
                 @if ($announcement->media->isNotEmpty())
-                    <div class="mt-3"><p>Current Media:</p><div class="d-flex flex-wrap gap-2">@foreach ($announcement->media as $media)<div class="position-relative">@if ($media->media_type === \App\Enums\MediaType::IMAGE)<img src="{{ $media->file_url }}" alt="{{ $media->title }}" class="img-thumbnail" style="height: 100px;">@elseif ($media->media_type === \App\Enums\MediaType::VIDEO)<video controls src="{{ $media->file_url }}" class="img-thumbnail" style="height: 100px;"></video>@endif</div>@endforeach</div></div>
+                    <div class="mt-3"><p>Current Media:</p><div class="d-flex flex-wrap gap-2">@foreach ($announcement->media as $media)<div class="position-relative">@if ($media->media_type === \App\enums\MediaType::IMAGE)<img src="{{ $media->file_url }}" alt="{{ $media->title }}" class="img-thumbnail" style="height: 100px;">@elseif ($media->media_type === \App\enums\MediaType::VIDEO)<video controls src="{{ $media->file_url }}" class="img-thumbnail" style="height: 100px;"></video>@endif</div>@endforeach</div></div>
                 @endif
             </div>
             <div class="row">

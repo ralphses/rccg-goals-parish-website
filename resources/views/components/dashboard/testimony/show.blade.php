@@ -71,11 +71,11 @@
                                 <div class="show-thumb-list">
                                     @foreach ($testimony->media as $item)
                                         <div class="show-thumb-card">
-                                            @if ($item->media_type === \App\Enums\MediaType::IMAGE)
+                                            @if ($item->media_type === \App\enums\MediaType::IMAGE)
                                                 <img src="{{ $item->visual_url }}" alt="{{ $item->title }}">
-                                            @elseif ($item->media_type === \App\Enums\MediaType::VIDEO)
+                                            @elseif ($item->media_type === \App\enums\MediaType::VIDEO)
                                                 <img src="{{ $item->visual_url }}" alt="{{ $item->title }}">
-                                            @elseif ($item->media_type === \App\Enums\MediaType::AUDIO)
+                                            @elseif ($item->media_type === \App\enums\MediaType::AUDIO)
                                                 <div class="show-thumb-card-body">
                                                     <audio controls class="w-100">
                                                         <source src="{{ $item->file_url }}">
@@ -83,7 +83,7 @@
                                                     </audio>
                                                 </div>
                                             @endif
-                                            @if ($item->media_type !== \App\Enums\MediaType::AUDIO)
+                                            @if ($item->media_type !== \App\enums\MediaType::AUDIO)
                                                 <div class="show-thumb-card-body">
                                                     <div class="show-thumb-card-title">{{ $item->title }}</div>
                                                     <span class="show-pill info">{{ ucwords($item->media_type->value) }}</span>

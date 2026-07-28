@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\enums\UserRole;
-use App\Enums\UserStatus;
+use App\enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 

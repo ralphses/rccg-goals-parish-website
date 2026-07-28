@@ -3,24 +3,24 @@
 
 @php
     $typePill = match ($media->media_type) {
-        \App\Enums\MediaType::IMAGE => 'info',
-        \App\Enums\MediaType::VIDEO => 'dark',
-        \App\Enums\MediaType::AUDIO => 'warning',
+        \App\enums\MediaType::IMAGE => 'info',
+        \App\enums\MediaType::VIDEO => 'dark',
+        \App\enums\MediaType::AUDIO => 'warning',
     };
 
     $uploadPill = match ($media->upload_status ?? null) {
-        \App\Enums\MediaUploadStatus::READY => 'success',
-        \App\Enums\MediaUploadStatus::FAILED => 'danger',
-        \App\Enums\MediaUploadStatus::PROCESSING => 'info',
-        \App\Enums\MediaUploadStatus::QUEUED => 'warning',
+        \App\enums\MediaUploadStatus::READY => 'success',
+        \App\enums\MediaUploadStatus::FAILED => 'danger',
+        \App\enums\MediaUploadStatus::PROCESSING => 'info',
+        \App\enums\MediaUploadStatus::QUEUED => 'warning',
         default => 'neutral',
     };
 
     $youtubePill = match ($media->youtube_status ?? null) {
-        \App\Enums\YouTubePublishStatus::UPLOADED_PRIVATE, \App\Enums\YouTubePublishStatus::PUBLISHED => 'success',
-        \App\Enums\YouTubePublishStatus::FAILED => 'danger',
-        \App\Enums\YouTubePublishStatus::UPLOADING => 'info',
-        \App\Enums\YouTubePublishStatus::QUEUED => 'warning',
+        \App\enums\YouTubePublishStatus::UPLOADED_PRIVATE, \App\enums\YouTubePublishStatus::PUBLISHED => 'success',
+        \App\enums\YouTubePublishStatus::FAILED => 'danger',
+        \App\enums\YouTubePublishStatus::UPLOADING => 'info',
+        \App\enums\YouTubePublishStatus::QUEUED => 'warning',
         default => 'neutral',
     };
 
@@ -70,18 +70,18 @@
                             <p class="show-card-subtitle">Primary asset preview with current readiness status.</p>
                         </div>
                         <div class="show-card-body">
-                            @if ($media->media_type === \App\Enums\MediaType::IMAGE)
+                            @if ($media->media_type === \App\enums\MediaType::IMAGE)
                                 <div class="show-media-frame visual mb-4">
                                     <img src="{{ $media->visual_url }}" alt="{{ $media->title }}">
                                 </div>
-                            @elseif ($media->media_type === \App\Enums\MediaType::VIDEO)
+                            @elseif ($media->media_type === \App\enums\MediaType::VIDEO)
                                 @if ($media->thumbnail_path)
                                     <div class="show-media-frame visual mb-4">
                                         <img src="{{ $media->visual_url }}" alt="{{ $media->title }}">
                                     </div>
                                 @endif
 
-                                @if ($media->upload_status === \App\Enums\MediaUploadStatus::READY && $media->file_url)
+                                @if ($media->upload_status === \App\enums\MediaUploadStatus::READY && $media->file_url)
                                     <div class="show-media-frame visual mb-4">
                                         <video controls>
                                             <source src="{{ $media->file_url }}">
@@ -94,7 +94,7 @@
                                         <strong>{{ ucwords(str_replace('_', ' ', $media->upload_status->value)) }}</strong>.
                                     </div>
                                 @endif
-                            @elseif ($media->media_type === \App\Enums\MediaType::AUDIO)
+                            @elseif ($media->media_type === \App\enums\MediaType::AUDIO)
                                 <div class="show-content-block mb-4">
                                     <audio controls class="w-100">
                                         <source src="{{ $media->file_url }}">
@@ -112,7 +112,7 @@
                         </div>
                     </div>
 
-                    @if ($media->media_type === \App\Enums\MediaType::VIDEO)
+                    @if ($media->media_type === \App\enums\MediaType::VIDEO)
                         <div class="show-detail-card mt-4">
                             <div class="show-card-header">
                                 <h3 class="show-card-title">Video Processing & YouTube</h3>
@@ -132,11 +132,11 @@
                                 @if ($media->upload_completed_at)
                                     <div class="alert alert-success rounded-4">App upload completed {{ $media->upload_completed_at->diffForHumans() }}.</div>
                                 @endif
-                                @if ($media->upload_status === \App\Enums\MediaUploadStatus::QUEUED)
+                                @if ($media->upload_status === \App\enums\MediaUploadStatus::QUEUED)
                                     <div class="alert alert-info rounded-4">This video file is waiting for the background upload worker to send it to Cloudinary.</div>
-                                @elseif ($media->upload_status === \App\Enums\MediaUploadStatus::PROCESSING)
+                                @elseif ($media->upload_status === \App\enums\MediaUploadStatus::PROCESSING)
                                     <div class="alert alert-info rounded-4">The app is uploading this video file in the background right now.</div>
-                                @elseif ($media->upload_status === \App\Enums\MediaUploadStatus::FAILED)
+                                @elseif ($media->upload_status === \App\enums\MediaUploadStatus::FAILED)
                                     <div class="alert alert-warning rounded-4">The app video upload failed before public playback or YouTube publishing could continue.</div>
                                 @endif
                                 @if ($media->upload_last_error)
@@ -158,11 +158,11 @@
                                         <div class="show-meta-item"><span class="show-meta-label">Last Queued</span><div class="show-meta-value">{{ $media->youtube_publish_requested_at?->diffForHumans() ?? 'N/A' }}</div></div>
                                     </div>
 
-                                    @if ($media->youtube_status === \App\Enums\YouTubePublishStatus::QUEUED)
+                                    @if ($media->youtube_status === \App\enums\YouTubePublishStatus::QUEUED)
                                         <div class="alert alert-info rounded-4">This video is waiting for the queue worker to process the YouTube upload job.</div>
-                                    @elseif ($media->youtube_status === \App\Enums\YouTubePublishStatus::UPLOADING)
+                                    @elseif ($media->youtube_status === \App\enums\YouTubePublishStatus::UPLOADING)
                                         <div class="alert alert-info rounded-4">The YouTube upload job is running now.</div>
-                                    @elseif ($media->youtube_status === \App\Enums\YouTubePublishStatus::FAILED)
+                                    @elseif ($media->youtube_status === \App\enums\YouTubePublishStatus::FAILED)
                                         <div class="alert alert-warning rounded-4">The YouTube upload failed. Fix the issue below, then retry from the stored private source copy.</div>
                                     @endif
 
@@ -177,7 +177,7 @@
                                         <div class="alert alert-warning rounded-4">{{ $media->youtube_last_error }}</div>
                                     @endif
 
-                                    @if ($media->upload_status !== \App\Enums\MediaUploadStatus::READY && $media->youtube_status === \App\Enums\YouTubePublishStatus::NOT_REQUESTED)
+                                    @if ($media->upload_status !== \App\enums\MediaUploadStatus::READY && $media->youtube_status === \App\enums\YouTubePublishStatus::NOT_REQUESTED)
                                         <div class="alert alert-info rounded-4">YouTube publishing will queue automatically after the app upload finishes successfully.</div>
                                     @endif
 
@@ -204,7 +204,7 @@
                                 <div class="show-side-item"><div class="show-side-icon"><i class="fas fa-user"></i></div><div><h6>Uploaded By</h6><p>{{ $uploadedBy }}</p></div></div>
                                 <div class="show-side-item"><div class="show-side-icon"><i class="fas fa-clock"></i></div><div><h6>Created</h6><p>{{ $media->created_at->format('d M, Y') }}</p></div></div>
                                 <div class="show-side-item"><div class="show-side-icon"><i class="fas fa-eye"></i></div><div><h6>Public Access</h6><p>{{ $media->is_public ? 'Visible publicly' : 'Restricted from public pages' }}</p></div></div>
-                                @if ($media->media_type === \App\Enums\MediaType::VIDEO && $media->thumbnail_path)
+                                @if ($media->media_type === \App\enums\MediaType::VIDEO && $media->thumbnail_path)
                                     <div class="show-side-item"><div class="show-side-icon"><i class="fas fa-crop-simple"></i></div><div><h6>Thumbnail</h6><p>Stored and cropped for consistent listing display.</p></div></div>
                                 @endif
                             </div>

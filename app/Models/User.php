@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\UserRole;
-use App\Enums\UserStatus;
+use App\enums\UserRole;
+use App\enums\UserStatus;
 use App\Support\MediaUrl;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

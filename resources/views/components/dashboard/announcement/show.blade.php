@@ -86,9 +86,9 @@
                                 <div class="show-thumb-list">
                                     @foreach ($announcement->media as $item)
                                         <div class="show-thumb-card">
-                                            @if ($item->media_type === \App\Enums\MediaType::IMAGE)
+                                            @if ($item->media_type === \App\enums\MediaType::IMAGE)
                                                 <img src="{{ $item->visual_url }}" alt="{{ $item->title }}">
-                                            @elseif ($item->media_type === \App\Enums\MediaType::VIDEO)
+                                            @elseif ($item->media_type === \App\enums\MediaType::VIDEO)
                                                 <img src="{{ $item->visual_url }}" alt="{{ $item->title }}">
                                             @endif
                                             <div class="show-thumb-card-body">

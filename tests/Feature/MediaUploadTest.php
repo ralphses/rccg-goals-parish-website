@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Enums\MediaCategory;
-use App\Enums\MediaType;
-use App\Enums\MediaUploadStatus;
-use App\Enums\UserRole;
+use App\enums\MediaCategory;
+use App\enums\MediaType;
+use App\enums\MediaUploadStatus;
+use App\enums\UserRole;
 use App\Jobs\ProcessVideoMediaUpload;
 use App\Models\Media;
 use App\Models\User;

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\MediaCategory;
-use App\Enums\MediaType;
-use App\Enums\MediaUploadStatus;
-use App\Enums\YouTubePublishStatus;
-use App\Enums\YouTubeVideoFormat;
+use App\enums\MediaCategory;
+use App\enums\MediaType;
+use App\enums\MediaUploadStatus;
+use App\enums\YouTubePublishStatus;
+use App\enums\YouTubeVideoFormat;
 use App\Jobs\ProcessVideoMediaUpload;
 use App\Jobs\PublishMediaToYouTube;
 use App\Models\Media;

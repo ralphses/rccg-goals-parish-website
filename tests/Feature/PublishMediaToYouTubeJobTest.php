@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Enums\MediaCategory;
-use App\Enums\MediaType;
-use App\Enums\MediaUploadStatus;
-use App\Enums\UserRole;
-use App\Enums\YouTubePublishStatus;
-use App\Enums\YouTubeVideoFormat;
+use App\enums\MediaCategory;
+use App\enums\MediaType;
+use App\enums\MediaUploadStatus;
+use App\enums\UserRole;
+use App\enums\YouTubePublishStatus;
+use App\enums\YouTubeVideoFormat;
 use App\Jobs\PublishMediaToYouTube;
 use App\Models\Media;
 use App\Models\User;

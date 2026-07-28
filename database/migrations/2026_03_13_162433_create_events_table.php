@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\EventStatus;
+use App\enums\EventStatus;
 use App\Models\Event;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

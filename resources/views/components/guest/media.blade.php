@@ -16,16 +16,16 @@
                 @forelse ($galleryMedia as $item)
                     @php
                         $galleryLinkClass = match ($item->media_type) {
-                            \App\Enums\MediaType::IMAGE => 'img-popup',
-                            \App\Enums\MediaType::VIDEO => $item->youtube_embed_url ? 'video-popup' : '',
+                            \App\enums\MediaType::IMAGE => 'img-popup',
+                            \App\enums\MediaType::VIDEO => $item->youtube_embed_url ? 'video-popup' : '',
                             default => '',
                         };
-                        $galleryHref = $item->media_type === \App\Enums\MediaType::VIDEO ? $item->public_video_url : $item->file_url;
+                        $galleryHref = $item->media_type === \App\enums\MediaType::VIDEO ? $item->public_video_url : $item->file_url;
                     @endphp
                     <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                         <div class="two-section__gallery-single">
                             <div class="two-section__gallery-img-inner">
-                                <a class="{{ $galleryLinkClass }} guest-media-link" href="{{ $galleryHref }}" @if ($item->media_type === \App\Enums\MediaType::IMAGE) data-group="1" @endif>
+                                <a class="{{ $galleryLinkClass }} guest-media-link" href="{{ $galleryHref }}" @if ($item->media_type === \App\enums\MediaType::IMAGE) data-group="1" @endif>
                                     <img src="{{ $item->visual_url }}" alt="{{ $item->title }}" class="guest-media-thumb">
                                 </a>
                             </div>
@@ -52,16 +52,16 @@
                 @forelse ($testimonyMedia as $item)
                     @php
                         $testimonyLinkClass = match ($item->media_type) {
-                            \App\Enums\MediaType::IMAGE => 'img-popup',
-                            \App\Enums\MediaType::VIDEO => $item->youtube_embed_url ? 'video-popup' : '',
+                            \App\enums\MediaType::IMAGE => 'img-popup',
+                            \App\enums\MediaType::VIDEO => $item->youtube_embed_url ? 'video-popup' : '',
                             default => '',
                         };
-                        $testimonyHref = $item->media_type === \App\Enums\MediaType::VIDEO ? $item->public_video_url : $item->file_url;
+                        $testimonyHref = $item->media_type === \App\enums\MediaType::VIDEO ? $item->public_video_url : $item->file_url;
                     @endphp
                     <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                         <div class="two-section__gallery-single">
                             <div class="two-section__gallery-img-inner">
-                                <a class="{{ $testimonyLinkClass }} guest-media-link" href="{{ $testimonyHref }}" @if ($item->media_type === \App\Enums\MediaType::IMAGE) data-group="2" @endif>
+                                <a class="{{ $testimonyLinkClass }} guest-media-link" href="{{ $testimonyHref }}" @if ($item->media_type === \App\enums\MediaType::IMAGE) data-group="2" @endif>
                                     <img src="{{ $item->visual_url }}" alt="{{ $item->title }}" class="guest-media-thumb">
                                 </a>
                             </div>

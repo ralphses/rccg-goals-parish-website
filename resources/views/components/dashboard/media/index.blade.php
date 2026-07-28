@@ -2,9 +2,9 @@
 
 @php
     $items = $media->getCollection();
-    $imageCount = $items->where('media_type', \App\Enums\MediaType::IMAGE)->count();
-    $videoCount = $items->where('media_type', \App\Enums\MediaType::VIDEO)->count();
-    $audioCount = $items->where('media_type', \App\Enums\MediaType::AUDIO)->count();
+    $imageCount = $items->where('media_type', \App\enums\MediaType::IMAGE)->count();
+    $videoCount = $items->where('media_type', \App\enums\MediaType::VIDEO)->count();
+    $audioCount = $items->where('media_type', \App\enums\MediaType::AUDIO)->count();
     $publicCount = $items->where('is_public', true)->count();
 @endphp
 
@@ -202,7 +202,7 @@
                                             <td>
                                                 <div class="media-main-cell">
                                                     <div class="media-thumb-wrap">
-                                                        @if ($item->media_type === \App\Enums\MediaType::AUDIO)
+                                                        @if ($item->media_type === \App\enums\MediaType::AUDIO)
                                                             <div class="media-audio-thumb">
                                                                 <i class="fas fa-music"></i>
                                                             </div>
@@ -247,9 +247,9 @@
                                                 <div class="media-date-sub">{{ $item->created_at->diffForHumans() }}</div>
                                             </td>
                                             <td>
-                                                @if ($item->media_type === \App\Enums\MediaType::VIDEO)
+                                                @if ($item->media_type === \App\enums\MediaType::VIDEO)
                                                     <div class="media-status-stack">
-                                                        <span class="media-status-chip {{ $item->upload_status === \App\Enums\MediaUploadStatus::FAILED ? 'danger' : ($item->upload_status === \App\Enums\MediaUploadStatus::READY ? 'success' : 'info') }}">
+                                                        <span class="media-status-chip {{ $item->upload_status === \App\enums\MediaUploadStatus::FAILED ? 'danger' : ($item->upload_status === \App\enums\MediaUploadStatus::READY ? 'success' : 'info') }}">
                                                             App Upload: {{ ucwords(str_replace('_', ' ', $item->upload_status->value)) }}
                                                         </span>
 
@@ -263,9 +263,9 @@
 
                                                         <div class="media-status-updated">Updated {{ $item->updated_at->diffForHumans() }}</div>
 
-                                                        @if ($item->upload_status === \App\Enums\MediaUploadStatus::FAILED && $item->upload_last_error)
+                                                        @if ($item->upload_status === \App\enums\MediaUploadStatus::FAILED && $item->upload_last_error)
                                                             <div class="media-status-error">{{ \Illuminate\Support\Str::limit($item->upload_last_error, 110) }}</div>
-                                                        @elseif ($item->youtube_status === \App\Enums\YouTubePublishStatus::FAILED && $item->youtube_last_error)
+                                                        @elseif ($item->youtube_status === \App\enums\YouTubePublishStatus::FAILED && $item->youtube_last_error)
                                                             <div class="media-status-error">{{ \Illuminate\Support\Str::limit($item->youtube_last_error, 110) }}</div>
                                                         @endif
 

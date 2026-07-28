@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
-use App\Enums\EventStatus;
+use App\enums\EventStatus;
 use App\Models\Event;
 use App\Services\CloudinaryUploadService;
 use App\Services\CroppedImageUploadService;

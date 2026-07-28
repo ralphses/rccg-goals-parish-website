@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\EventStatus;
+use App\enums\EventStatus;
 use App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

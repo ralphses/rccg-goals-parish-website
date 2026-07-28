@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\AnnouncementFrequency;
-use App\Enums\MediaType;
+use App\enums\AnnouncementFrequency;
+use App\enums\MediaType;
 use App\Models\Announcement;
 use App\Models\Media;
 use App\Models\User;

@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Media;
 use App\Models\User;
-use App\Enums\MediaCategory;
-use App\Enums\MediaType;
+use App\enums\MediaCategory;
+use App\enums\MediaType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
 

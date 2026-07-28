@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Testimony;
 use Illuminate\Http\Request;
-use App\Enums\TestimonyAnnouncementType;
-use App\Enums\MediaCategory;
-use App\Enums\MediaType;
+use App\enums\TestimonyAnnouncementType;
+use App\enums\MediaCategory;
+use App\enums\MediaType;
 use App\Models\Media;
 use App\Services\CloudinaryUploadService;
 

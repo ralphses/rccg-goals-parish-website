@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Enums\MediaType;
-use App\Enums\MediaUploadStatus;
-use App\Enums\YouTubePublishStatus;
+use App\enums\MediaType;
+use App\enums\MediaUploadStatus;
+use App\enums\YouTubePublishStatus;
 use App\Models\Media;
 use App\Services\CloudinaryUploadService;
 use Illuminate\Contracts\Queue\ShouldQueue;
