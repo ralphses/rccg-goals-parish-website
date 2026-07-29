@@ -15,7 +15,10 @@
     <meta name="description" content="{{ $description }}" />
     <meta name="keywords" content="{{ $keywords }}" />
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <link rel="icon" href="{{ asset('assets/dashboard/img/kaiadmin/favicon.ico') }}" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/images/favicons/apple-touch-icon.png') }}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/favicons/favicon-32x32.png') }}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicons/favicon-16x16.png') }}" />
+    <link rel="manifest" href="{{ asset('assets/images/favicons/site.webmanifest') }}" />
 
     <!-- Fonts and icons -->
     <script src="{{ asset('assets/dashboard/js/plugin/webfont/webfont.min.js') }}"></script>
@@ -442,6 +445,214 @@
 
     <!-- Kaiadmin JS -->
     <script src="{{ asset('assets/dashboard/js/kaiadmin.min.js') }}"></script>
+
+    <style>
+        .dashboard-submit-progress {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid #dbeafe;
+            background: linear-gradient(180deg, #eff6ff 0%, #f8fbff 100%);
+        }
+
+        .dashboard-submit-progress.d-none {
+            display: none !important;
+        }
+
+        .dashboard-submit-progress__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-submit-progress__label {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .dashboard-submit-progress__hint {
+            display: block;
+            color: #64748b;
+            font-size: 0.82rem;
+            margin-top: 2px;
+        }
+
+        .dashboard-submit-progress__percent {
+            font-weight: 800;
+            color: #1d4ed8;
+            min-width: 48px;
+            text-align: right;
+        }
+
+        .dashboard-submit-progress__bar {
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.12);
+            overflow: hidden;
+        }
+
+        .dashboard-submit-progress__bar-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #2563eb 0%, #0ea5e9 100%);
+            transition: width 0.18s ease;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dashboardForms = Array.from(document.querySelectorAll('.main-panel form'))
+                .filter((form) => {
+                    const method = (form.getAttribute('method') || 'GET').toUpperCase();
+                    if (method === 'GET') return false;
+                    if (form.matches('[data-media-form], [data-progress-ignore], [data-bulk-form]')) return false;
+                    if ((form.getAttribute('action') || '').includes('/logout')) return false;
+                    if (!form.querySelector('button[type="submit"], input[type="submit"]')) return false;
+                    return true;
+                });
+
+            function createProgressNode() {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'dashboard-submit-progress d-none';
+                wrapper.innerHTML = `
+                    <div class="dashboard-submit-progress__head">
+                        <div>
+                            <div class="dashboard-submit-progress__label" data-progress-label>Preparing request...</div>
+                            <span class="dashboard-submit-progress__hint">Please keep this page open while the request completes.</span>
+                        </div>
+                        <div class="dashboard-submit-progress__percent" data-progress-percent>0%</div>
+                    </div>
+                    <div class="dashboard-submit-progress__bar">
+                        <div class="dashboard-submit-progress__bar-fill" data-progress-fill></div>
+                    </div>
+                `;
+
+                return wrapper;
+            }
+
+            function mountProgress(form, progressNode) {
+                const actionRow = form.querySelector('.dashboard-form-actions, .card-action, .show-action-row, .comment-form__btn-box');
+                if (actionRow?.parentNode) {
+                    actionRow.parentNode.insertBefore(progressNode, actionRow);
+                    return;
+                }
+
+                const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+                if (submitButton?.parentNode) {
+                    submitButton.parentNode.insertBefore(progressNode, submitButton);
+                    return;
+                }
+
+                form.appendChild(progressNode);
+            }
+
+            function updateProgress(progressNode, percent, label) {
+                const bounded = Math.max(0, Math.min(100, Math.round(percent)));
+                progressNode.classList.remove('d-none');
+                progressNode.querySelector('[data-progress-fill]').style.width = `${bounded}%`;
+                progressNode.querySelector('[data-progress-percent]').textContent = `${bounded}%`;
+                progressNode.querySelector('[data-progress-label]').textContent = label;
+            }
+
+            dashboardForms.forEach((form) => {
+                const submitButtons = Array.from(form.querySelectorAll('button[type="submit"], input[type="submit"]'));
+                if (!submitButtons.length) return;
+
+                const progressNode = createProgressNode();
+                mountProgress(form, progressNode);
+
+                let isSubmitting = false;
+
+                form.addEventListener('submit', function (event) {
+                    if (event.defaultPrevented || isSubmitting) {
+                        return;
+                    }
+
+                    isSubmitting = true;
+
+                    submitButtons.forEach((button) => {
+                        if (button.dataset.originalHtml === undefined) {
+                            button.dataset.originalHtml = button.tagName === 'INPUT' ? button.value : button.innerHTML;
+                        }
+
+                        button.disabled = true;
+
+                        if (button.tagName === 'INPUT') {
+                            button.value = 'Submitting...';
+                        } else {
+                            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Submitting...';
+                        }
+                    });
+
+                    updateProgress(progressNode, 0, 'Preparing request...');
+                    event.preventDefault();
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open((form.getAttribute('method') || 'POST').toUpperCase(), form.action, true);
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    xhr.setRequestHeader('Accept', 'text/html,application/xhtml+xml');
+
+                    xhr.upload.addEventListener('progress', function (uploadEvent) {
+                        if (!uploadEvent.lengthComputable) {
+                            updateProgress(progressNode, 15, 'Submitting request...');
+                            return;
+                        }
+
+                        const percent = (uploadEvent.loaded / uploadEvent.total) * 100;
+                        updateProgress(progressNode, percent, percent >= 100 ? 'Finalizing response...' : 'Submitting request...');
+                    });
+
+                    xhr.addEventListener('load', function () {
+                        if (xhr.status >= 200 && xhr.status < 400) {
+                            updateProgress(progressNode, 100, 'Request complete. Updating page...');
+                            if (xhr.responseURL) {
+                                window.history.replaceState({}, '', xhr.responseURL);
+                            }
+                            document.open();
+                            document.write(xhr.responseText);
+                            document.close();
+                            return;
+                        }
+
+                        isSubmitting = false;
+                        updateProgress(progressNode, 0, 'Request failed. Please try again.');
+
+                        submitButtons.forEach((button) => {
+                            button.disabled = false;
+                            if (button.tagName === 'INPUT') {
+                                button.value = button.dataset.originalHtml || 'Submit';
+                            } else {
+                                button.innerHTML = button.dataset.originalHtml || 'Submit';
+                            }
+                        });
+
+                        alert('The request could not be completed. Please try again.');
+                    });
+
+                    xhr.addEventListener('error', function () {
+                        isSubmitting = false;
+                        updateProgress(progressNode, 0, 'Network error while submitting.');
+
+                        submitButtons.forEach((button) => {
+                            button.disabled = false;
+                            if (button.tagName === 'INPUT') {
+                                button.value = button.dataset.originalHtml || 'Submit';
+                            } else {
+                                button.innerHTML = button.dataset.originalHtml || 'Submit';
+                            }
+                        });
+
+                        alert('A network error interrupted the request. Please try again.');
+                    });
+
+                    xhr.send(new FormData(form));
+                });
+            });
+        });
+    </script>
 
     @stack('scripts')
 </body>
