@@ -345,6 +345,20 @@
 
             <div class="mobile-nav__container"></div>
 
+            <div class="mobile-nav__auth" style="padding: 18px 0 8px;">
+                @guest
+                    <a href="{{ route('login') }}" class="thm-btn" style="display: inline-flex; align-items: center; justify-content: center; width: 100%;">
+                        Login
+                    </a>
+                @endguest
+
+                @auth
+                    <a href="{{ route('dashboard') }}" class="thm-btn" style="display: inline-flex; align-items: center; justify-content: center; width: 100%;">
+                        Dashboard
+                    </a>
+                @endauth
+            </div>
+
             <ul class="mobile-nav__contact list-unstyled">
                 <li>
                     <i class="fa fa-envelope"></i>

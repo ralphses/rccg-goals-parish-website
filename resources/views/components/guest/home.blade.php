@@ -426,15 +426,15 @@
                         <!-- Sermon Card -->
                         <div class="causes-one__single">
                             <div class="causes-one__img">
-                                <img src="{{ $sermon->cover_image ?? 'assets/images/causes/causes-1-1.jpg' }}"
+                                <img src="{{ $sermon->cover_image_url ?? asset('assets/images/causes/causes-1-1.jpg') }}"
                                     alt="Sermon Image">
                             </div>
                             <div class="causes-one__content">
                                 <h3 class="causes-one__title">
-                                    <a href="#">{{ $sermon->title }}</a>
+                                    <a href="{{ route('sermons.show', $sermon->slug) }}">{{ $sermon->title }}</a>
                                 </h3>
                                 <p class="causes-one__text">
-                                    Preacher: {{ $sermon->preacher }}<br>
+                                    Preacher: {{ $sermon->speaker->name ?? 'RCCG GOALS Parish' }}<br>
                                     Date: {{ $sermon->sermon_date->format('M d, Y') }}
                                 </p>
                             </div>
@@ -449,7 +449,7 @@
 
                 <!-- View All Button -->
                 <div class="text-center mt-4">
-                    <a href="all-sermons.html" class="thm-btn">View All Sermons</a>
+                    <a href="{{ route('sermons') }}" class="thm-btn">View All Sermons</a>
                 </div>
             </div>
         </div>
@@ -475,8 +475,10 @@
                         @forelse ($galleries as $gallery)
                             <div class="col-md-4 mb-3">
                                 <div class="fundraishing__gallery-item">
-                                    <img src="{{ $gallery->file_path ?? 'assets/images/gallery/two-section-gallery-img-1.jpg' }}"
+                                    <a href="{{ route('media') }}#gallery">
+                                        <img src="{{ $gallery->visual_url ?? asset('assets/images/gallery/two-section-gallery-img-1.jpg') }}"
                                         alt="Gallery Image" class="img-fluid rounded">
+                                    </a>
                                 </div>
                             </div>
                         @empty
@@ -488,7 +490,7 @@
 
                     <!-- Button to View All Gallery -->
                     <div class="fundraishing__btn-box mt-4">
-                        <a href="all-gallery.html" class="thm-btn fundraishing__btn">View Full Gallery</a>
+                        <a href="{{ route('media') }}#gallery" class="thm-btn fundraishing__btn">View Full Gallery</a>
                     </div>
                 </div>
             </div>
@@ -522,14 +524,14 @@
                                 <li><i class="fas fa-map-marker-alt"></i> {{ $event->location ?? 'Church Auditorium' }}</li>
                             </ul>
                             <h3 class="blog-one__title">
-                                <a href="event-details.html">{{ $event->title }}</a>
+                                <a href="{{ route('event', $event) }}">{{ $event->title }}</a>
                             </h3>
                             <p class="blog-one__text">
                                 {{ Str::limit($event->description, 100) }}
                             </p>
                             <div class="blog-one__bottom">
-                                <a href="event-details.html" class="blog-one__btn">View Details</a>
-                                <a href="event-details.html" class="blog-one__arrow"><span
+                                <a href="{{ route('event', $event) }}" class="blog-one__btn">View Details</a>
+                                <a href="{{ route('event', $event) }}" class="blog-one__arrow"><span
                                         class="icon-right-arrow"></span></a>
                             </div>
                         </div>
@@ -544,7 +546,7 @@
 
         <!-- View All Events Button -->
         <div class="text-center mt-4">
-            <a href="all-events.html" class="thm-btn">View All Events</a>
+            <a href="{{ route('events') }}" class="thm-btn">View All Events</a>
         </div>
     </div>
 </section>
