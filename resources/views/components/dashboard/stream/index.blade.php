@@ -1,7 +1,6 @@
 @include('components.dashboard.partials.form-shell')
 
-<x-app-layout title="Stream Settings">
-    <div class="container-fluid px-0">
+    <div class="container">
         <div class="page-inner stream-page-shell">
             <div class="dashboard-form-shell">
                 <div class="dashboard-form-hero card mb-4">
@@ -162,4 +161,3 @@
             });
         </script>
     @endpush
-</x-app-layout>

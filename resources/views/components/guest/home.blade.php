@@ -45,9 +45,9 @@
                                 <p>A place of worship, word, and transformation</p>
 
                                 <div class="main-slider__btns">
-                                    <a href="about.html" class="thm-btn mb-2" style="background-color: #1c0f5e">About
+                                    <a href="{{ route('about') }}" class="thm-btn mb-2" style="background-color: #1c0f5e">About
                                         the Church</a>
-                                    <a href="live.html" class="thm-btn thm-btn--secondary mb-2">
+                                    <a href="{{ route('home') }}#live-stream" class="thm-btn thm-btn--secondary mb-2">
                                         <i class="fab fa-youtube"></i> Watch Live
                                     </a>
                                 </div>
@@ -73,9 +73,9 @@
                                 <p>Join us for life-changing services and fellowship</p>
 
                                 <div class="main-slider__btns">
-                                    <a href="events.html" class="thm-btn mb-2" style="background-color: #1c0f5e">Service
+                                    <a href="{{ route('events') }}" class="thm-btn mb-2" style="background-color: #1c0f5e">Service
                                         Times</a>
-                                    <a href="sermons.html" class="thm-btn thm-btn--secondary mb-2">
+                                    <a href="{{ route('sermons') }}" class="thm-btn thm-btn--secondary mb-2">
                                         Listen to Sermons
                                     </a>
                                 </div>
@@ -101,10 +101,10 @@
                                 <p>Serve God, serve people, and grow together</p>
 
                                 <div class="main-slider__btns">
-                                    <a href="departments.html" style="background-color: #1c0f5e" class="thm-btn mb-2">
+                                    <a href="{{ route('departments') }}" style="background-color: #1c0f5e" class="thm-btn mb-2">
                                         Join a Department
                                     </a>
-                                    <a href="contact.html" class="thm-btn thm-btn--secondary mb-2">
+                                    <a href="{{ route('contact') }}" class="thm-btn thm-btn--secondary mb-2">
                                         Contact Us
                                     </a>
                                 </div>
@@ -275,7 +275,7 @@
 
 
 <!--Live Streaming Section Start-->
-<section class="quality-work live-streaming">
+<section class="quality-work live-streaming" id="live-stream">
     <div class="quality-work-shape" style="background-image: url(assets/images/shapes/quality-work--shape.png);">
     </div>
     <div class="container">
@@ -428,20 +428,15 @@
                             <div class="causes-one__img">
                                 <img src="{{ $sermon->cover_image ?? 'assets/images/causes/causes-1-1.jpg' }}"
                                     alt="Sermon Image">
-                                <div class="causes-one__category">
-                                    <span>{{ $sermon->category ?? 'Sermon' }}</span>
-                                </div>
                             </div>
-                            <div class="causes-one__content-box">
-                                <div class="causes-one__content">
-                                    <h3 class="causes-one__title">
-                                        <a href="#">{{ $sermon->title }}</a>
-                                    </h3>
-                                    <p class="causes-one__text">
-                                        Preacher: {{ $sermon->preacher }}<br>
-                                        Date: {{ $sermon->sermon_date->format('M d, Y') }}
-                                    </p>
-                                </div>
+                            <div class="causes-one__content">
+                                <h3 class="causes-one__title">
+                                    <a href="#">{{ $sermon->title }}</a>
+                                </h3>
+                                <p class="causes-one__text">
+                                    Preacher: {{ $sermon->preacher }}<br>
+                                    Date: {{ $sermon->sermon_date->format('M d, Y') }}
+                                </p>
                             </div>
                         </div>
                     @empty
@@ -482,10 +477,6 @@
                                 <div class="fundraishing__gallery-item">
                                     <img src="{{ $gallery->file_path ?? 'assets/images/gallery/two-section-gallery-img-1.jpg' }}"
                                         alt="Gallery Image" class="img-fluid rounded">
-                                    <a class="img-popup"
-                                        href="{{ $gallery->file_path ?? 'assets/images/gallery/two-section-gallery-img-1.jpg' }}">
-                                        <span class="icon-right-arrow"></span>
-                                    </a>
                                 </div>
                             </div>
                         @empty
@@ -524,16 +515,11 @@
                     <div class="blog-one__single">
                         <div class="blog-one__img">
                             <img src="{{ $event->image_url ?? 'assets/images/blog/blog-1-1.jpg' }}" alt="">
-                            <div class="blog-one__date">
-                                <p>{{ $event->event_date->format('d M') }}</p>
-                            </div>
-                            <a href="event-details.html">
-                                <span class="news-one__plus"></span>
-                            </a>
                         </div>
                         <div class="blog-one__content">
                             <ul class="list-unstyled blog-one__meta">
-                                <li><i class="far fa-calendar-alt"></i> {{ $event->category ?? 'Special Event' }}</li>
+                                <li><i class="far fa-calendar-alt"></i> {{ $event->event_date->format('d M, Y') }}</li>
+                                <li><i class="fas fa-map-marker-alt"></i> {{ $event->location ?? 'Church Auditorium' }}</li>
                             </ul>
                             <h3 class="blog-one__title">
                                 <a href="event-details.html">{{ $event->title }}</a>

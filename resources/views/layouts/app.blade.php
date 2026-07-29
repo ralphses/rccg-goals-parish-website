@@ -350,7 +350,7 @@
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                                     aria-expanded="false">
                                     <div class="avatar-sm">
-                                        <img src="{{ asset('assets/dashboard/img/profile.jpg') }}" alt="..."
+                                        <img src="{{ auth()->user()->avatar_url ?? asset('assets/img/default-avatar.png') }}" alt="{{ auth()->user()->name }}"
                                             class="avatar-img rounded-circle" />
                                     </div>
                                     <span class="profile-username">
@@ -363,13 +363,14 @@
                                         <li>
                                             <div class="user-box">
                                                 <div class="avatar-lg">
-                                                    <img src="{{ asset('assets/dashboard/img/profile.jpg') }}"
+                                                    <img src="{{ auth()->user()->avatar_url ?? asset('assets/img/default-avatar.png') }}"
                                                         alt="image profile" class="avatar-img rounded" />
                                                 </div>
                                                 <div class="u-text">
-                                                    <h4>Hizrian</h4>
-                                                    <p class="text-muted">hello@example.com</p>
-                                                    <a href="profile.html"
+                                                    <h4>{{ auth()->user()->name }}</h4>
+                                                    <p class="text-muted mb-1">{{ auth()->user()->email }}</p>
+                                                    <p class="text-muted mb-2">{{ ucwords(str_replace('_', ' ', auth()->user()->role->value)) }}</p>
+                                                    <a href="{{ route('settings.index') }}"
                                                         class="btn btn-xs btn-secondary btn-sm">View
                                                         Profile</a>
                                                 </div>
@@ -377,11 +378,17 @@
                                         </li>
                                         <li>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">My Profile</a>
-                                            <a class="dropdown-item" href="#">My Balance</a>
-                                            <a class="dropdown-item" href="#">Inbox</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Account Setting</a>
+                                            <a class="dropdown-item" href="{{ route('settings.index') }}">My Profile</a>
+                                            <a class="dropdown-item" href="{{ route('settings.index') }}">Account Settings</a>
+                                            @if (auth()->user()->phone)
+                                                <div class="dropdown-item-text text-muted small">Phone: {{ auth()->user()->phone }}</div>
+                                            @endif
+                                            @if (auth()->user()->occupation)
+                                                <div class="dropdown-item-text text-muted small">Occupation: {{ auth()->user()->occupation }}</div>
+                                            @endif
+                                            @if (auth()->user()->state_of_origin)
+                                                <div class="dropdown-item-text text-muted small">State: {{ auth()->user()->state_of_origin }}</div>
+                                            @endif
                                             <div class="dropdown-divider"></div>
 
                                             <!-- Logout using Laravel POST -->

@@ -270,7 +270,10 @@
                                                         @endif
 
                                                         @if ($item->youtube_video_url)
-                                                            <a href="{{ $item->youtube_video_url }}" target="_blank" rel="noopener" class="media-inline-link">Open on YouTube</a>
+                                                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                                                <a href="{{ $item->youtube_video_url }}" target="_blank" rel="noopener" class="media-inline-link">Open on YouTube</a>
+                                                                <button type="button" class="btn btn-light btn-sm media-copy-btn" data-copy-text="{{ $item->youtube_video_url }}">Copy Link</button>
+                                                            </div>
                                                         @endif
                                                     </div>
                                                 @else
@@ -735,6 +738,16 @@
             color: var(--media-muted);
         }
 
+        .media-copy-btn {
+            border-radius: 999px;
+            padding: 0.3rem 0.78rem;
+            border-color: #dbe4f0;
+            color: #0f172a;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: #fff;
+        }
+
         .media-status-stack {
             display: flex;
             flex-direction: column;
@@ -923,6 +936,27 @@
                 });
 
                 updateState();
+            });
+
+            document.querySelectorAll('[data-copy-text]').forEach(button => {
+                button.addEventListener('click', async function(event) {
+                    event.preventDefault();
+                    const text = button.dataset.copyText;
+                    if (!text) return;
+
+                    const original = button.textContent.trim();
+
+                    try {
+                        await navigator.clipboard.writeText(text);
+                        button.textContent = 'Copied';
+                    } catch (error) {
+                        button.textContent = 'Failed';
+                    }
+
+                    setTimeout(() => {
+                        button.textContent = original;
+                    }, 1800);
+                });
             });
         });
     </script>

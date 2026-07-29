@@ -6,5 +6,6 @@
         :sermon="$sermon"
         :speakers="$speakers"
         :statuses="$statuses"
+        :media-library="$mediaLibrary"
     />
 </x-app-layout>

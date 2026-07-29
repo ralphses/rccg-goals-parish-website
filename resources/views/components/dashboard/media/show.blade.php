@@ -170,6 +170,7 @@
                                         <div class="alert alert-success rounded-4">
                                             YouTube link ready:
                                             <a href="{{ $media->youtube_video_url }}" target="_blank" rel="noopener">Open Video</a>
+                                            <button type="button" class="btn btn-sm btn-outline-success ms-2" data-copy-text="{{ $media->youtube_video_url }}">Copy Link</button>
                                         </div>
                                     @endif
 
@@ -215,3 +216,29 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-copy-text]').forEach(button => {
+                button.addEventListener('click', async function () {
+                    const text = button.dataset.copyText;
+                    if (!text) return;
+
+                    const original = button.textContent.trim();
+
+                    try {
+                        await navigator.clipboard.writeText(text);
+                        button.textContent = 'Copied';
+                    } catch (error) {
+                        button.textContent = 'Failed';
+                    }
+
+                    setTimeout(() => {
+                        button.textContent = original;
+                    }, 1800);
+                });
+            });
+        });
+    </script>
+@endpush

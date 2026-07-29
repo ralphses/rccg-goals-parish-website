@@ -42,7 +42,7 @@
                 <!--Department Single-->
                 <div class="events__single shadow-sm rounded overflow-hidden">
                     <div class="events__img position-relative">
-                        <img src="{{ asset('assets/images/resources/events-img-1.jpg') }}" alt="{{ $department->name }}" class="img-fluid">
+                        <img src="{{ $department->image_url ?? asset('assets/images/resources/events-img-1.jpg') }}" alt="{{ $department->name }}" class="img-fluid department-listing-cover">
                     </div>
                     <div class="events__content p-3">
                         <h3 class="events__title mb-2"><a href="{{ route('department', $department) }}">{{ $department->name }}</a></h3>
@@ -56,3 +56,14 @@
     </div>
 </section>
 <!--Events Page End-->
+
+@push('scripts')
+    <style>
+        .department-listing-cover {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+@endpush

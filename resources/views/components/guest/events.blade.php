@@ -40,17 +40,13 @@
                 <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
                     <!--Events Single-->
                     <div class="events__single shadow-sm rounded overflow-hidden">
-                        <div class="events__img position-relative">
+                        <div class="events__img">
                             <img src="{{ $event->image ? asset($event->image) : 'assets/images/resources/events-img-1.jpg' }}" alt="{{ $event->title }}" class="img-fluid">
-                            <div class="events__date bg-primary text-white position-absolute p-2 rounded">
-                            <p class="mb-0 text-center">
-                                {{ $event->event_date->format('d') }} <br> {{ $event->event_date->format('M') }}
-                            </p>
-                        </div>
                         </div>
                         <div class="events__content p-3">
                             <h3 class="events__title mb-2"><a href="{{ route('event', $event) }}">{{ $event->title }}</a></h3>
                             <ul class="list-unstyled events__meta mb-0">
+                                <li class="mb-1"><i class="far fa-calendar-alt me-2"></i>{{ $event->event_date->format('d M, Y') }}</li>
                                 <li class="mb-1"><i class="far fa-clock me-2"></i>{{ $event->event_date->format('g:ia') }}</li>
                                 <li><i class="fas fa-map-marker-alt me-2"></i>{{ $event->location }}</li>
                             </ul>
