@@ -37,8 +37,8 @@
                         <div class="row">
                             <div class="col-xl-6 col-lg-6">
                                 <div class="donations-list__img position-relative">
-                                    <img src="{{ $sermon->cover_image ?? asset('assets/images/resources/donations-list-img-1.jpg') }}"
-                                        alt="{{ $sermon->title }}">
+                                    <img src="{{ $sermon->cover_image_url ?? asset('assets/images/resources/donations-list-img-1.jpg') }}"
+                                        alt="{{ $sermon->title }}" loading="lazy">
                                 </div>
                             </div>
 
@@ -51,7 +51,7 @@
                                         </div>
 
                                         <h3 class="donations-list__title mt-4">
-                                            <a href="#">{{ $sermon->title }}</a>
+                                            <a href="{{ route('sermons.show', $sermon->slug) }}">{{ $sermon->title }}</a>
                                         </h3>
 
                                         <p class="donations-list__text">
@@ -65,10 +65,7 @@
                                         </div>
 
                                         <div class="mt-4">
-                                            <a href="#" class="open-video thm-btn" data-bs-toggle="modal"
-                                                data-bs-target="#videoModal" data-video="{{ $sermon->video_url }}">
-                                                Watch Sermon
-                                            </a>
+                                            <a href="{{ route('sermons.show', $sermon->slug) }}" class="thm-btn">Watch Sermon</a>
                                         </div>
 
                                     </div>
@@ -124,8 +121,8 @@
                         <div class="row">
                             <div class="col-xl-6 col-lg-6">
                                 <div class="donations-list__img position-relative">
-                                    <img src="{{ $sermon->cover_image ?? asset('assets/images/resources/donations-list-img-1.jpg') }}"
-                                        alt="{{ $sermon->title }}">
+                                    <img src="{{ $sermon->cover_image_url ?? asset('assets/images/resources/donations-list-img-1.jpg') }}"
+                                        alt="{{ $sermon->title }}" loading="lazy">
                                 </div>
                             </div>
 
@@ -138,7 +135,7 @@
                                         </div>
 
                                         <h3 class="donations-list__title mt-4">
-                                            <a href="#">{{ $sermon->title }}</a>
+                                            <a href="{{ route('sermons.show', $sermon->slug) }}">{{ $sermon->title }}</a>
                                         </h3>
 
                                         <p class="donations-list__text">
@@ -152,10 +149,7 @@
                                         </div>
 
                                         <div class="mt-4">
-                                            <a href="#" class="open-audio thm-btn" data-bs-toggle="modal"
-                                                data-bs-target="#audioModal" data-audio="{{ $sermon->audio_url }}">
-                                                Listen Sermon
-                                            </a>
+                                            <a href="{{ route('sermons.show', $sermon->slug) }}" class="thm-btn">Listen Sermon</a>
                                         </div>
 
 
@@ -175,64 +169,3 @@
 </section>
 <!--Sermons List End-->
 
-
-<!-- Video Modal -->
-<div class="modal fade video-modal" id="videoModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content video-modal-content">
-
-            <div class="modal-body p-0 position-relative">
-
-                <!-- Close Button -->
-                <button type="button" class="btn-close video-close-btn" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-
-                <!-- Header -->
-                <div class="video-header text-center">
-                    <p class="video-subtitle">Be blessed by this powerful sermon</p>
-                </div>
-
-                <!-- Video Iframe -->
-                <div class="video-body">
-                    <iframe id="videoFrame" width="100%" height="450" src=""
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-                    </iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Audio Modal -->
-<div class="modal fade audio-modal" id="audioModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content audio-modal-content">
-
-            <div class="modal-body p-0 position-relative">
-
-                <!-- Close Button -->
-                <button type="button" class="btn-close audio-close-btn" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-
-                <!-- Header Section -->
-                <div class="audio-header text-center">
-                    <div class="audio-icon">
-                        <i class="fas fa-music"></i>
-                    </div>
-                    <p class="audio-subtitle">Be blessed by this powerful message</p>
-                </div>
-
-                <!-- Audio Section -->
-                <div class="audio-body text-center">
-                    <audio id="audioPlayer" controls>
-                        <source src="" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>

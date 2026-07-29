@@ -1,10 +1,26 @@
 @props([
+    'seo' => [],
     'title' => 'The Redeemed Christian Church of God, GOALS Parish | Worship, Word & Empowerment',
     'description' =>
         'Welcome to The Redeemed Christian Church of God, GOALS Parish. Join us for spirit-filled worship, life-transforming sermons, youth fellowship, community outreach, and empowering Christian ministries.',
     'keywords' =>
         'RCCG GOALS Parish, The Redeemed Christian Church of God, RCCG Church, Christian Church, Bible Teaching Church, Youth Fellowship Wednesdays 7pm, Church Services, Online Sermons, Church Events, Gospel Ministry, Children Ministry, Women Fellowship, Men Fellowship, Christian Worship Center',
 ])
+
+@php
+    $title = $seo['title'] ?? $title;
+    $description = $seo['description'] ?? $description;
+    $keywords = $seo['keywords'] ?? $keywords;
+    $canonical = $seo['canonical'] ?? url()->current();
+    $robots = $seo['robots'] ?? 'index,follow';
+    $image = $seo['image'] ?? asset('assets/images/resources/goals_logo_real.png');
+    $ogType = $seo['type'] ?? 'website';
+    $siteName = $seo['site_name'] ?? config('seo.site_name');
+    $twitterCard = $seo['twitter_card'] ?? 'summary_large_image';
+    $prevUrl = $seo['prev'] ?? null;
+    $nextUrl = $seo['next'] ?? null;
+    $schemaPayloads = $seo['schema'] ?? [];
+@endphp
 
 
 <!DOCTYPE html>
@@ -19,6 +35,24 @@
     <meta name="description" content="{{ $description }}" />
     <meta name="keywords" content="{{ $keywords }}" />
     <meta name="author" content="The Redeemed Christian Church of God, GOALS Parish" />
+    <meta name="robots" content="{{ $robots }}" />
+    <link rel="canonical" href="{{ $canonical }}" />
+    @if ($prevUrl)
+        <link rel="prev" href="{{ $prevUrl }}" />
+    @endif
+    @if ($nextUrl)
+        <link rel="next" href="{{ $nextUrl }}" />
+    @endif
+    <meta property="og:type" content="{{ $ogType }}" />
+    <meta property="og:title" content="{{ $title }}" />
+    <meta property="og:description" content="{{ $description }}" />
+    <meta property="og:url" content="{{ $canonical }}" />
+    <meta property="og:image" content="{{ $image }}" />
+    <meta property="og:site_name" content="{{ $siteName }}" />
+    <meta name="twitter:card" content="{{ $twitterCard }}" />
+    <meta name="twitter:title" content="{{ $title }}" />
+    <meta name="twitter:description" content="{{ $description }}" />
+    <meta name="twitter:image" content="{{ $image }}" />
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/images/favicons/apple-touch-icon.png') }}" />
@@ -60,6 +94,9 @@
     <!-- Template Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/pifoxen.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/pifoxen-responsive.css') }}" />
+    @foreach ($schemaPayloads as $schemaPayload)
+        <script type="application/ld+json">{!! json_encode($schemaPayload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    @endforeach
 </head>
 
 <body>

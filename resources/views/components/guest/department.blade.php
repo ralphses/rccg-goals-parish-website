@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <div class="event-details__img">
-                    <img src="{{ $department->image ? asset($department->image) : asset('assets/images/resources/event-details-img-1.jpg') }}" alt="{{ $department->name }}">
+                    <img src="{{ $department->image_url ?? asset('assets/images/resources/event-details-img-1.jpg') }}" alt="{{ $department->name }}" loading="eager">
                 </div>
             </div>
         </div>

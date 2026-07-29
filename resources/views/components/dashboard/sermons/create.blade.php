@@ -99,6 +99,17 @@
                             <div class="col-md-6 mb-3"><label class="form-label">Video URL</label><input type="url" name="video_url" value="{{ old('video_url') }}" class="form-control"><small class="dashboard-form-helper">Optional fallback for an external video link when no sermon media asset is selected.</small></div>
                             <div class="col-md-12 mb-3"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="3">{{ old('description') }}</textarea></div>
                             <div class="col-md-12 mb-3"><label class="form-label">Message</label><textarea name="message" class="form-control" rows="5">{{ old('message') }}</textarea></div>
+                            <div class="col-md-12 mb-4">
+                                <div class="dashboard-form-preview-panel h-100">
+                                    <p class="mb-2 fw-semibold">SEO Settings</p>
+                                    <p class="dashboard-form-helper mb-3">These fields are optional. Leave them empty to let the public sermon page auto-generate search metadata from the sermon content.</p>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3"><label class="form-label">Meta Title</label><input type="text" name="meta_title" value="{{ old('meta_title') }}" class="form-control" maxlength="255"></div>
+                                        <div class="col-md-12 mb-3"><label class="form-label">Meta Description</label><textarea name="meta_description" class="form-control" rows="3" maxlength="320">{{ old('meta_description') }}</textarea></div>
+                                        <div class="col-md-12 mb-0"><label class="form-label">Meta Keywords</label><input type="text" name="meta_keywords" value="{{ old('meta_keywords') }}" class="form-control" maxlength="255"><small class="dashboard-form-helper">Comma-separated keywords, such as church sermon, Bible teaching, Ajah Lagos.</small></div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-12 mb-3"><label class="form-label">Attachments</label><input type="file" name="attachments[]" class="form-control" multiple></div>
                         </div>
 

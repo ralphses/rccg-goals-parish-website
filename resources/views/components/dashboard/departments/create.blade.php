@@ -22,6 +22,17 @@
                 <div class="col-md-6 mb-3"><label class="form-label">Name</label><input type="text" name="name" value="{{ old('name') }}" class="form-control" required></div>
                 <div class="col-md-6 mb-3"><label class="form-label">Status</label><select name="status" class="form-select"><option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option><option value="created" {{ old('status') == 'created' ? 'selected' : '' }}>Created</option><option value="suspended" {{ old('status') == 'suspended' ? 'selected' : '' }}>Suspended</option></select></div>
                 <div class="col-md-12 mb-3"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea></div>
+                <div class="col-md-12 mb-4">
+                    <div class="dashboard-form-preview-panel h-100">
+                        <p class="mb-2 fw-semibold">SEO Settings</p>
+                        <p class="dashboard-form-helper mb-3">Optional search metadata for the public department page.</p>
+                        <div class="row">
+                            <div class="col-md-12 mb-3"><label class="form-label">Meta Title</label><input type="text" name="meta_title" value="{{ old('meta_title') }}" class="form-control" maxlength="255"></div>
+                            <div class="col-md-12 mb-3"><label class="form-label">Meta Description</label><textarea name="meta_description" class="form-control" rows="3" maxlength="320">{{ old('meta_description') }}</textarea></div>
+                            <div class="col-md-12 mb-0"><label class="form-label">Meta Keywords</label><input type="text" name="meta_keywords" value="{{ old('meta_keywords') }}" class="form-control" maxlength="255"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12 mb-3"><label class="form-label">Department Members</label><select name="users[]" class="form-select" multiple size="8">@foreach ($users as $user)<option value="{{ $user->id }}" {{ in_array($user->id, old('users', [])) ? 'selected' : '' }}>{{ $user->name }} ({{ $user->email }})</option>@endforeach</select><small class="dashboard-form-helper">Hold CTRL (Windows) or CMD (Mac) to select multiple members.</small></div>
                 <div class="col-md-12 mb-3"><label class="form-label">Department Leader</label><select name="leader_id" class="form-select"><option value="">Select a leader</option>@foreach ($users as $user)<option value="{{ $user->id }}" {{ (string) old('leader_id') === (string) $user->id ? 'selected' : '' }}>{{ $user->name }} ({{ $user->email }})</option>@endforeach</select><small class="dashboard-form-helper">Optional: assign any user on the platform as department leader.</small></div>
             </div>

@@ -6,6 +6,7 @@ use App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Support\MediaUrl;
+use Illuminate\Support\Str;
 
 class Sermon extends Model
 {
@@ -26,7 +27,10 @@ class Sermon extends Model
         'video_url',
         'video_media_id',
         'status',
-        'published_at'
+        'published_at',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     protected $casts = [
@@ -68,5 +72,41 @@ class Sermon extends Model
     public function getCoverImageUrlAttribute(): ?string
     {
         return MediaUrl::toPublicUrl($this->cover_image);
+    }
+
+    public function getPublicVideoUrlAttribute(): ?string
+    {
+        return $this->youtube_embed_url ?: $this->video_url;
+    }
+
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        if (blank($this->video_url)) {
+            return null;
+        }
+
+        $parts = parse_url($this->video_url);
+        $host = Str::lower($parts['host'] ?? '');
+        $path = trim((string) ($parts['path'] ?? ''), '/');
+        $videoId = null;
+
+        if (str_contains($host, 'youtu.be')) {
+            $videoId = $path;
+        } elseif (str_contains($host, 'youtube.com')) {
+            if ($path === 'watch') {
+                parse_str($parts['query'] ?? '', $query);
+                $videoId = $query['v'] ?? null;
+            } elseif (str_starts_with($path, 'embed/')) {
+                $videoId = Str::after($path, 'embed/');
+            } elseif (str_starts_with($path, 'shorts/')) {
+                $videoId = Str::after($path, 'shorts/');
+            }
+        }
+
+        if (blank($videoId)) {
+            return null;
+        }
+
+        return 'https://www.youtube.com/embed/' . $videoId;
     }
 }

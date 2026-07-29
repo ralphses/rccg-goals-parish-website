@@ -26,7 +26,7 @@
                         <div class="two-section__gallery-single">
                             <div class="two-section__gallery-img-inner">
                                 <a class="{{ $galleryLinkClass }} guest-media-link" href="{{ $galleryHref }}" @if ($item->media_type === \App\enums\MediaType::IMAGE) data-group="1" @endif>
-                                    <img src="{{ $item->visual_url }}" alt="{{ $item->title }}" class="guest-media-thumb">
+                                    <img src="{{ $item->visual_url }}" alt="{{ $item->title }}" class="guest-media-thumb" loading="lazy">
                                 </a>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                         <div class="two-section__gallery-single">
                             <div class="two-section__gallery-img-inner">
                                 <a class="{{ $testimonyLinkClass }} guest-media-link" href="{{ $testimonyHref }}" @if ($item->media_type === \App\enums\MediaType::IMAGE) data-group="2" @endif>
-                                    <img src="{{ $item->visual_url }}" alt="{{ $item->title }}" class="guest-media-thumb">
+                                    <img src="{{ $item->visual_url }}" alt="{{ $item->title }}" class="guest-media-thumb" loading="lazy">
                                 </a>
                             </div>
                         </div>

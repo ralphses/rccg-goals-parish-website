@@ -10,42 +10,85 @@ use App\Models\Sermon;
 use App\Models\Media;
 use App\Models\Event;
 use App\Mail\ContactFormMail;
+use App\Services\SeoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use StreamBucket;
 
 class GuestViewController extends Controller
 {
-    // In app/Http/Controllers/GuestViewController.php
+    public function __construct(
+        private SeoService $seoService
+    ) {
+    }
 
     public function home()
     {
         $theme = YearlyDetail::latest()->first();
         $stream = Stream::where('is_live', true)->first();
         $testimonies = Testimony::where('is_approved', true)->latest()->take(3)->get();
-        $sermons = Sermon::latest()->take(3)->get();
-        $galleries = Media::where(['category' => MediaCategory::CHURCH_GALLERY, 'media_type' => 'image'])->latest()->take(6)->get();
-        // dd($galleries);
+        $sermons = Sermon::with('speaker')
+            ->where('status', \App\enums\SermonStatus::PUBLISHED->value)
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+        $galleries = Media::where([
+                'category' => MediaCategory::CHURCH_GALLERY,
+                'media_type' => 'image',
+                'is_public' => true,
+            ])
+            ->where('upload_status', \App\enums\MediaUploadStatus::READY)
+            ->latest()
+            ->take(6)
+            ->get();
         $events = Event::where('event_date', '>=', now())->orderBy('event_date', 'asc')->take(3)->get();
-        return view('guest.home', compact('theme', 'stream', 'testimonies', 'sermons', 'galleries', 'events'));
+        $seo = $this->seoService->home();
+
+        return view('guest.home', compact('theme', 'stream', 'testimonies', 'sermons', 'galleries', 'events', 'seo'));
     }
 
     public function about()
     {
-        return view('guest/about');
+        $seo = $this->seoService->about();
+
+        return view('guest/about', compact('seo'));
     }
 
     public function sermons()
     {
-        $videoSermons = Sermon::whereNotNull('video_url')->latest()->paginate(3, ['*'], 'video_page');
-        $audioSermons = Sermon::whereNotNull('audio_url')->latest()->paginate(3, ['*'], 'audio_page');
+        $videoSermons = Sermon::with('speaker')
+            ->where('status', \App\enums\SermonStatus::PUBLISHED->value)
+            ->whereNotNull('video_url')
+            ->latest('published_at')
+            ->paginate(3, ['*'], 'video_page');
+        $audioSermons = Sermon::with('speaker')
+            ->where('status', \App\enums\SermonStatus::PUBLISHED->value)
+            ->whereNotNull('audio_url')
+            ->latest('published_at')
+            ->paginate(3, ['*'], 'audio_page');
+        $seo = $this->seoService->sermonsIndex($videoSermons, $audioSermons);
 
-        return view('guest.sermons', compact('videoSermons', 'audioSermons'));
+        return view('guest.sermons', compact('videoSermons', 'audioSermons', 'seo'));
+    }
+
+    public function sermon(Sermon $sermon)
+    {
+        abort_unless(
+            $sermon->status === \App\enums\SermonStatus::PUBLISHED || $sermon->status === \App\enums\SermonStatus::PUBLISHED->value,
+            404
+        );
+
+        $sermon->load('speaker');
+        $seo = $this->seoService->sermon($sermon);
+
+        return view('guest.sermon', compact('sermon', 'seo'));
     }
 
     public function contact()
     {
-        return view('guest/contact');
+        $seo = $this->seoService->contact();
+
+        return view('guest/contact', compact('seo'));
     }
 
     public function blog()
@@ -80,19 +123,28 @@ class GuestViewController extends Controller
                 break;
         }
 
-        $events = $query->paginate(6)->withQueryString();
+        $events = $query
+            ->where('status', '!=', \App\enums\EventStatus::CANCELLED->value)
+            ->paginate(6)
+            ->withQueryString();
+        $seo = $this->seoService->eventsIndex($events);
 
-        return view('guest.events', compact('events', 'sort'));
+        return view('guest.events', compact('events', 'sort', 'seo'));
     }
 
     public function event(\App\Models\Event $event)
     {
-        return view('guest.event', compact('event'));
+        abort_if(($event->status?->value ?? $event->status) === \App\enums\EventStatus::CANCELLED->value, 404);
+
+        $seo = $this->seoService->event($event);
+
+        return view('guest.event', compact('event', 'seo'));
     }
 
     public function departments(Request $request)
     {
-        $query = \App\Models\Department::with('leader');
+        $query = \App\Models\Department::with('leader')
+            ->where('status', \App\enums\UserStatus::ACTIVE->value);
 
         // Search logic
         if ($request->filled('query')) {
@@ -115,28 +167,37 @@ class GuestViewController extends Controller
         }
 
         $departments = $query->paginate(6)->withQueryString();
+        $seo = $this->seoService->departmentsIndex($departments);
 
-        return view('guest.departments', compact('departments', 'sort'));
+        return view('guest.departments', compact('departments', 'sort', 'seo'));
     }
 
     public function department(\App\Models\Department $department)
     {
-        $department->load('leader');
+        abort_unless(($department->status?->value ?? $department->status) === \App\enums\UserStatus::ACTIVE->value, 404);
 
-        return view('guest.department', compact('department'));
+        $department->load('leader');
+        $seo = $this->seoService->department($department);
+
+        return view('guest.department', compact('department', 'seo'));
     }
 
     public function media()
     {
         $galleryMedia = Media::where('category', MediaCategory::CHURCH_GALLERY)
+            ->where('is_public', true)
+            ->where('upload_status', \App\enums\MediaUploadStatus::READY)
             ->latest()
             ->paginate(8, ['*'], 'gallery_page');
 
         $testimonyMedia = Media::where('category', MediaCategory::TESTIMONY)
+            ->where('is_public', true)
+            ->where('upload_status', \App\enums\MediaUploadStatus::READY)
             ->latest()
             ->paginate(8, ['*'], 'testimony_page');
+        $seo = $this->seoService->media($galleryMedia, $testimonyMedia);
 
-        return view('guest.media', compact('galleryMedia', 'testimonyMedia'));
+        return view('guest.media', compact('galleryMedia', 'testimonyMedia', 'seo'));
     }
 
     public function store(Request $request)
@@ -153,4 +214,19 @@ class GuestViewController extends Controller
         return redirect()->back()->with('success', 'Your message has been sent successfully!');
     }
 
+    public function sitemap()
+    {
+        $urls = $this->seoService->publicSitemapUrls();
+
+        return response()
+            ->view('seo.sitemap', compact('urls'))
+            ->header('Content-Type', 'application/xml');
+    }
+
+    public function robots()
+    {
+        return response($this->seoService->robotsTxt(), 200, [
+            'Content-Type' => 'text/plain; charset=UTF-8',
+        ]);
+    }
 }

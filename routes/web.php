@@ -28,6 +28,7 @@ Route::get('/login', function () {
 Route::get('/about', [GuestViewController::class, 'about'])->name('about');
 
 Route::get('/sermons', [GuestViewController::class, 'sermons'])->name('sermons');
+Route::get('/sermons/{sermon:slug}', [GuestViewController::class, 'sermon'])->name('sermons.show');
 
 Route::get("/contact", [GuestViewController::class, 'contact'])->name('contact');
 Route::post("/contact", [GuestViewController::class, 'store'])->name('contact.store');
@@ -43,6 +44,8 @@ Route::get("/departments", [GuestViewController::class, 'departments'])->name('d
 Route::get("/departments/{department}", [GuestViewController::class, 'department'])->name('department');
 
 Route::get("/media", [GuestViewController::class, 'media'])->name('media');
+Route::get('/sitemap.xml', [GuestViewController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [GuestViewController::class, 'robots'])->name('robots');
 
 // AUTHENTICATED ROUTES
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {

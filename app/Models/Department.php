@@ -16,6 +16,9 @@ class Department extends Model
         'image',
         'leader_id',
         'status',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     /*

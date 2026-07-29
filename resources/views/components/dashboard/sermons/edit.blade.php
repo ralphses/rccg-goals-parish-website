@@ -105,6 +105,17 @@
                             <div class="col-md-6 mb-3"><label class="form-label">Video URL</label><input type="url" name="video_url" value="{{ old('video_url', $sermon->video_url) }}" class="form-control"><small class="dashboard-form-helper">Optional fallback when no shared sermon video is selected.</small></div>
                             <div class="col-md-12 mb-3"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="3">{{ old('description', $sermon->description) }}</textarea></div>
                             <div class="col-md-12 mb-3"><label class="form-label">Message</label><textarea name="message" class="form-control" rows="5">{{ old('message', $sermon->message) }}</textarea></div>
+                            <div class="col-md-12 mb-4">
+                                <div class="dashboard-form-preview-panel h-100">
+                                    <p class="mb-2 fw-semibold">SEO Settings</p>
+                                    <p class="dashboard-form-helper mb-3">Optional overrides for the public sermon page. Leave blank to keep using generated metadata from the sermon itself.</p>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3"><label class="form-label">Meta Title</label><input type="text" name="meta_title" value="{{ old('meta_title', $sermon->meta_title) }}" class="form-control" maxlength="255"></div>
+                                        <div class="col-md-12 mb-3"><label class="form-label">Meta Description</label><textarea name="meta_description" class="form-control" rows="3" maxlength="320">{{ old('meta_description', $sermon->meta_description) }}</textarea></div>
+                                        <div class="col-md-12 mb-0"><label class="form-label">Meta Keywords</label><input type="text" name="meta_keywords" value="{{ old('meta_keywords', $sermon->meta_keywords) }}" class="form-control" maxlength="255"></div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Current Attachments</label>

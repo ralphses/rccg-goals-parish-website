@@ -67,6 +67,9 @@ class EventController extends Controller
             'department_id' => 'nullable|exists:departments,id',
             'video_link' => 'nullable|url',
             'description_heading' => 'nullable|string|max:255',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
+            'meta_keywords' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('image_source')) {
@@ -116,6 +119,9 @@ class EventController extends Controller
             'department_id' => 'nullable|exists:departments,id',
             'video_link' => 'nullable|url',
             'description_heading' => 'nullable|string|max:255',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
+            'meta_keywords' => 'nullable|string|max:255',
         ]);
 
         $data = $request->except(['image_source', 'image_cropped']);

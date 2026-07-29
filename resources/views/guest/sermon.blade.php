@@ -1,3 +1,3 @@
 <x-guest-layout :seo="$seo">
- <x-guest.event :event="$event" />
+    <x-guest.sermon :sermon="$sermon" />
 </x-guest-layout>

@@ -89,6 +89,9 @@ class SermonController extends Controller
             'video_media_id' => ['nullable', $this->sermonMediaRule(MediaType::VIDEO)],
             'video_url' => 'nullable|url',
             'status' => 'required|in:' . implode(',', SermonStatus::values()),
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
+            'meta_keywords' => 'nullable|string|max:255',
             'attachments.*' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx|max:10240',
         ]);
 
@@ -161,6 +164,9 @@ class SermonController extends Controller
             'video_media_id' => ['nullable', $this->sermonMediaRule(MediaType::VIDEO)],
             'video_url' => 'nullable|url',
             'status' => 'required|in:' . implode(',', SermonStatus::values()),
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
+            'meta_keywords' => 'nullable|string|max:255',
             'attachments.*' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx|max:10240',
         ]);
 

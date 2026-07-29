@@ -41,7 +41,7 @@
                     <!--Events Single-->
                     <div class="events__single shadow-sm rounded overflow-hidden">
                         <div class="events__img">
-                            <img src="{{ $event->image ? asset($event->image) : 'assets/images/resources/events-img-1.jpg' }}" alt="{{ $event->title }}" class="img-fluid">
+                            <img src="{{ $event->image_url ?? asset('assets/images/resources/events-img-1.jpg') }}" alt="{{ $event->title }}" class="img-fluid" loading="lazy">
                         </div>
                         <div class="events__content p-3">
                             <h3 class="events__title mb-2"><a href="{{ route('event', $event) }}">{{ $event->title }}</a></h3>

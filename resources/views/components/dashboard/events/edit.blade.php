@@ -49,6 +49,17 @@
                             <div class="col-md-6 mb-3"><label class="form-label">Video Link</label><input type="url" name="video_link" value="{{ old('video_link', $event->video_link) }}" class="form-control"></div>
                             <div class="col-md-12 mb-3"><label class="form-label">Description Heading</label><input type="text" name="description_heading" value="{{ old('description_heading', $event->description_heading) }}" class="form-control"></div>
                             <div class="col-md-12 mb-3"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="5">{{ old('description', $event->description) }}</textarea></div>
+                            <div class="col-md-12 mb-4">
+                                <div class="dashboard-form-preview-panel h-100">
+                                    <p class="mb-2 fw-semibold">SEO Settings</p>
+                                    <p class="dashboard-form-helper mb-3">Optional overrides for the public event metadata.</p>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3"><label class="form-label">Meta Title</label><input type="text" name="meta_title" value="{{ old('meta_title', $event->meta_title) }}" class="form-control" maxlength="255"></div>
+                                        <div class="col-md-12 mb-3"><label class="form-label">Meta Description</label><textarea name="meta_description" class="form-control" rows="3" maxlength="320">{{ old('meta_description', $event->meta_description) }}</textarea></div>
+                                        <div class="col-md-12 mb-0"><label class="form-label">Meta Keywords</label><input type="text" name="meta_keywords" value="{{ old('meta_keywords', $event->meta_keywords) }}" class="form-control" maxlength="255"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="dashboard-form-actions"><button class="btn btn-primary dashboard-form-primary-btn">Update Event</button></div>
                     </form>

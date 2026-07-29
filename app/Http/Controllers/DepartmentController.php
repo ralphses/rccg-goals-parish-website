@@ -76,6 +76,9 @@ class DepartmentController extends Controller
             'leader_id' => 'nullable|exists:users,id',
             'users' => 'nullable|array',
             'users.*' => 'integer|exists:users,id',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
+            'meta_keywords' => 'nullable|string|max:255',
         ]);
 
         $memberIds = array_map('intval', $validated['users'] ?? []);
@@ -129,6 +132,9 @@ class DepartmentController extends Controller
             'leader_id' => 'nullable|exists:users,id',
             'users' => 'nullable|array',
             'users.*' => 'integer|exists:users,id',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:320',
+            'meta_keywords' => 'nullable|string|max:255',
         ]);
 
         $memberIds = array_map('intval', $validated['users'] ?? []);

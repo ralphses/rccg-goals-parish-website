@@ -20,6 +20,9 @@ class Event extends Model
         'image',
         'video_link',
         'description_heading',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     protected function casts(): array
