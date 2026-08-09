@@ -8,7 +8,7 @@
                     <div class="row align-items-center g-4">
                         <div class="col-lg-8">
                             <span class="dashboard-form-eyebrow">Settings Workspace</span>
-                            <h2 class="dashboard-form-title">Manage profile, security, integrations, and yearly church details from one polished settings hub.</h2>
+                            <h2 class="dashboard-form-title">Manage profile, security, integrations, and church details from one polished settings hub.</h2>
                             <p class="dashboard-form-subtitle">Everything is organized into focused cards so updates feel calmer and easier to review before saving.</p>
                         </div>
                         <div class="col-lg-4">
