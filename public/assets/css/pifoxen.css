@@ -14119,3 +14119,885 @@ body.boxed-wrapper {
   line-height: 28px;
   font-weight: 600;
 }
+
+/*--------------------------------------------------------------
+# Homepage Modernization Overrides
+--------------------------------------------------------------*/
+.main-slider--refined {
+  position: relative;
+}
+
+.main-slider--refined:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(17, 12, 46, 0.74) 0%, rgba(17, 12, 46, 0.48) 38%, rgba(17, 12, 46, 0.16) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.main-slider--refined .swiper-slide .container,
+.main-slider--refined .main-slider__nav,
+.main-slider--refined .swiper-pagination {
+  position: relative;
+  z-index: 2;
+}
+
+.main-slider--refined .main-slider__content {
+  max-width: 640px;
+  padding: 36px 0 18px;
+}
+
+.main-slider--refined .main-slider__content h2 {
+  max-width: 12ch;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.main-slider--refined .main-slider__content p {
+  max-width: 34rem;
+  margin-top: 22px;
+  font-size: 20px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.main-slider--refined .main-slider__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.thm-btn--brand,
+.thm-btn--secondary,
+.fundraishing__btn,
+.footer-donate__btn {
+  border-radius: 999px;
+  box-shadow: 0 14px 30px rgba(17, 12, 46, 0.14);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease, color 300ms ease;
+}
+
+.thm-btn--brand {
+  background: linear-gradient(135deg, #1c0f5e 0%, #2c1b83 100%);
+}
+
+.thm-btn--secondary {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+.thm-btn--secondary:hover,
+.thm-btn--secondary:focus {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.thm-btn--brand:hover,
+.thm-btn--secondary:hover,
+.thm-btn:hover,
+.fundraishing__btn:hover,
+.footer-donate__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 38px rgba(17, 12, 46, 0.2);
+}
+
+.swiper-pagination#main-slider-pagination {
+  bottom: 32px !important;
+}
+
+.main-slider--refined .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.36);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.main-slider--refined .swiper-pagination-bullet-active {
+  background: #fff;
+  transform: scale(1.1);
+}
+
+.main-slider--refined .main-slider__nav .swiper-button-next,
+.main-slider--refined .main-slider__nav .swiper-button-prev {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+.main-slider--refined .main-slider__nav .swiper-button-next:hover,
+.main-slider--refined .main-slider__nav .swiper-button-prev:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.we-believe,
+.welcome-one,
+.quality-work,
+.testimonial-two,
+.causes-one,
+.fundraishing,
+.blog-one,
+.site-footer__top {
+  position: relative;
+}
+
+.we-believe,
+.welcome-one,
+.quality-work,
+.testimonial-two,
+.causes-one,
+.blog-one {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.section-title {
+  margin-bottom: 26px;
+}
+
+.section-title__tagline {
+  margin-bottom: 12px;
+  letter-spacing: 0.12em;
+}
+
+.section-title__title {
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.section-title__description,
+.section-title__text {
+  max-width: 700px;
+  margin: 18px auto 0;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #6d6c76;
+}
+
+.section-title.text-left .section-title__description,
+.section-title.text-left .section-title__text {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.we-believe {
+  background:
+    radial-gradient(circle at top center, rgba(28, 15, 94, 0.05) 0%, rgba(28, 15, 94, 0) 44%),
+    linear-gradient(180deg, #fff 0%, #fbfaff 100%);
+}
+
+.we-believe__single,
+.causes-one__single,
+.blog-one__single,
+.testimonial-two__single,
+.theme-card--refined,
+.tab-content__inner {
+  border: 1px solid rgba(28, 15, 94, 0.08);
+  box-shadow: 0 24px 60px rgba(17, 12, 46, 0.08);
+}
+
+.we-believe__single {
+  padding: 40px 28px 34px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.we-believe__single:hover {
+  transform: translateY(-6px);
+  border-color: rgba(28, 15, 94, 0.14);
+  box-shadow: 0 30px 70px rgba(17, 12, 46, 0.12);
+}
+
+.we-believe__icon {
+  margin: 0 auto 26px;
+  box-shadow: 0 16px 30px rgba(28, 15, 94, 0.12);
+}
+
+.we-believe__title {
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.we-believe__text {
+  line-height: 1.9;
+}
+
+.welcome-one {
+  background:
+    linear-gradient(180deg, rgba(249, 247, 255, 0.82) 0%, rgba(255, 255, 255, 0) 30%),
+    #fff;
+}
+
+.welcome-one__img-box {
+  padding-left: 36px;
+}
+
+.welcome-one__img {
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 28px 70px rgba(17, 12, 46, 0.18);
+}
+
+.welcome-one__img img {
+  transform: scale(1.01);
+}
+
+.welcome-one-shape-1 {
+  opacity: 0.55;
+}
+
+.welcome-one__right {
+  padding-left: 24px;
+}
+
+.welcome-one__copy {
+  margin-top: 34px;
+  padding: 32px 34px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 248, 255, 0.92) 100%);
+  border: 1px solid rgba(28, 15, 94, 0.08);
+  box-shadow: 0 24px 50px rgba(17, 12, 46, 0.08);
+}
+
+.welcome-one__text-2 {
+  color: #676672;
+  line-height: 1.95;
+}
+
+.welcome-one__text-2 + .welcome-one__text-2,
+.welcome-one__text-2 + .welcome-one__signature {
+  margin-top: 22px !important;
+}
+
+.welcome-one__signature {
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.welcome-one__signature span {
+  display: block;
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6d6c76;
+}
+
+.theme-of-the-month {
+  padding-top: 20px;
+  padding-bottom: 30px;
+}
+
+.theme-card--refined {
+  position: relative;
+  overflow: hidden;
+  padding: 48px 36px;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 28%),
+    linear-gradient(135deg, #1c0f5e 0%, #25146f 55%, #38209c 100%);
+}
+
+.theme-card--refined:before {
+  content: "";
+  position: absolute;
+  inset: auto -30px -54px auto;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.theme-card__tagline,
+.theme-card__title,
+.theme-card__quote {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+.theme-card__tagline {
+  font-weight: 600;
+}
+
+.theme-card__title {
+  margin: 16px 0;
+  font-size: 32px;
+}
+
+.theme-card__quote {
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 17px;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.live-streaming {
+  background:
+    radial-gradient(circle at bottom left, rgba(28, 15, 94, 0.08) 0%, rgba(28, 15, 94, 0) 42%),
+    linear-gradient(180deg, #fff 0%, #f7f5ff 100%);
+}
+
+.live-streaming .tab-content__inner {
+  padding: 34px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.live-streaming .tab-content__title--big {
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.live-streaming .tab-content__summery {
+  margin-top: 18px;
+  line-height: 1.9;
+  color: #666570;
+}
+
+.live-streaming .tab-content-video-bg {
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 22px 44px rgba(17, 12, 46, 0.16);
+}
+
+.testimonial-two {
+  overflow: hidden;
+}
+
+.testimonial-two:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(250, 248, 255, 0.72) 0%, rgba(255, 255, 255, 0.9) 100%);
+  pointer-events: none;
+}
+
+.testimonial-two .container {
+  position: relative;
+  z-index: 1;
+}
+
+.testimonial-two__left {
+  padding-right: 28px;
+}
+
+.testimonial-two__single {
+  padding: 34px 34px 0;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.testimonial-two__content {
+  min-height: 280px;
+}
+
+.testimonial-two__quote {
+  box-shadow: 0 14px 30px rgba(28, 15, 94, 0.14);
+}
+
+.testimonial-two__text {
+  color: #64636f;
+  line-height: 1.95;
+}
+
+.testimonial-two__client-info {
+  margin-top: 24px;
+  padding: 22px 0 28px;
+  border-top: 1px solid rgba(28, 15, 94, 0.08);
+}
+
+.testimonial-two__client-img img {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 12px 28px rgba(17, 12, 46, 0.14);
+}
+
+.testimonial-two__client-name {
+  margin-bottom: 4px;
+}
+
+.causes-one {
+  background: linear-gradient(180deg, #fff 0%, #fbfaff 100%);
+}
+
+.causes-one__single {
+  overflow: hidden;
+  border-radius: 28px;
+  background: #fff;
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.causes-one__single:hover,
+.blog-one__single:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 70px rgba(17, 12, 46, 0.12);
+}
+
+.causes-one__img,
+.blog-one__img {
+  overflow: hidden;
+  border-radius: 28px 28px 0 0;
+}
+
+.causes-one__img img,
+.blog-one__img img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.causes-one__content,
+.blog-one__content {
+  padding: 28px 28px 30px;
+}
+
+.causes-one__title,
+.blog-one__title {
+  line-height: 1.22;
+}
+
+.causes-one__text,
+.blog-one__text {
+  line-height: 1.85;
+  color: #666570;
+}
+
+.fundraishing {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.fundraishing__inner {
+  padding: 90px 68px;
+  border-radius: 36px;
+  background: linear-gradient(180deg, rgba(7, 4, 25, 0.42) 0%, rgba(7, 4, 25, 0.64) 100%);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 30px 80px rgba(17, 12, 46, 0.18);
+}
+
+.fundraishing__sub-title {
+  letter-spacing: 0.08em;
+}
+
+.fundraishing__title {
+  max-width: 12ch;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.fundraishing__gallery-item {
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+}
+
+.fundraishing__gallery-item img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 400ms ease, opacity 300ms ease;
+}
+
+.fundraishing__gallery-item:hover img {
+  transform: scale(1.04);
+  opacity: 0.92;
+}
+
+.blog-one {
+  background:
+    radial-gradient(circle at top right, rgba(28, 15, 94, 0.06) 0%, rgba(28, 15, 94, 0) 38%),
+    #fff;
+}
+
+.blog-one__single {
+  overflow: hidden;
+  border-radius: 28px;
+  background: #fff;
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.blog-one__meta {
+  gap: 10px 20px;
+}
+
+.blog-one__meta li {
+  color: #6d6c76;
+}
+
+.blog-one__bottom {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(28, 15, 94, 0.08);
+}
+
+.site-footer {
+  margin-top: 0;
+}
+
+.site-footer-bg:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(23, 22, 28, 0.84) 0%, rgba(23, 22, 28, 0.9) 100%);
+}
+
+.site-footer__top {
+  padding-top: 118px;
+  padding-bottom: 88px;
+}
+
+.footer-widget__about-text {
+  max-width: 14ch;
+  line-height: 1.12;
+}
+
+.footer-donate__btn {
+  min-height: 72px;
+  padding: 0 34px 0 20px;
+}
+
+.footer-widget__title {
+  margin-bottom: 32px;
+}
+
+.footer-widget__links-list li + li,
+.footer-widget__non-profit-list li + li,
+.footer-widget__contact-list li + li {
+  margin-top: 16px;
+}
+
+.footer-widget__links-list a,
+.footer-widget__non-profit-list a,
+.footer-widget__contact-list a,
+.footer-widget__contact-list .text {
+  transition: color 300ms ease, transform 300ms ease;
+}
+
+.footer-widget__links-list a:hover,
+.footer-widget__non-profit-list a:hover,
+.footer-widget__contact-list a:hover {
+  color: #fff;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1199px) {
+  .we-believe,
+  .welcome-one,
+  .quality-work,
+  .testimonial-two,
+  .causes-one,
+  .fundraishing,
+  .blog-one {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+
+  .main-slider--refined .main-slider__content h2 {
+    max-width: 11ch;
+  }
+
+  .welcome-one__right {
+    padding-left: 0;
+    margin-top: 40px;
+  }
+
+  .welcome-one__img-box {
+    padding-left: 16px;
+  }
+
+  .fundraishing__inner {
+    padding: 72px 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .we-believe,
+  .welcome-one,
+  .quality-work,
+  .testimonial-two,
+  .causes-one,
+  .fundraishing,
+  .blog-one {
+    padding-top: 78px;
+    padding-bottom: 78px;
+  }
+
+  .main-slider--refined .main-slider__content {
+    padding: 0;
+  }
+
+  .main-slider--refined .main-slider__content p {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .main-slider--refined .main-slider__btns {
+    gap: 12px;
+  }
+
+  .main-slider--refined .main-slider__nav .swiper-button-next,
+  .main-slider--refined .main-slider__nav .swiper-button-prev {
+    width: 46px;
+    height: 46px;
+  }
+
+  .we-believe__single,
+  .testimonial-two__single,
+  .theme-card--refined,
+  .live-streaming .tab-content__inner,
+  .welcome-one__copy,
+  .fundraishing__inner,
+  .causes-one__content,
+  .blog-one__content {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .we-believe__single,
+  .testimonial-two__single,
+  .theme-card--refined,
+  .live-streaming .tab-content__inner,
+  .welcome-one__copy,
+  .fundraishing__inner {
+    border-radius: 24px;
+  }
+
+  .welcome-one__img-box,
+  .welcome-one__right {
+    padding-left: 0;
+  }
+
+  .welcome-one__right {
+    margin-top: 32px;
+  }
+
+  .fundraishing__inner {
+    padding-top: 62px;
+    padding-bottom: 62px;
+  }
+
+  .fundraishing__title,
+  .main-slider--refined .main-slider__content h2 {
+    max-width: none;
+  }
+
+  .theme-card__title {
+    font-size: 26px;
+  }
+
+  .site-footer__top {
+    padding-top: 84px;
+    padding-bottom: 54px;
+  }
+}
+
+/*--------------------------------------------------------------
+# About Page Modernization Overrides
+--------------------------------------------------------------*/
+.about-page--refined {
+  background:
+    radial-gradient(circle at top left, rgba(28, 15, 94, 0.06) 0%, rgba(28, 15, 94, 0) 36%),
+    linear-gradient(180deg, #fff 0%, #fbfaff 100%);
+}
+
+.about-page--refined .about-page__left {
+  margin-right: 24px;
+}
+
+.about-page--refined .about-page__img {
+  overflow: hidden;
+  border-radius: 32px;
+  box-shadow: 0 28px 70px rgba(17, 12, 46, 0.16);
+}
+
+.about-page--refined .about-page__img:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(17, 12, 46, 0.02) 0%, rgba(17, 12, 46, 0.16) 100%);
+  pointer-events: none;
+}
+
+.about-page--refined .about-page__img img {
+  min-height: 100%;
+  object-fit: cover;
+}
+
+.about-page--refined .about-page__right {
+  margin-left: 24px;
+  padding-top: 14px;
+}
+
+.about-page__story {
+  padding: 30px 32px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 247, 255, 0.92) 100%);
+  border: 1px solid rgba(28, 15, 94, 0.08);
+  box-shadow: 0 24px 54px rgba(17, 12, 46, 0.08);
+}
+
+.about-page--refined .about-page__text {
+  padding-bottom: 0;
+  color: #666570;
+  line-height: 1.95;
+}
+
+.about-values {
+  overflow: hidden;
+}
+
+.about-values:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(250, 248, 255, 0.72) 0%, rgba(255, 255, 255, 0.92) 100%);
+  pointer-events: none;
+}
+
+.about-values .container {
+  position: relative;
+  z-index: 1;
+}
+
+.about-values .testimonial-two__single {
+  padding: 36px 34px 18px;
+}
+
+.about-values .testimonial-two__content {
+  min-height: 320px;
+}
+
+.about-values .we-believe__title {
+  margin-bottom: 16px;
+  line-height: 1.18;
+}
+
+.about-leadership {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  background:
+    radial-gradient(circle at top center, rgba(28, 15, 94, 0.04) 0%, rgba(28, 15, 94, 0) 34%),
+    #fff;
+}
+
+.about-leadership .volunteers-one__single {
+  overflow: hidden;
+  border-radius: 30px;
+  border: 1px solid rgba(28, 15, 94, 0.08);
+  box-shadow: 0 24px 56px rgba(17, 12, 46, 0.1);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.about-leadership .volunteers-one__single:hover {
+  transform: translateY(-6px);
+  border-color: rgba(28, 15, 94, 0.14);
+  box-shadow: 0 30px 70px rgba(17, 12, 46, 0.14);
+}
+
+.about-leadership .volunteers-one__img {
+  overflow: hidden;
+}
+
+.about-leadership .volunteers-one__img img {
+  width: 100%;
+  aspect-ratio: 4 / 4.7;
+  object-fit: cover;
+}
+
+.about-leadership .volunteers-one__content {
+  padding: 28px 26px 30px;
+  background: linear-gradient(180deg, #fff 0%, #faf8ff 100%);
+}
+
+.about-leadership .volunteers-one__name {
+  line-height: 1.18;
+}
+
+.about-cta {
+  padding-top: 0;
+}
+
+.about-cta .cta-one__inner {
+  overflow: hidden;
+  border-radius: 34px;
+  box-shadow: 0 28px 70px rgba(17, 12, 46, 0.14);
+}
+
+.about-cta .cta-one__title {
+  max-width: 16ch;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.about-cta .cta-one__btn {
+  border-radius: 999px;
+  box-shadow: 0 14px 30px rgba(17, 12, 46, 0.16);
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.about-cta .cta-one__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 38px rgba(17, 12, 46, 0.22);
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1199px) {
+  .about-page--refined .about-page__left,
+  .about-page--refined .about-page__right {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .about-page--refined .about-page__right {
+    padding-top: 0;
+  }
+
+  .about-values .testimonial-two__content {
+    min-height: 0;
+  }
+
+  .about-leadership {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+}
+
+@media (max-width: 767px) {
+  .about-page__story,
+  .about-values .testimonial-two__single {
+    padding: 24px 22px;
+    border-radius: 24px;
+  }
+
+  .about-page--refined .about-page__img,
+  .about-cta .cta-one__inner,
+  .about-leadership .volunteers-one__single {
+    border-radius: 24px;
+  }
+
+  .about-values .testimonial-two__content {
+    min-height: 0;
+  }
+
+  .about-leadership {
+    padding-top: 78px;
+    padding-bottom: 78px;
+  }
+}

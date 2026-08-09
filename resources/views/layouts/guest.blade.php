@@ -156,7 +156,7 @@
 
                         <!-- Main Menu -->
                         <div class="main-menu-wrapper__main-menu">
-                            <a href="#" class="mobile-nav__toggler">
+                            <a href="#" class="mobile-nav__toggler" aria-label="Open mobile menu">
                                 <i class="fa fa-bars"></i>
                             </a>
 
@@ -189,7 +189,7 @@
                                 </li>
 
                                 <li><a href="{{ route('events') }}">Events</a></li>
-                                <li><a href="{{ route('departments') }}">Departments</a></li>
+                                {{-- <li><a href="{{ route('departments') }}">Departments</a></li> --}}
                                 <li><a href="{{ route('contact') }}">Contact</a></li>
 
                                 <!-- Auth Button -->
@@ -221,7 +221,8 @@
 
         <!--Site Footer Start-->
         <footer class="site-footer">
-            <div class="site-footer-bg" style="background-image: url(assets/images/backgrounds/site-footer-bg.jpg);">
+            <div class="site-footer-bg"
+                style="background-image: url('{{ asset('assets/images/backgrounds/site-footer-bg.jpg') }}');">
             </div>
             <div class="site-footer__top">
                 <div class="container">

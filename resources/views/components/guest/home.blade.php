@@ -5,7 +5,7 @@
 </div><!-- /.stricky-header -->
 
 <!--Main Slider Start-->
-<section class="main-slider">
+<section class="main-slider main-slider--refined">
     <div class="main-slider-ripped-paper">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 1200 19.07">
             <path class="cls-2"
@@ -45,7 +45,7 @@
                                 <p>A place of worship, word, and transformation</p>
 
                                 <div class="main-slider__btns">
-                                    <a href="{{ route('about') }}" class="thm-btn mb-2" style="background-color: #1c0f5e">About
+                                    <a href="{{ route('about') }}" class="thm-btn thm-btn--brand mb-2">About
                                         the Church</a>
                                     <a href="{{ route('home') }}#live-stream" class="thm-btn thm-btn--secondary mb-2">
                                         <i class="fab fa-youtube"></i> Watch Live
@@ -73,7 +73,7 @@
                                 <p>Join us for life-changing services and fellowship</p>
 
                                 <div class="main-slider__btns">
-                                    <a href="{{ route('events') }}" class="thm-btn mb-2" style="background-color: #1c0f5e">Service
+                                    <a href="{{ route('events') }}" class="thm-btn thm-btn--brand mb-2">Service
                                         Times</a>
                                     <a href="{{ route('sermons') }}" class="thm-btn thm-btn--secondary mb-2">
                                         Listen to Sermons
@@ -101,9 +101,9 @@
                                 <p>Serve God, serve people, and grow together</p>
 
                                 <div class="main-slider__btns">
-                                    <a href="{{ route('departments') }}" style="background-color: #1c0f5e" class="thm-btn mb-2">
+                                    {{-- <a href="{{ route('departments') }}" class="thm-btn thm-btn--brand mb-2">
                                         Join a Department
-                                    </a>
+                                    </a> --}}
                                     <a href="{{ route('contact') }}" class="thm-btn thm-btn--secondary mb-2">
                                         Contact Us
                                     </a>
@@ -252,17 +252,16 @@
     {{-- <div class="container"> --}}
     <div class="row justify-content-center">
         <div class="col-xl-12 col-lg-4">
-            <div class="theme-card text-center"
-                style="background-color: #1c0f5e; padding: 40px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+            <div class="theme-card theme-card--refined text-center">
                 <!-- Section Title -->
-                <span class="section-title__tagline" style="font-weight: 500; color: #ffffff;">Theme for This
+                <span class="section-title__tagline theme-card__tagline">Theme for This
                     Month</span>
-                <h3 class="section-title__title" style="margin: 15px 0; font-size: 28px; color: #ffffff;">
+                <h3 class="section-title__title theme-card__title">
                     {{ $theme->current_month_theme ?? 'Walking in Faith and Purpose' }}
                 </h3>
 
                 <!-- Scriptural Quotation -->
-                <p class="theme-quote" style="font-style: italic; font-size: 16px; color: #ffffff;">
+                <p class="theme-quote theme-card__quote">
                     "{{ $theme->current_month_scripture_content ?? 'For we walk by faith, not by sight.' }}" –
                     <strong>{{ $theme->current_month_scripture ?? '2 Corinthians 5:7' }}</strong>
                 </p>

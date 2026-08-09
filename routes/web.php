@@ -39,9 +39,9 @@ Route::get("/events", [GuestViewController::class, 'events'])->name('events');
 
 Route::get("/events/{event}", [GuestViewController::class, 'event'])->name('event');
 
-Route::get("/departments", [GuestViewController::class, 'departments'])->name('departments');
+// Route::get("/departments", [GuestViewController::class, 'departments'])->name('departments');
 
-Route::get("/departments/{department}", [GuestViewController::class, 'department'])->name('department');
+// Route::get("/departments/{department}", [GuestViewController::class, 'department'])->name('department');
 
 Route::get("/media", [GuestViewController::class, 'media'])->name('media');
 Route::get('/sitemap.xml', [GuestViewController::class, 'sitemap'])->name('sitemap');

@@ -1,11 +1,11 @@
   <!--About Page Start-->
-  <section class="about-page" id="history">
+  <section class="about-page about-page--refined" id="history">
       <div class="container">
           <div class="row">
               <div class="col-xl-6">
                   <div class="about-page__left wow slideInLeft" data-wow-delay="100ms" data-wow-duration="2500ms">
                       <div class="about-page__img">
-                          <img src="{{ asset('assets/images/resources/about-page-img-1.jpg') }}" alt="">
+                          <img src="{{ asset('assets/images/resources/about-page-img-1.jpg') }}" alt="RCCG church gathering">
                       </div>
                   </div>
               </div>
@@ -15,7 +15,9 @@
                           <span class="section-title__tagline">get to know us</span>
                           <h2 class="section-title__title">Brief History</h2>
                       </div>
-                      <p class="about-page__text">The Redeemed Christian Church of God (RCCG) was founded in 1952 by Reverend Josiah Akindayomi in Lagos, Nigeria. What began as a small prayer group has grown into a global network of churches with a presence in over 190 countries. The mission of the RCCG is to spread the Word of God to the ends of the earth, with a vision to have a member of RCCG in every family of all nations. The church is built on a foundation of prayer, holiness, and evangelism, with a commitment to raising disciples who will impact the world for Christ.</p>
+                      <div class="about-page__story">
+                          <p class="about-page__text">The Redeemed Christian Church of God (RCCG) was founded in 1952 by Reverend Josiah Akindayomi in Lagos, Nigeria. What began as a small prayer group has grown into a global network of churches with a presence in over 190 countries. The mission of the RCCG is to spread the Word of God to the ends of the earth, with a vision to have a member of RCCG in every family of all nations. The church is built on a foundation of prayer, holiness, and evangelism, with a commitment to raising disciples who will impact the world for Christ.</p>
+                      </div>
 
                   </div>
               </div>
@@ -25,14 +27,15 @@
   <!--About Page End-->
 
   <!--Testimonial Three Start-->
-  <section class="testimonial-two testimonial-three" id="mission">
-      <div class="testimonial-two-bg" style="background-image: url(assets/images/backgrounds/testimonial-two-bg.png);">
+  <section class="testimonial-two testimonial-three about-values" id="mission">
+      <div class="testimonial-two-bg" style="background-image: url('{{ asset('assets/images/backgrounds/testimonial-two-bg.png') }}');">
       </div>
       <div class="container">
           <div class="row">
               <div class="col-xl-4">
                   <div class="testimonial-two__left">
                       <div class="section-title text-left">
+                          <span class="section-title__tagline">our foundation</span>
                           <h2 class="section-title__title">Want to know more about our values?</h2>
                       </div>
                   </div>
@@ -66,9 +69,10 @@
   <!--Testimonial Three End-->
 
   <!--Volunteers One Start-->
-  <section class="volunteers-one" id="pastorate">
+  <section class="volunteers-one about-leadership" id="pastorate">
       <div class="container">
           <div class="section-title text-center">
+              <span class="section-title__tagline">those who serve</span>
               <h2 class="section-title__title">Church Leadership</h2>
           </div>
           <div class="row justify-content-center">
@@ -91,8 +95,8 @@
   <!--Volunteers One End-->
 
   <!--CTA One Start-->
-  <section class="cta-one">
-    <div class="cta-one-shape" style="background-image: url(assets/images/shapes/cta-one-shape.png);"></div>
+  <section class="cta-one about-cta">
+    <div class="cta-one-shape" style="background-image: url('{{ asset('assets/images/shapes/cta-one-shape.png') }}');"></div>
     <div class="container">
         <div class="row">
             <div class="col-xl-12">
@@ -103,7 +107,7 @@
                         </h2>
                     </div>
                     <div class="cta-one__right">
-                        <a href="contact.html" class="thm-btn cta-one__btn">
+                        <a href="{{ route('contact') }}" class="thm-btn cta-one__btn">
                             Contact Us for More Information
                         </a>
                     </div>
