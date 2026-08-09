@@ -149,7 +149,7 @@
                     <!-- Tuesday -->
                     <li class="we-believe__single wow fadeInUp" data-wow-delay="100ms">
                         <div class="we-believe__icon">
-                            <img src="assets/images/icons/bible-study.png" alt="Bible Study">
+                            <img src="{{ asset('assets/images/icons/bible-study.png') }}" alt="Bible Study">
                         </div>
                         <h3 class="we-believe__title">Digging Deep (Bible Study)</h3>
                         <p class="we-believe__text">
@@ -161,7 +161,7 @@
                     <!-- Wednesday -->
                     <li class="we-believe__single wow fadeInUp" data-wow-delay="200ms">
                         <div class="we-believe__icon">
-                            <img src="assets/images/icons/prayer-fasting.png" alt="Prayer and Fasting">
+                            <img src="{{ asset('assets/images/icons/prayer-fasting.png') }}" alt="Prayer and Fasting">
                         </div>
                         <h3 class="we-believe__title">General Prayer & Fasting</h3>
                         <p class="we-believe__text">
@@ -173,7 +173,7 @@
                     {{-- Wednesday (Youth Fellowship) --}}
                     <li class="we-believe__single wow fadeInUp" data-wow-delay="300ms">
                         <div class="we-believe__icon">
-                            <img src="assets/images/icons/youth-fellowship.png" alt="Youth Fellowship">
+                            <img src="{{ asset('assets/images/icons/youth-fellowship.png') }}" alt="Youth Fellowship">
                         </div>
                         <h3 class="we-believe__title">Youth Fellowship</h3>
                         <p class="we-believe__text">
@@ -186,7 +186,7 @@
                     <!-- Thursday -->
                     <li class="we-believe__single wow fadeInUp" data-wow-delay="300ms">
                         <div class="we-believe__icon">
-                            <img src="assets/images/icons/faith-clinic.png" alt="Faith Clinic">
+                            <img src="{{ asset('assets/images/icons/faith-clinic.png') }}" alt="Faith Clinic">
                         </div>
                         <h3 class="we-believe__title">Faith Clinic</h3>
                         <p class="we-believe__text">
@@ -220,26 +220,26 @@
             <div class="col-xl-6">
                 <div class="welcome-one__right">
                     <div class="section-title text-left">
-                        <h2 class="section-title__title">Welcome to RCCG Glory of All Lands Parish</h2>
-                        <p class="welcome-one__text-2 mb-2">Dear Beloved, it is with great joy that I welcome
-                            you to
-                            our parish website.
-                            Here, you will find spiritual resources, information about our programs,
-                            and ways to connect with our church family.
-                            We pray that your experience with us will bring encouragement, faith, and hope.
-                            <br>
-                            Whether you are new to our church or have been with us for a while, we
-                            invite you to explore our website and discover all that RCCG Glory of All Lands has
-                            to offer. May God bless you abundantly as you navigate through our online home.
-                            <br>
-                            <br>
-                            <strong>Pastor Adekunle Omotimirin (Zonal Pastor) </strong>
-                        </p>
-
+                        <span class="welcome-one__eyebrow">A Warm Welcome</span>
+                        <h2 class="section-title__title">Welcome to<br>RCCG Glory of All Lands Parish</h2>
+                        <div class="welcome-one__copy">
+                            <p class="welcome-one__text-2 mb-0">
+                                Dear Beloved, it is with great joy that I welcome you to our parish website. Here,
+                                you will find spiritual resources, information about our programs, and ways to
+                                connect with our church family. We pray that your experience with us will bring
+                                encouragement, faith, and hope.
+                            </p>
+                            <p class="welcome-one__text-2 welcome-one__text-2--muted mb-0">
+                                Whether you are new to our church or have been with us for a while, we invite you
+                                to explore our website and discover all that RCCG Glory of All Lands has to offer.
+                                May God bless you abundantly as you navigate through our online home.
+                            </p>
+                            <p class="welcome-one__signature mb-0">
+                                Pastor Adekunle Omotimirin
+                                <span>Zonal Pastor</span>
+                            </p>
+                        </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>

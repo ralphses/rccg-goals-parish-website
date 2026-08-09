@@ -195,8 +195,7 @@
                                 <!-- Auth Button -->
                                 @guest
                                     <li class="main-menu__login">
-                                        <a href="{{ route('login') }}" class="btn btn-outline-primary"
-                                            style="padding: 8px 18px; border-radius: 25px;">
+                                        <a href="{{ route('login') }}" class="main-menu__action">
                                             Login
                                         </a>
                                     </li>
@@ -204,8 +203,7 @@
 
                                 @auth
                                     <li class="main-menu__login">
-                                        <a href="{{ route('dashboard') }}" class="btn btn-outline-primary"
-                                            style="padding: 8px 18px; border-radius: 25px; margin-right: 10px;">
+                                        <a href="{{ route('dashboard') }}" class="main-menu__action">
                                             Dashboard
                                         </a>
                                     </li>
@@ -338,8 +336,8 @@
 
             <!-- Mobile Logo -->
             <div class="mobile-nav__logo">
-                <a href="index.html" aria-label="RCCG GOALS logo">
-                    <img src="assets/images/resources/goals_logo_real.png" alt="RCCG Glory of All Lands Parish Logo">
+                <a href="{{ route('home') }}" aria-label="RCCG GOALS logo">
+                    <img src="{{ asset('assets/images/resources/goals_logo_real.png') }}" alt="RCCG Glory of All Lands Parish Logo">
                 </a>
             </div>
 
