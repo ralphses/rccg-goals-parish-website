@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\enums\MediaType;
 use App\enums\TestimonyAnnouncementType;
+use App\Support\HumanAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,5 +38,14 @@ class Testimony extends Model
     public function media()
     {
         return $this->morphMany(Media::class, 'mediable');
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        $image = $this->relationLoaded('media')
+            ? $this->media->first(fn (Media $media) => $media->media_type === MediaType::IMAGE)
+            : $this->media()->where('media_type', MediaType::IMAGE->value)->oldest('id')->first();
+
+        return $image?->visual_url ?: HumanAvatar::url();
     }
 }

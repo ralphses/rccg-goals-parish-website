@@ -17,10 +17,10 @@
                     @php
                         $galleryLinkClass = match ($item->media_type) {
                             \App\enums\MediaType::IMAGE => 'img-popup',
-                            \App\enums\MediaType::VIDEO => $item->youtube_embed_url ? 'video-popup' : '',
+                            \App\enums\MediaType::VIDEO => 'video-popup',
                             default => '',
                         };
-                        $galleryHref = $item->media_type === \App\enums\MediaType::VIDEO ? $item->public_video_url : $item->file_url;
+                        $galleryHref = $item->media_type === \App\enums\MediaType::VIDEO ? $item->youtube_embed_url : $item->file_url;
                     @endphp
                     <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                         <div class="two-section__gallery-single">
@@ -53,10 +53,10 @@
                     @php
                         $testimonyLinkClass = match ($item->media_type) {
                             \App\enums\MediaType::IMAGE => 'img-popup',
-                            \App\enums\MediaType::VIDEO => $item->youtube_embed_url ? 'video-popup' : '',
+                            \App\enums\MediaType::VIDEO => 'video-popup',
                             default => '',
                         };
-                        $testimonyHref = $item->media_type === \App\enums\MediaType::VIDEO ? $item->public_video_url : $item->file_url;
+                        $testimonyHref = $item->media_type === \App\enums\MediaType::VIDEO ? $item->youtube_embed_url : $item->file_url;
                     @endphp
                     <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                         <div class="two-section__gallery-single">

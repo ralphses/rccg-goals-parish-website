@@ -1,3 +1,4 @@
+@props(['event', 'departments', 'statuses', 'mediaLibrary'])
 @include('components.dashboard.partials.form-shell')
 
 <div class="container">
@@ -9,12 +10,12 @@
                         <div class="col-lg-8">
                             <span class="dashboard-form-eyebrow">Events Form</span>
                             <h2 class="dashboard-form-title">Update this event with better visibility into the image, schedule, and status.</h2>
-                            <p class="dashboard-form-subtitle">Refresh event details confidently while keeping the current media and timing context in view.</p>
+                            <p class="dashboard-form-subtitle">Refresh event details confidently while keeping the current media, reusable assets, and timing context in view.</p>
                         </div>
                         <div class="col-lg-4">
                             <div class="dashboard-form-hero-actions">
                                 <a href="{{ route('dashboard.events.index') }}" class="btn btn-outline-secondary btn-lg dashboard-form-secondary-btn">Back to Events</a>
-                                <div class="dashboard-form-note"><span class="dot"></span>Current image remains visible until you replace it</div>
+                                <div class="dashboard-form-note"><span class="dot"></span>Shared event media stays reusable across the application</div>
                             </div>
                         </div>
                     </div>
@@ -28,6 +29,26 @@
                         @csrf
                         @method('PUT')
                         <div class="row">
+                            <div class="col-lg-6 mb-4">
+                                <label class="form-label">Use Event Image From Media Library</label>
+                                <select name="image_media_id" class="form-select">
+                                    <option value="">Keep current custom image or upload a new one</option>
+                                    @foreach ($mediaLibrary['images'] as $item)
+                                        <option value="{{ $item->id }}" {{ old('image_media_id', $event->image_media_id) == $item->id ? 'selected' : '' }}>
+                                            {{ $item->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="dashboard-form-helper">Selecting an event media image makes this record reuse the centralized media asset.</small>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="dashboard-form-preview-panel h-100">
+                                    <p class="mb-2 fw-semibold">Current image source</p>
+                                    <p class="dashboard-form-helper mb-0">
+                                        {{ $event->image_media_id ? 'This event currently uses a shared media-library image.' : 'This event currently uses its own stored image.' }}
+                                    </p>
+                                </div>
+                            </div>
                             <div class="col-md-12 mb-4">
                                 <x-dashboard.partials.cropped-image-field
                                     label="Upload New Image"
@@ -46,7 +67,18 @@
                             <div class="col-md-6 mb-3"><label class="form-label">Location</label><input type="text" name="location" value="{{ old('location', $event->location) }}" class="form-control"></div>
                             <div class="col-md-6 mb-3"><label class="form-label">Status</label><select name="status" class="form-select">@foreach ($statuses as $status)<option value="{{ $status->value }}" {{ old('status', $event->status?->value ?? $event->status) == $status->value ? 'selected' : '' }}>{{ ucfirst($status->value) }}</option>@endforeach</select></div>
                             <div class="col-md-6 mb-3"><label class="form-label">Department</label><select name="department_id" class="form-select"><option value="">Select a department</option>@foreach ($departments as $department)<option value="{{ $department->id }}" {{ $event->department_id == $department->id ? 'selected' : '' }}>{{ $department->name }}</option>@endforeach</select></div>
-                            <div class="col-md-6 mb-3"><label class="form-label">Video Link</label><input type="url" name="video_link" value="{{ old('video_link', $event->video_link) }}" class="form-control"></div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Event Video From Media Library</label>
+                                <select name="video_media_id" class="form-select">
+                                    <option value="">Keep or use external video URL</option>
+                                    @foreach ($mediaLibrary['videos'] as $item)
+                                        <option value="{{ $item->id }}" {{ old('video_media_id', $event->video_media_id) == $item->id ? 'selected' : '' }}>
+                                            {{ $item->title }}{{ $item->youtube_video_url ? ' • YouTube ready' : '' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3"><label class="form-label">Video Link</label><input type="url" name="video_link" value="{{ old('video_link', $event->video_link) }}" class="form-control"><small class="dashboard-form-helper">Optional fallback when no shared event video is selected.</small></div>
                             <div class="col-md-12 mb-3"><label class="form-label">Description Heading</label><input type="text" name="description_heading" value="{{ old('description_heading', $event->description_heading) }}" class="form-control"></div>
                             <div class="col-md-12 mb-3"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="5">{{ old('description', $event->description) }}</textarea></div>
                             <div class="col-md-12 mb-4">

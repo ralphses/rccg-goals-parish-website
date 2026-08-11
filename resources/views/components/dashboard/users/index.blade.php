@@ -142,7 +142,7 @@
                                             </td>
                                             <td>
                                                 <div class="listing-main-cell">
-                                                    <img src="{{ $user->avatar_url ?? asset('assets/img/default-avatar.png') }}" alt="{{ $user->name }}" class="listing-thumb-avatar">
+                                                    <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="listing-thumb-avatar">
                                                     <div>
                                                         <div class="listing-main-title">{{ $user->name }}</div>
                                                         <div class="listing-main-meta">

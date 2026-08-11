@@ -14,7 +14,7 @@
                         source-name="avatar_source"
                         cropped-name="avatar_cropped"
                         source-id="user-avatar-edit"
-                        :current-url="$user->avatar_url ?? asset('assets/img/default-avatar.png')"
+                        :current-url="$user->avatar_url"
                         current-label="Current avatar"
                         helper="Optional: replace the current avatar, drag to focus the best section, then confirm the crop."
                         empty-state="Select a new avatar image to begin cropping."

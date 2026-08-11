@@ -27,7 +27,9 @@ class EventFactory extends Factory
             'department_id' => fake()->randomElement([1, 2, 3, 4, 5]), // Adjust based on your departments
             'status' => fake()->randomElement([EventStatus::CANCELLED->value, EventStatus::COMPLETED->value, EventStatus::ONGOING->value, EventStatus::UPCOMING->value]),
             'image' => fake()->imageUrl(),
+            'image_media_id' => null,
             'video_link' => fake()->url(),
+            'video_media_id' => null,
             'description_heading' => fake()->sentence(),
         ];
     }

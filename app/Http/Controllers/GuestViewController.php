@@ -9,6 +9,9 @@ use App\Models\Testimony;
 use App\Models\Sermon;
 use App\Models\Media;
 use App\Models\Event;
+use App\enums\MediaType;
+use App\enums\MediaUploadStatus;
+use App\enums\YouTubePublishStatus;
 use App\Mail\ContactFormMail;
 use App\Services\SeoService;
 use Illuminate\Http\Request;
@@ -26,7 +29,7 @@ class GuestViewController extends Controller
     {
         $theme = YearlyDetail::latest()->first();
         $stream = Stream::where('is_live', true)->first();
-        $testimonies = Testimony::where('is_approved', true)->latest()->take(3)->get();
+        $testimonies = Testimony::with('media')->where('is_approved', true)->latest()->take(3)->get();
         $sermons = Sermon::with('speaker')
             ->where('status', \App\enums\SermonStatus::PUBLISHED->value)
             ->latest('published_at')
@@ -186,13 +189,31 @@ class GuestViewController extends Controller
     {
         $galleryMedia = Media::where('category', MediaCategory::CHURCH_GALLERY)
             ->where('is_public', true)
-            ->where('upload_status', \App\enums\MediaUploadStatus::READY)
+            ->where(function ($query) {
+                $query->where('media_type', MediaType::IMAGE->value)
+                    ->where('upload_status', MediaUploadStatus::READY->value)
+                    ->orWhere(function ($videoQuery) {
+                        $videoQuery->where('media_type', MediaType::VIDEO->value)
+                            ->where('upload_status', MediaUploadStatus::READY->value)
+                            ->where('youtube_status', YouTubePublishStatus::PUBLISHED->value)
+                            ->whereNotNull('youtube_video_url');
+                    });
+            })
             ->latest()
             ->paginate(8, ['*'], 'gallery_page');
 
         $testimonyMedia = Media::where('category', MediaCategory::TESTIMONY)
             ->where('is_public', true)
-            ->where('upload_status', \App\enums\MediaUploadStatus::READY)
+            ->where(function ($query) {
+                $query->where('media_type', MediaType::IMAGE->value)
+                    ->where('upload_status', MediaUploadStatus::READY->value)
+                    ->orWhere(function ($videoQuery) {
+                        $videoQuery->where('media_type', MediaType::VIDEO->value)
+                            ->where('upload_status', MediaUploadStatus::READY->value)
+                            ->where('youtube_status', YouTubePublishStatus::PUBLISHED->value)
+                            ->whereNotNull('youtube_video_url');
+                    });
+            })
             ->latest()
             ->paginate(8, ['*'], 'testimony_page');
         $seo = $this->seoService->media($galleryMedia, $testimonyMedia);

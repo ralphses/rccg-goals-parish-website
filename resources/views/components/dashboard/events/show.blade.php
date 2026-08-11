@@ -68,15 +68,22 @@
                         </div>
                     </div>
 
-                    @if ($event->video_link && dashboardEventYoutubeId($event->video_link))
+                    @if ($event->video_link)
                         <div class="show-detail-card mt-4">
                             <div class="show-card-header">
                                 <h3 class="show-card-title">Event Video</h3>
-                                <p class="show-card-subtitle">Embedded YouTube preview linked to this event.</p>
+                                <p class="show-card-subtitle">Embedded preview linked to this event.</p>
                             </div>
                             <div class="show-card-body">
                                 <div class="show-media-frame video">
-                                    <iframe src="https://www.youtube.com/embed/{{ dashboardEventYoutubeId($event->video_link) }}" allowfullscreen></iframe>
+                                    @if (dashboardEventYoutubeId($event->video_link))
+                                        <iframe src="https://www.youtube.com/embed/{{ dashboardEventYoutubeId($event->video_link) }}" allowfullscreen></iframe>
+                                    @else
+                                        <video controls preload="metadata" class="w-100 rounded-4">
+                                            <source src="{{ $event->video_link }}">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    @endif
                                 </div>
                             </div>
                         </div>

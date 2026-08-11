@@ -41,7 +41,7 @@
                         </div>
                         <div class="show-card-body">
                             <div class="d-flex align-items-center gap-3 flex-wrap mb-4">
-                                <img src="{{ $user->avatar_url ?? asset('assets/img/default-avatar.png') }}" width="120" height="120" class="rounded-circle border object-fit-cover" alt="{{ $user->name }}">
+                                <img src="{{ $user->avatar_url }}" width="120" height="120" class="rounded-circle border object-fit-cover" alt="{{ $user->name }}">
                                 <div>
                                     <h3 class="mb-1">{{ $user->name }}</h3>
                                     <p class="text-muted mb-1">{{ $user->email }}</p>

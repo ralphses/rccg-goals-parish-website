@@ -6,5 +6,6 @@
     <x-dashboard.events.create
         :departments="$departments"
         :statuses="$statuses"
+        :media-library="$mediaLibrary"
     />
 </x-app-layout>

@@ -369,7 +369,7 @@
                                 </div>
                                 <div class="testimonial-two__client-info">
                                     <div class="testimonial-two__client-img">
-                                        <img src="{{ $testimony->image_url ?? 'assets/images/testimonial/testimonials-2-1.jpg' }}"
+                                        <img src="{{ $testimony->image_url }}"
                                             alt="Member Photo">
                                     </div>
                                     <div class="testimonial-two__client-details">

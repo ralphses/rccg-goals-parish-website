@@ -7,5 +7,6 @@
         :event="$event"
         :departments="$departments"
         :statuses="$statuses"
+        :media-library="$mediaLibrary"
     />
 </x-app-layout>

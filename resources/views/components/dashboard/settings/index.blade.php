@@ -62,7 +62,7 @@
                                             source-name="avatar_source"
                                             cropped-name="avatar_cropped"
                                             source-id="settings-avatar"
-                                            :current-url="$settings['user']->avatar_url ?? asset('assets/img/default-avatar.png')"
+                                            :current-url="$settings['user']->avatar_url"
                                             current-label="Current avatar"
                                             helper="Optional: upload a new avatar, drag to choose the best framing, then confirm the crop."
                                             empty-state="Select a profile image to begin cropping."

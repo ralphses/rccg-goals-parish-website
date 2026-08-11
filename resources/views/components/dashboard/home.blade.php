@@ -230,7 +230,7 @@
 
                             @if ($dashboard['latestUser'])
                                 <div class="dashboard-home-member-card">
-                                    <img src="{{ $dashboard['latestUser']->avatar_url ?? 'https://via.placeholder.com/150' }}" alt="{{ $dashboard['latestUser']->name }}" class="listing-thumb-avatar">
+                                    <img src="{{ $dashboard['latestUser']->avatar_url }}" alt="{{ $dashboard['latestUser']->name }}" class="listing-thumb-avatar">
                                     <div>
                                         <h4 class="mb-1">{{ $dashboard['latestUser']->name }}</h4>
                                         <div class="listing-main-meta">

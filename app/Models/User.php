@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\enums\UserRole;
 use App\enums\UserStatus;
+use App\Support\HumanAvatar;
 use App\Support\MediaUrl;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -135,8 +136,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphMany(Media::class, 'mediable');
     }
 
-    public function getAvatarUrlAttribute(): ?string
+    public function getAvatarUrlAttribute(): string
     {
-        return MediaUrl::toPublicUrl($this->avatar);
+        return MediaUrl::toPublicUrl($this->avatar) ?: HumanAvatar::url();
     }
 }
