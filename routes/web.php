@@ -177,48 +177,62 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // TESTIMONIES ROUTES
     Route::prefix("testimonies")->group(function () {
-        Route::delete('/bulk-delete', [TestimonyController::class, 'bulkDestroy'])
-            ->name('dashboard.testimonies.bulk-destroy');
-
         Route::resource('', TestimonyController::class)
+            ->only(['index', 'create', 'store', 'show', 'destroy'])
             ->parameters(['' => 'testimony'])
             ->names([
                 'index' => 'dashboard.testimonies.index',
                 'create' => 'dashboard.testimonies.create',
                 'store' => 'dashboard.testimonies.store',
                 'show' => 'dashboard.testimonies.show',
-                'edit' => 'dashboard.testimonies.edit',
-                'update' => 'dashboard.testimonies.update',
                 'destroy' => 'dashboard.testimonies.destroy'
             ]);
 
-        Route::patch('/{testimony}/approve', [TestimonyController::class, 'approve'])
-            ->name('dashboard.testimonies.approve');
+        Route::middleware([RoleMiddleware::class . ':admin,pastor'])->group(function () {
+            Route::delete('/bulk-delete', [TestimonyController::class, 'bulkDestroy'])
+                ->name('dashboard.testimonies.bulk-destroy');
+
+            Route::get('/{testimony}/edit', [TestimonyController::class, 'edit'])
+                ->name('dashboard.testimonies.edit');
+
+            Route::put('/{testimony}', [TestimonyController::class, 'update'])
+                ->name('dashboard.testimonies.update');
+
+            Route::patch('/{testimony}/approve', [TestimonyController::class, 'approve'])
+                ->name('dashboard.testimonies.approve');
+        });
     });
 
 
     // ANNOUNCEMENTS ROUTES
-    Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->prefix("announcements")->group(function () {
-        Route::delete('/bulk-delete', [AnnouncementController::class, 'bulkDestroy'])
-            ->name('dashboard.announcements.bulk-destroy');
-
+    Route::prefix("announcements")->group(function () {
         Route::resource('', AnnouncementController::class)
+            ->only(['index', 'create', 'store', 'show', 'destroy'])
             ->parameters(['' => 'announcement'])
             ->names([
                 'index' => 'dashboard.announcements.index',
                 'create' => 'dashboard.announcements.create',
                 'store' => 'dashboard.announcements.store',
                 'show' => 'dashboard.announcements.show',
-                'edit' => 'dashboard.announcements.edit',
-                'update' => 'dashboard.announcements.update',
                 'destroy' => 'dashboard.announcements.destroy'
             ]);
 
-        Route::patch('/{announcement}/approve', [AnnouncementController::class, 'approve'])
-            ->name('dashboard.announcements.approve');
+        Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->group(function () {
+            Route::delete('/bulk-delete', [AnnouncementController::class, 'bulkDestroy'])
+                ->name('dashboard.announcements.bulk-destroy');
 
-        Route::patch('/{announcement}/decline', [AnnouncementController::class, 'decline'])
-            ->name('dashboard.announcements.decline');
+            Route::get('/{announcement}/edit', [AnnouncementController::class, 'edit'])
+                ->name('dashboard.announcements.edit');
+
+            Route::put('/{announcement}', [AnnouncementController::class, 'update'])
+                ->name('dashboard.announcements.update');
+
+            Route::patch('/{announcement}/approve', [AnnouncementController::class, 'approve'])
+                ->name('dashboard.announcements.approve');
+
+            Route::patch('/{announcement}/decline', [AnnouncementController::class, 'decline'])
+                ->name('dashboard.announcements.decline');
+        });
     });
 
 

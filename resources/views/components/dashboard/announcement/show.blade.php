@@ -1,6 +1,10 @@
 @props(['announcement'])
 @include('components.dashboard.partials.show-shell')
 
+@php
+    $canManageAnnouncements = auth()->user()->isAdmin() || auth()->user()->isPastor() || auth()->user()->isMedia();
+@endphp
+
 <div class="container">
     <div class="page-inner">
         <div class="show-shell">
@@ -16,8 +20,15 @@
                             <div class="show-hero-actions">
                                 <div class="show-action-row">
                                     <a href="{{ route('dashboard.announcements.index') }}" class="btn btn-outline-secondary btn-lg">Back to Announcements</a>
-                                    <a href="{{ route('dashboard.announcements.edit', $announcement->id) }}" class="btn btn-primary btn-lg show-primary-btn">Edit Announcement</a>
+                                    @if ($canManageAnnouncements)
+                                        <a href="{{ route('dashboard.announcements.edit', $announcement->id) }}" class="btn btn-primary btn-lg show-primary-btn">Edit Announcement</a>
+                                    @endif
                                 </div>
+                                <form action="{{ route('dashboard.announcements.destroy', $announcement->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this announcement?')" class="mt-3">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger btn-lg">Delete Announcement</button>
+                                </form>
                                 <div class="show-hero-note"><span class="dot"></span>Created {{ $announcement->created_at->diffForHumans() }}</div>
                             </div>
                         </div>
@@ -110,7 +121,7 @@
                         </div>
                     </div>
 
-                    @if ((auth()->user()->isAdmin() || auth()->user()->isEditor()) && !$announcement->is_approved)
+                    @if ($canManageAnnouncements && !$announcement->is_approved)
                         <div class="show-side-card mt-4">
                             <div class="show-card-header">
                                 <h3 class="show-card-title">Approval Action</h3>

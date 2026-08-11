@@ -7,6 +7,7 @@
     $approvedCount = $items->where('is_approved', true)->count();
     $featuredCount = $items->where('is_featured', true)->count();
     $pendingCount = $testimonies->count() - $approvedCount;
+    $canModerateTestimonies = auth()->user()->isAdmin() || auth()->user()->isPastor();
 @endphp
 
 <div class="container">
@@ -54,32 +55,36 @@
                         <form method="POST" action="{{ route('dashboard.testimonies.bulk-destroy') }}" data-bulk-form>
                             @csrf
                             @method('DELETE')
-                            <div class="listing-bulk-bar">
-                                <div class="listing-bulk-summary"><strong><span data-selected-count>0</span></strong> testimony item(s) selected on this page</div>
-                                <div class="listing-bulk-actions">
-                                    <button type="submit" class="btn btn-outline-danger" data-bulk-submit disabled>Delete Selected</button>
+                            @if ($canModerateTestimonies)
+                                <div class="listing-bulk-bar">
+                                    <div class="listing-bulk-summary"><strong><span data-selected-count>0</span></strong> testimony item(s) selected on this page</div>
+                                    <div class="listing-bulk-actions">
+                                        <button type="submit" class="btn btn-outline-danger" data-bulk-submit disabled>Delete Selected</button>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         <div class="table-responsive listing-table-wrap">
                             <table class="table listing-table align-middle mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="listing-check-cell"><input type="checkbox" class="form-check-input listing-check-input" data-select-all></th>
+                                        @if ($canModerateTestimonies)
+                                            <th class="listing-check-cell"><input type="checkbox" class="form-check-input listing-check-input" data-select-all></th>
+                                        @endif
                                         <th>Testimony</th>
                                         <th>Featured</th>
                                         <th>Approval</th>
                                         <th>Created</th>
-                                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
-                                            <th class="text-end">Action</th>
-                                        @endif
+                                        <th class="text-end">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($testimonies as $testimony)
                                         <tr class="listing-row" data-listing-row data-href="{{ route('dashboard.testimonies.show', $testimony->id) }}">
-                                            <td class="listing-check-cell" onclick="event.stopPropagation();">
-                                                <input type="checkbox" name="selected_ids[]" value="{{ $testimony->id }}" class="form-check-input listing-check-input" data-select-item>
-                                            </td>
+                                            @if ($canModerateTestimonies)
+                                                <td class="listing-check-cell" onclick="event.stopPropagation();">
+                                                    <input type="checkbox" name="selected_ids[]" value="{{ $testimony->id }}" class="form-check-input listing-check-input" data-select-item>
+                                                </td>
+                                            @endif
                                             <td>
                                                 <div class="listing-main-cell">
                                                     <div class="listing-thumb-icon"><i class="fas fa-hands-praying"></i></div>
@@ -98,24 +103,24 @@
                                                 <div class="listing-date">{{ $testimony->created_at->format('d M, Y') }}</div>
                                                 <div class="listing-date-sub">{{ $testimony->created_at->diffForHumans() }}</div>
                                             </td>
-                                            @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
-                                                <td class="text-end" onclick="event.stopPropagation();">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-light btn-sm listing-action-btn" type="button" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a class="dropdown-item" href="{{ route('dashboard.testimonies.show', $testimony->id) }}">View</a></li>
+                                            <td class="text-end" onclick="event.stopPropagation();">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-light btn-sm listing-action-btn" type="button" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item" href="{{ route('dashboard.testimonies.show', $testimony->id) }}">View</a></li>
+                                                        @if ($canModerateTestimonies)
                                                             <li><a class="dropdown-item" href="{{ route('dashboard.testimonies.edit', $testimony->id) }}">Edit</a></li>
-                                                            <li>
-                                                                <form method="POST" action="{{ route('dashboard.testimonies.destroy', $testimony->id) }}" onsubmit="return confirm('Are you sure you want to delete this testimony?')">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="dropdown-item text-danger">Delete</button>
-                                                                </form>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            @endif
+                                                        @endif
+                                                        <li>
+                                                            <form method="POST" action="{{ route('dashboard.testimonies.destroy', $testimony->id) }}" onsubmit="return confirm('Are you sure you want to delete this testimony?')">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

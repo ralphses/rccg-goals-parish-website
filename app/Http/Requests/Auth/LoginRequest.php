@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\enums\UserStatus;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +48,17 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
+            ]);
+        }
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user->status === UserStatus::SUSPENDED) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Account currently suspended. Kindly reach out to church admin for help',
             ]);
         }
 

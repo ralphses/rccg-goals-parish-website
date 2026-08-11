@@ -21,7 +21,14 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $announcements = Announcement::latest()->paginate(12);
+        $query = Announcement::with('creator')->latest();
+
+        if ($this->currentUserIsMember()) {
+            $query->where('user_id', auth()->id());
+        }
+
+        $announcements = $query->paginate(12);
+
         return view('dashboard.announcements.index', compact('announcements'));
     }
 
@@ -90,6 +97,10 @@ class AnnouncementController extends Controller
      */
     public function show(Announcement $announcement)
     {
+        $this->ensureCanAccessAnnouncement($announcement);
+
+        $announcement->load(['creator', 'media']);
+
         return view('dashboard.announcements.show', compact('announcement'));
     }
 
@@ -98,6 +109,7 @@ class AnnouncementController extends Controller
      */
     public function edit(Announcement $announcement)
     {
+        $announcement->load('media');
         $frequencies = AnnouncementFrequency::cases();
         return view('dashboard.announcements.edit', compact('announcement', 'frequencies'));
     }
@@ -154,6 +166,8 @@ class AnnouncementController extends Controller
      */
     public function destroy(Announcement $announcement)
     {
+        $this->ensureCanAccessAnnouncement($announcement);
+
         $this->deleteAnnouncementRecord($announcement);
         return redirect()->route('dashboard.announcements.index')->with('success', 'Announcement deleted successfully.');
     }
@@ -189,6 +203,18 @@ class AnnouncementController extends Controller
         ]);
 
         return redirect()->route('dashboard.announcements.show', $announcement->id)->with('success', 'Announcement approved successfully.');
+    }
+
+    private function currentUserIsMember(): bool
+    {
+        return (bool) auth()->user()?->isMember();
+    }
+
+    private function ensureCanAccessAnnouncement(Announcement $announcement): void
+    {
+        if ($this->currentUserIsMember() && $announcement->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 
     private function getMediaType(string $mimeType)

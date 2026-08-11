@@ -1,6 +1,10 @@
 @props(['testimony'])
 @include('components.dashboard.partials.show-shell')
 
+@php
+    $canModerateTestimonies = auth()->user()->isAdmin() || auth()->user()->isPastor();
+@endphp
+
 <div class="container">
     <div class="page-inner">
         <div class="show-shell">
@@ -16,8 +20,15 @@
                             <div class="show-hero-actions">
                                 <div class="show-action-row">
                                     <a href="{{ route('dashboard.testimonies.index') }}" class="btn btn-outline-secondary btn-lg">Back to Testimonies</a>
-                                    <a href="{{ route('dashboard.testimonies.edit', $testimony->id) }}" class="btn btn-primary btn-lg show-primary-btn">Edit Testimony</a>
+                                    @if ($canModerateTestimonies)
+                                        <a href="{{ route('dashboard.testimonies.edit', $testimony->id) }}" class="btn btn-primary btn-lg show-primary-btn">Edit Testimony</a>
+                                    @endif
                                 </div>
+                                <form action="{{ route('dashboard.testimonies.destroy', $testimony->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this testimony?')" class="mt-3">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger btn-lg">Delete Testimony</button>
+                                </form>
                                 <div class="show-hero-note"><span class="dot"></span>Submitted {{ $testimony->created_at->diffForHumans() }}</div>
                             </div>
                         </div>

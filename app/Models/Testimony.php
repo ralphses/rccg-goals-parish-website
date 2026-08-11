@@ -13,6 +13,7 @@ class Testimony extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'testifier_name',
         'testifier_phone',
         'testifier_email',
@@ -38,6 +39,11 @@ class Testimony extends Model
     public function media()
     {
         return $this->morphMany(Media::class, 'mediable');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function getImageUrlAttribute(): string

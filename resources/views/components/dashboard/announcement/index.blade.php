@@ -7,6 +7,7 @@
     $approvedCount = $items->where('is_approved', true)->count();
     $pendingCount = $announcements->count() - $approvedCount;
     $recurringCount = $items->filter(fn ($announcement) => strtolower((string) $announcement->frequency->name) !== 'once')->count();
+    $canManageAnnouncements = auth()->user()->isAdmin() || auth()->user()->isPastor() || auth()->user()->isMedia();
 @endphp
 
 <div class="container">
@@ -54,17 +55,21 @@
                         <form method="POST" action="{{ route('dashboard.announcements.bulk-destroy') }}" data-bulk-form>
                             @csrf
                             @method('DELETE')
-                            <div class="listing-bulk-bar">
-                                <div class="listing-bulk-summary"><strong><span data-selected-count>0</span></strong> announcement(s) selected on this page</div>
-                                <div class="listing-bulk-actions">
-                                    <button type="submit" class="btn btn-outline-danger" data-bulk-submit disabled>Delete Selected</button>
+                            @if ($canManageAnnouncements)
+                                <div class="listing-bulk-bar">
+                                    <div class="listing-bulk-summary"><strong><span data-selected-count>0</span></strong> announcement(s) selected on this page</div>
+                                    <div class="listing-bulk-actions">
+                                        <button type="submit" class="btn btn-outline-danger" data-bulk-submit disabled>Delete Selected</button>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         <div class="table-responsive listing-table-wrap">
                             <table class="table listing-table align-middle mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="listing-check-cell"><input type="checkbox" class="form-check-input listing-check-input" data-select-all></th>
+                                        @if ($canManageAnnouncements)
+                                            <th class="listing-check-cell"><input type="checkbox" class="form-check-input listing-check-input" data-select-all></th>
+                                        @endif
                                         <th>Announcement</th>
                                         <th>Service Date</th>
                                         <th>Frequency</th>
@@ -75,9 +80,11 @@
                                 <tbody>
                                     @foreach ($announcements as $announcement)
                                         <tr class="listing-row" data-listing-row data-href="{{ route('dashboard.announcements.show', $announcement->id) }}">
-                                            <td class="listing-check-cell" onclick="event.stopPropagation();">
-                                                <input type="checkbox" name="selected_ids[]" value="{{ $announcement->id }}" class="form-check-input listing-check-input" data-select-item>
-                                            </td>
+                                            @if ($canManageAnnouncements)
+                                                <td class="listing-check-cell" onclick="event.stopPropagation();">
+                                                    <input type="checkbox" name="selected_ids[]" value="{{ $announcement->id }}" class="form-check-input listing-check-input" data-select-item>
+                                                </td>
+                                            @endif
                                             <td>
                                                 <div class="listing-main-cell">
                                                     <div class="listing-thumb-icon"><i class="fas fa-bullhorn"></i></div>
@@ -101,7 +108,9 @@
                                                     <button class="btn btn-light btn-sm listing-action-btn" type="button" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li><a class="dropdown-item" href="{{ route('dashboard.announcements.show', $announcement->id) }}">View</a></li>
-                                                        <li><a class="dropdown-item" href="{{ route('dashboard.announcements.edit', $announcement->id) }}">Edit</a></li>
+                                                        @if ($canManageAnnouncements)
+                                                            <li><a class="dropdown-item" href="{{ route('dashboard.announcements.edit', $announcement->id) }}">Edit</a></li>
+                                                        @endif
                                                         <li>
                                                             <form method="POST" action="{{ route('dashboard.announcements.destroy', $announcement->id) }}" onsubmit="return confirm('Are you sure you want to delete this announcement?')">
                                                                 @csrf

@@ -4,6 +4,7 @@
     $items = $departments->getCollection();
     $activeCount = $items->filter(fn ($department) => strcasecmp((string) $department->status, 'active') === 0)->count();
     $inactiveCount = $departments->count() - $activeCount;
+    $canManageDepartments = auth()->user()->isAdmin() || auth()->user()->isPastor();
 @endphp
 
 <div class="container">
@@ -19,7 +20,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="listing-hero-actions">
-                                @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                                @if ($canManageDepartments)
                                     <a href="{{ route('dashboard.departments.create') }}" class="btn btn-primary btn-lg listing-primary-btn">Create Department</a>
                                 @endif
                                 <div class="listing-hero-note">
@@ -89,17 +90,21 @@
                         <form method="POST" action="{{ route('dashboard.departments.bulk-destroy') }}" data-bulk-form>
                             @csrf
                             @method('DELETE')
-                            <div class="listing-bulk-bar">
-                                <div class="listing-bulk-summary"><strong><span data-selected-count>0</span></strong> department(s) selected on this page</div>
-                                <div class="listing-bulk-actions">
-                                    <button type="submit" class="btn btn-outline-danger" data-bulk-submit disabled>Delete Selected</button>
+                            @if ($canManageDepartments)
+                                <div class="listing-bulk-bar">
+                                    <div class="listing-bulk-summary"><strong><span data-selected-count>0</span></strong> department(s) selected on this page</div>
+                                    <div class="listing-bulk-actions">
+                                        <button type="submit" class="btn btn-outline-danger" data-bulk-submit disabled>Delete Selected</button>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         <div class="table-responsive listing-table-wrap">
                             <table class="table listing-table align-middle mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="listing-check-cell"><input type="checkbox" class="form-check-input listing-check-input" data-select-all></th>
+                                        @if ($canManageDepartments)
+                                            <th class="listing-check-cell"><input type="checkbox" class="form-check-input listing-check-input" data-select-all></th>
+                                        @endif
                                         <th>Department</th>
                                         <th>Status</th>
                                         <th class="text-end">Action</th>
@@ -108,9 +113,11 @@
                                 <tbody>
                                     @foreach ($departments as $department)
                                         <tr class="listing-row" data-listing-row data-href="{{ route('dashboard.departments.show', $department->id) }}">
-                                            <td class="listing-check-cell" onclick="event.stopPropagation();">
-                                                <input type="checkbox" name="selected_ids[]" value="{{ $department->id }}" class="form-check-input listing-check-input" data-select-item>
-                                            </td>
+                                            @if ($canManageDepartments)
+                                                <td class="listing-check-cell" onclick="event.stopPropagation();">
+                                                    <input type="checkbox" name="selected_ids[]" value="{{ $department->id }}" class="form-check-input listing-check-input" data-select-item>
+                                                </td>
+                                            @endif
                                             <td>
                                                 <div class="listing-main-cell">
                                                     <div class="listing-thumb-icon"><i class="fas fa-users-cog"></i></div>
@@ -133,7 +140,7 @@
                                                     <button class="btn btn-light btn-sm listing-action-btn" type="button" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li><a class="dropdown-item" href="{{ route('dashboard.departments.show', $department->id) }}">View</a></li>
-                                                        @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                                                        @if ($canManageDepartments)
                                                             <li><a class="dropdown-item" href="{{ route('dashboard.departments.edit', $department->id) }}">Edit</a></li>
                                                             <li><hr class="dropdown-divider"></li>
                                                             <li>
@@ -159,7 +166,7 @@
                             <h4 class="mb-2">No departments matched this view</h4>
                             <p class="text-muted mb-3">Try a different search or create a new department to keep the structure growing.</p>
                             <div class="d-flex flex-wrap gap-2 justify-content-center">
-                                @if (auth()->user()->isAdmin() || auth()->user()->isPastor())
+                                @if ($canManageDepartments)
                                     <a href="{{ route('dashboard.departments.create') }}" class="btn btn-primary">Create Department</a>
                                 @endif
                                 <a href="{{ route('dashboard.departments.index') }}" class="btn btn-outline-secondary">Clear Filters</a>

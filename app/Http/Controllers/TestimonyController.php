@@ -20,7 +20,14 @@ class TestimonyController extends Controller
      */
     public function index()
     {
-        $testimonies = Testimony::latest()->paginate(12);
+        $query = Testimony::latest();
+
+        if ($this->currentUserIsMember()) {
+            $query->where('user_id', auth()->id());
+        }
+
+        $testimonies = $query->paginate(12);
+
         return view('dashboard.testimonies.index', compact('testimonies'));
     }
 
@@ -52,7 +59,17 @@ class TestimonyController extends Controller
             'announce_in_service' => 'nullable|boolean',
         ]);
 
-        $testimony = Testimony::create($request->except('file'));
+        $payload = $request->except('file');
+
+        if ($this->currentUserIsMember()) {
+            $payload['is_featured'] = false;
+            $payload['is_approved'] = false;
+            $payload['announce_in_service'] = false;
+        }
+
+        $payload['user_id'] = auth()->id();
+
+        $testimony = Testimony::create($payload);
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
@@ -91,6 +108,10 @@ class TestimonyController extends Controller
      */
     public function show(Testimony $testimony)
     {
+        $this->ensureCanAccessTestimony($testimony);
+
+        $testimony->load('media');
+
         return view('dashboard.testimonies.show', compact('testimony'));
     }
 
@@ -169,6 +190,8 @@ class TestimonyController extends Controller
      */
     public function destroy(Testimony $testimony)
     {
+        $this->ensureCanAccessTestimony($testimony);
+
         $this->deleteTestimonyRecord($testimony);
 
         return redirect()->route('dashboard.testimonies.index')->with('success', 'Testimony deleted successfully.');
@@ -194,6 +217,18 @@ class TestimonyController extends Controller
     {
         $testimony->update(['is_approved' => true]);
         return redirect()->route('dashboard')->with('success', 'Testimony approved successfully.');
+    }
+
+    private function currentUserIsMember(): bool
+    {
+        return (bool) auth()->user()?->isMember();
+    }
+
+    private function ensureCanAccessTestimony(Testimony $testimony): void
+    {
+        if ($this->currentUserIsMember() && $testimony->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 
     private function deleteTestimonyRecord(Testimony $testimony): void

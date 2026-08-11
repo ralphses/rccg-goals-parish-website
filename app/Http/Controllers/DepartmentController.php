@@ -160,6 +160,10 @@ class DepartmentController extends Controller
 
     public function destroy(Department $department)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to delete this department.');
+        }
+
         $this->deleteDepartmentRecord($department);
 
         return redirect()->route('dashboard.departments.index')->with('success', 'Department deleted successfully.');
@@ -167,6 +171,10 @@ class DepartmentController extends Controller
 
     public function bulkDestroy(Request $request)
     {
+        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+            return back()->with('error', 'You are not authorized to delete departments.');
+        }
+
         $validated = $request->validate([
             'selected_ids' => ['required', 'array', 'min:1'],
             'selected_ids.*' => ['integer', 'exists:departments,id'],
