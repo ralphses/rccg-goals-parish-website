@@ -171,7 +171,7 @@
                                     <p class="mb-0">
                                         Visual uploads use a `4:3` crop and are stored as the final uploaded asset at `1600 x 1200`.
                                         Images are cropped before upload. Videos keep the uploaded file and require a cropped thumbnail.
-                                        Audio uploads do not use cropping.
+                                        Audio uploads do not use cropping. Image sources and thumbnails are capped at `10 MB`, while video and audio files can be up to `60 MB`.
                                     </p>
                                 </div>
                             </div>
@@ -208,7 +208,7 @@
                                             <div class="form-group">
                                                 <label for="source_image">Source Image</label>
                                                 <input type="file" class="form-control @error('source_image') is-invalid @enderror" id="source_image" name="source_image" accept="image/jpeg,image/png,image/webp" data-source-input="image" data-panel-input>
-                                                <small class="text-muted">Choose a source image, then crop it below. The cropped result becomes the stored upload.</small>
+                                                <small class="text-muted">Choose a source image up to 10 MB, then crop it below. The cropped result becomes the stored upload.</small>
                                                 @error('source_image')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -266,7 +266,7 @@
                                             <div class="form-group">
                                                 <label for="file">Video File</label>
                                                 <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file" accept="video/mp4,video/quicktime,video/ogg,video/webm" data-video-input data-panel-input>
-                                                <small class="text-muted">Upload the video file. The video itself is not cropped, and the public app copy uploads in the background after you save.</small>
+                                                <small class="text-muted">Upload the video file up to 60 MB. The video itself is not cropped, and the public app copy uploads in the background after you save.</small>
                                                 @error('file')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -283,7 +283,7 @@
                                             <div class="form-group">
                                                 <label for="thumbnail_source_image">Video Thumbnail Source Image</label>
                                                 <input type="file" class="form-control @error('thumbnail_source_image') is-invalid @enderror" id="thumbnail_source_image" name="thumbnail_source_image" accept="image/jpeg,image/png,image/webp" data-source-input="video" data-panel-input>
-                                                <small class="text-muted">Crop the thumbnail below. The cropped thumbnail is what appears in listings and galleries.</small>
+                                                <small class="text-muted">Choose a thumbnail source image up to 10 MB, then crop it below. The cropped thumbnail is what appears in listings and galleries.</small>
                                                 @error('thumbnail_source_image')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -434,7 +434,7 @@
                                             <div class="form-group">
                                                 <label for="audio_file">Audio File</label>
                                                 <input type="file" class="form-control @error('file') is-invalid @enderror" id="audio_file" name="file" accept="audio/mpeg,audio/wav,audio/x-wav,audio/ogg" data-audio-input data-panel-input>
-                                                <small class="text-muted">Audio uploads do not need cropping.</small>
+                                                <small class="text-muted">Audio uploads do not need cropping and can be up to 60 MB.</small>
                                                 @error('file')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror

@@ -20,6 +20,10 @@ use Illuminate\Validation\ValidationException;
 
 class MediaController extends Controller
 {
+    private const IMAGE_MAX_KILOBYTES = 10240;
+
+    private const MEDIA_FILE_MAX_KILOBYTES = 61440;
+
     public function __construct(private CloudinaryUploadService $cloudinaryUploadService)
     {
     }
@@ -414,10 +418,10 @@ class MediaController extends Controller
             'category' => 'required|in:' . $categoryValues,
             'media_type' => ['required', Rule::in(array_map(fn ($case) => $case->value, MediaType::cases()))],
             'is_public' => 'nullable|boolean',
-            'source_image' => 'required_if:media_type,image|nullable|image|mimes:jpeg,jpg,png,webp|max:10240',
+            'source_image' => 'required_if:media_type,image|nullable|image|mimes:jpeg,jpg,png,webp|max:' . self::IMAGE_MAX_KILOBYTES,
             'cropped_image' => 'required_if:media_type,image|nullable|string',
-            'file' => 'nullable|file|max:51200',
-            'thumbnail_source_image' => 'required_if:media_type,video|nullable|image|mimes:jpeg,jpg,png,webp|max:10240',
+            'file' => 'nullable|file|max:' . self::MEDIA_FILE_MAX_KILOBYTES,
+            'thumbnail_source_image' => 'required_if:media_type,video|nullable|image|mimes:jpeg,jpg,png,webp|max:' . self::IMAGE_MAX_KILOBYTES,
             'cropped_thumbnail' => 'required_if:media_type,video|nullable|string',
             'publish_to_youtube' => 'nullable|boolean',
             'youtube_format' => ['nullable', Rule::in(array_map(fn ($case) => $case->value, YouTubeVideoFormat::cases()))],
@@ -431,11 +435,11 @@ class MediaController extends Controller
         $mediaType = $request->input('media_type');
 
         if ($mediaType === MediaType::VIDEO->value) {
-            $rules['file'] = 'required|file|mimetypes:video/mp4,video/quicktime,video/ogg,video/webm|max:51200';
+            $rules['file'] = 'required|file|mimetypes:video/mp4,video/quicktime,video/ogg,video/webm|max:' . self::MEDIA_FILE_MAX_KILOBYTES;
         }
 
         if ($mediaType === MediaType::AUDIO->value) {
-            $rules['file'] = 'required|file|mimetypes:audio/mpeg,audio/wav,audio/x-wav,audio/ogg|max:20480';
+            $rules['file'] = 'required|file|mimetypes:audio/mpeg,audio/wav,audio/x-wav,audio/ogg|max:' . self::MEDIA_FILE_MAX_KILOBYTES;
         }
 
         $this->applyYouTubeValidation($rules, $request, true);
@@ -448,32 +452,32 @@ class MediaController extends Controller
         $rules = $this->rulesForStore($request);
         $selectedType = $request->input('media_type', $media->media_type->value);
 
-        $rules['source_image'] = 'nullable|image|mimes:jpeg,jpg,png,webp|max:10240';
+        $rules['source_image'] = 'nullable|image|mimes:jpeg,jpg,png,webp|max:' . self::IMAGE_MAX_KILOBYTES;
         $rules['cropped_image'] = 'nullable|string';
-        $rules['thumbnail_source_image'] = 'nullable|image|mimes:jpeg,jpg,png,webp|max:10240';
+        $rules['thumbnail_source_image'] = 'nullable|image|mimes:jpeg,jpg,png,webp|max:' . self::IMAGE_MAX_KILOBYTES;
         $rules['cropped_thumbnail'] = 'nullable|string';
-        $rules['file'] = 'nullable|file|max:51200';
+        $rules['file'] = 'nullable|file|max:' . self::MEDIA_FILE_MAX_KILOBYTES;
 
         if ($selectedType === MediaType::IMAGE->value && ($media->media_type !== MediaType::IMAGE || $request->hasFile('source_image'))) {
-            $rules['source_image'] = 'required|image|mimes:jpeg,jpg,png,webp|max:10240';
+            $rules['source_image'] = 'required|image|mimes:jpeg,jpg,png,webp|max:' . self::IMAGE_MAX_KILOBYTES;
             $rules['cropped_image'] = 'required|string';
         }
 
         if ($selectedType === MediaType::VIDEO->value) {
             $rules['file'] = ($media->media_type !== MediaType::VIDEO || $request->hasFile('file'))
-                ? 'required|file|mimetypes:video/mp4,video/quicktime,video/ogg,video/webm|max:51200'
-                : 'nullable|file|mimetypes:video/mp4,video/quicktime,video/ogg,video/webm|max:51200';
+                ? 'required|file|mimetypes:video/mp4,video/quicktime,video/ogg,video/webm|max:' . self::MEDIA_FILE_MAX_KILOBYTES
+                : 'nullable|file|mimetypes:video/mp4,video/quicktime,video/ogg,video/webm|max:' . self::MEDIA_FILE_MAX_KILOBYTES;
 
             if ($media->media_type !== MediaType::VIDEO || $request->hasFile('thumbnail_source_image') || empty($media->thumbnail_path)) {
-                $rules['thumbnail_source_image'] = 'required|image|mimes:jpeg,jpg,png,webp|max:10240';
+                $rules['thumbnail_source_image'] = 'required|image|mimes:jpeg,jpg,png,webp|max:' . self::IMAGE_MAX_KILOBYTES;
                 $rules['cropped_thumbnail'] = 'required|string';
             }
         }
 
         if ($selectedType === MediaType::AUDIO->value) {
             $rules['file'] = ($media->media_type !== MediaType::AUDIO || $request->hasFile('file'))
-                ? 'required|file|mimetypes:audio/mpeg,audio/wav,audio/x-wav,audio/ogg|max:20480'
-                : 'nullable|file|mimetypes:audio/mpeg,audio/wav,audio/x-wav,audio/ogg|max:20480';
+                ? 'required|file|mimetypes:audio/mpeg,audio/wav,audio/x-wav,audio/ogg|max:' . self::MEDIA_FILE_MAX_KILOBYTES
+                : 'nullable|file|mimetypes:audio/mpeg,audio/wav,audio/x-wav,audio/ogg|max:' . self::MEDIA_FILE_MAX_KILOBYTES;
         }
 
         if ($selectedType === MediaType::IMAGE->value) {

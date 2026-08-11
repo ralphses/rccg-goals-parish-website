@@ -4,7 +4,7 @@ namespace App\Support;
 
 class HumanAvatar
 {
-    public const RELATIVE_PATH = 'assets/images/resources/default-avatar-human.png';
+    public const RELATIVE_PATH = 'default-avatar-human.png';
 
     public static function url(): string
     {
