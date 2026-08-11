@@ -177,6 +177,11 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // TESTIMONIES ROUTES
     Route::prefix("testimonies")->group(function () {
+        Route::middleware([RoleMiddleware::class . ':admin,pastor'])->group(function () {
+            Route::delete('/bulk-delete', [TestimonyController::class, 'bulkDestroy'])
+                ->name('dashboard.testimonies.bulk-destroy');
+        });
+
         Route::resource('', TestimonyController::class)
             ->only(['index', 'create', 'store', 'show', 'destroy'])
             ->parameters(['' => 'testimony'])
@@ -189,9 +194,6 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
             ]);
 
         Route::middleware([RoleMiddleware::class . ':admin,pastor'])->group(function () {
-            Route::delete('/bulk-delete', [TestimonyController::class, 'bulkDestroy'])
-                ->name('dashboard.testimonies.bulk-destroy');
-
             Route::get('/{testimony}/edit', [TestimonyController::class, 'edit'])
                 ->name('dashboard.testimonies.edit');
 
@@ -206,6 +208,11 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // ANNOUNCEMENTS ROUTES
     Route::prefix("announcements")->group(function () {
+        Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->group(function () {
+            Route::delete('/bulk-delete', [AnnouncementController::class, 'bulkDestroy'])
+                ->name('dashboard.announcements.bulk-destroy');
+        });
+
         Route::resource('', AnnouncementController::class)
             ->only(['index', 'create', 'store', 'show', 'destroy'])
             ->parameters(['' => 'announcement'])
@@ -218,9 +225,6 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
             ]);
 
         Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->group(function () {
-            Route::delete('/bulk-delete', [AnnouncementController::class, 'bulkDestroy'])
-                ->name('dashboard.announcements.bulk-destroy');
-
             Route::get('/{announcement}/edit', [AnnouncementController::class, 'edit'])
                 ->name('dashboard.announcements.edit');
 
