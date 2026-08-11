@@ -1,6 +1,10 @@
 @props(['frequencies'])
 @include('components.dashboard.partials.form-shell')
 
+@php
+    $canManageAnnouncementStatus = auth()->user()->isAdmin() || auth()->user()->isPastor() || auth()->user()->isMedia();
+@endphp
+
 <div class="container"><div class="page-inner"><div class="dashboard-form-shell">
     <div class="dashboard-form-hero card mb-4"><div class="card-body p-4 p-lg-5"><div class="row align-items-center g-4"><div class="col-lg-8"><span class="dashboard-form-eyebrow">Announcements Form</span><h2 class="dashboard-form-title">Create an announcement with cleaner content, media, and scheduling controls.</h2><p class="dashboard-form-subtitle">Compose the notice, attach supporting media, and set the service date and recurrence from one refined workspace.</p></div><div class="col-lg-4"><div class="dashboard-form-hero-actions"><a href="{{ route('dashboard.announcements.index') }}" class="btn btn-outline-secondary btn-lg dashboard-form-secondary-btn">Back to Announcements</a><div class="dashboard-form-note"><span class="dot"></span>Media previews appear immediately after selection</div></div></div></div></div></div>
     <div class="card dashboard-form-card"><div class="card-header"><div class="card-title">New Announcement</div></div><div class="card-body">
@@ -13,7 +17,9 @@
                 <div class="col-md-6"><div class="form-group"><label for="service_date">Service Date</label><input type="date" class="form-control @error('service_date') is-invalid @enderror" id="service_date" name="service_date" value="{{ old('service_date') }}" required>@error('service_date')<div class="invalid-feedback">{{ $message }}</div>@enderror</div></div>
                 <div class="col-md-6"><div class="form-group"><label for="frequency">Frequency</label><select class="form-control @error('frequency') is-invalid @enderror" id="frequency" name="frequency">@foreach ($frequencies as $frequency)<option value="{{ $frequency->value }}" {{ old('frequency') == $frequency->value ? 'selected' : '' }}>{{ $frequency->name }}</option>@endforeach</select>@error('frequency')<div class="invalid-feedback">{{ $message }}</div>@enderror</div></div>
             </div>
-            <div class="form-group"><div class="form-check"><input class="form-check-input" type="checkbox" value="1" id="is_active" name="is_active" {{ old('is_active') ? 'checked' : '' }}><label class="form-check-label" for="is_active">Active</label></div></div>
+            @if ($canManageAnnouncementStatus)
+                <div class="form-group"><input type="hidden" name="is_active" value="0"><div class="form-check"><input class="form-check-input" type="checkbox" value="1" id="is_active" name="is_active" {{ old('is_active') ? 'checked' : '' }}><label class="form-check-label" for="is_active">Active</label></div></div>
+            @endif
             <div class="dashboard-form-actions"><button type="submit" class="btn btn-primary dashboard-form-primary-btn">Create Announcement</button><a href="{{ route('dashboard.announcements.index') }}" class="btn btn-outline-secondary">Cancel</a></div>
         </form>
     </div></div>

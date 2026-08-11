@@ -55,7 +55,13 @@ class AnnouncementController extends Controller
             'media.*' => 'nullable|file|mimes:jpg,jpeg,png,mp4|max:102400', // 100MB Max for each file
         ]);
 
-        $announcement = new Announcement($request->except('is_approved'));
+        $payload = $request->except('is_approved');
+
+        if ($this->currentUserIsMember()) {
+            unset($payload['is_active']);
+        }
+
+        $announcement = new Announcement($payload);
         $announcement->user_id = auth()->id();
         $announcement->save();
 
