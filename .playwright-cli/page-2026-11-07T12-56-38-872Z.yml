@@ -1,0 +1,220 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Primary navigation" [ref=e4]:
+        - generic [ref=e5]:
+          - link "RCCG Glory of All Lands Parish Logo The Redeemed Christian Church of God Glory of All Lands Parish" [ref=e7] [cursor=pointer]:
+            - /url: http://127.0.0.1:8000
+            - img "RCCG Glory of All Lands Parish Logo" [ref=e8]
+            - generic [ref=e9]:
+              - strong [ref=e10]: The RedeemedChristian Church of God
+              - generic [ref=e11]: Glory of All Lands Parish
+          - generic [ref=e12]:
+            - generic:
+              - text: 
+              - list:
+                - listitem [ref=e13]:
+                  - link "Home" [ref=e14] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000
+                - listitem [ref=e15]:
+                  - link "About" [ref=e16] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/about
+                - listitem [ref=e17]:
+                  - link "Services" [ref=e18] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/events
+                - listitem [ref=e19]:
+                  - link "Ministries" [ref=e20] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/about#pastorate
+                - listitem [ref=e21]:
+                  - link "Resources" [ref=e22] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/media
+                - listitem [ref=e23]:
+                  - link "Get Involved" [ref=e24] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/contact
+                - listitem [ref=e25]:
+                  - link "Login" [ref=e26] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/login
+                    - generic [aria-hidden] [ref=e27]: 
+                    - text: Login
+    - region [ref=e28]:
+      - img "RCCG Glory of All Lands Parish church building" [ref=e29]
+      - generic [ref=e31]:
+        - paragraph [ref=e32]: Welcome to
+        - heading [level=1] [ref=e34]:
+          - text: RCCG
+          - strong [ref=e35]: Glory of All Lands
+          - text: Parish
+        - paragraph [ref=e37]: A place to worship God, grow in His Word, find family, and fulfill your God-given purpose.
+        - generic [ref=e38]:
+          - link "Join a Service" [ref=e39] [cursor=pointer]:
+            - /url: http://127.0.0.1:8000/events
+            - generic [aria-hidden] [ref=e40]: 
+            - text: Join a Service
+          - link "Watch Online" [ref=e41] [cursor=pointer]:
+            - /url: http://127.0.0.1:8000#live-stream
+            - generic [aria-hidden] [ref=e42]: 
+            - text: Watch Online
+          - link "Join Our WhatsApp Community" [ref=e43] [cursor=pointer]:
+            - /url: https://chat.whatsapp.com/IaH0ZO2WcurJEoQMvhnMTW
+            - generic [aria-hidden] [ref=e44]: 
+            - text: Join Our WhatsApp Community
+      - generic "Weekly service schedule" [ref=e45]:
+        - generic [ref=e46]:
+          - generic [aria-hidden] [ref=e47]: 
+          - generic [ref=e48]:
+            - strong [ref=e49]: Sunday Service
+            - generic [ref=e50]: 8:00 AM
+        - generic [ref=e51]:
+          - generic [aria-hidden] [ref=e52]: 
+          - generic [ref=e53]:
+            - strong [ref=e54]: House Fellowship
+            - generic [ref=e55]: 5:00 PM
+        - generic [ref=e56]:
+          - generic [aria-hidden] [ref=e57]: 
+          - generic [ref=e58]:
+            - strong [ref=e59]: Digging Deep (Tuesday)
+            - generic [ref=e60]: 6:30 PM
+        - generic [ref=e61]:
+          - generic [aria-hidden] [ref=e62]: 
+          - generic [ref=e63]:
+            - strong [ref=e64]: Faith Clinic (Thursday)
+            - generic [ref=e65]: 6:30 PM
+    - generic [ref=e67]:
+      - heading "Welcome to RCCG Glory of All Lands Parish" [level=2] [ref=e69]: Welcome toRCCG Glory of All Lands Parish
+      - img "Pastor Adekunle Omotimirin" [ref=e74]
+      - generic [ref=e75]:
+        - paragraph [ref=e76]: Dear Beloved, it is with great joy that I welcome you to our parish website. Here, you will find spiritual resources, information about our programs, and ways to connect with our church family. We pray that your experience with us will bring encouragement, faith, and hope.
+        - paragraph [ref=e77]: Whether you are new to our church or have been with us for a while, we invite you to explore our website and discover all that RCCG Glory of All Lands has to offer. May God bless you abundantly as you navigate through our online home.
+        - paragraph [ref=e78]:
+          - text: Pastor Adekunle Omotimirin
+          - generic [ref=e79]: Zonal Pastor
+    - generic [ref=e83]:
+      - generic [ref=e84]: Theme for This Month
+      - heading "Theme of the Month" [level=3] [ref=e86]
+      - paragraph [ref=e88]:
+        - generic [aria-hidden] [ref=e89]: “
+        - generic [ref=e90]:
+          - text: For we walk by faith, not by sight.”
+          - strong [ref=e91]: Scripture of the Month
+    - generic [ref=e94]:
+      - generic [ref=e96]:
+        - generic [ref=e97]: Stay Connected
+        - heading "Currently Streaming" [level=2] [ref=e99]
+        - paragraph [ref=e101]: Watch live services and special events from the comfort of your home.
+      - generic [ref=e108]:
+        - generic [ref=e110]:
+          - generic [ref=e111]: Live from RCCG Glory of All Lands
+          - heading "Test" [level=3] [ref=e113]
+          - paragraph [ref=e114]: Dear Beloved, it is with great joy that I welcome you to our parish website. Here, you will find spiritual resources, information about our programs, and ways to connect with our church family. We pray that your experience with us will bring encouragement, faith, and hope. Whether you are new to our church or have been with us for a while, we invite you to explore our website and discover all that RCCG Glory of All Lands has to offer. May God bless you abundantly as you navigate through our online home.
+        - iframe [ref=e119]:
+          - generic [ref=f1e1]:
+            - generic "YouTube Video Player" [ref=f1e3]
+            - generic [ref=f1e5]:
+              - generic:
+                - generic:
+                  - generic [ref=f1e6] [cursor=pointer]
+                  - button "Play video" [ref=f1e10] [cursor=pointer]
+                  - button "Hide player controls" [ref=f1e12] [cursor=pointer]
+                  - generic [ref=f1e14]:
+                    - generic [ref=f1e21]:
+                      - generic [ref=f1e22]:
+                        - link "Best iPhone Art Wins! Worst Will be Destroyed!" [ref=f1e23] [cursor=pointer]:
+                          - /url: https://www.youtube.com/watch?v=zOQYlfMqPZ4
+                        - link "Ivan and Maria" [ref=f1e24] [cursor=pointer]:
+                          - /url: /channel/UCfo1RBwk-S-wz4Xa_y5n5FA
+                      - generic [ref=f1e26]:
+                        - button [ref=f1e27] [cursor=pointer]
+                        - generic [ref=f1e29]:
+                          - generic: Ivan and Maria
+                          - generic: 172K subscribers
+                    - generic [ref=f1e30]:
+                      - button "Share" [ref=f1e33] [cursor=pointer]
+                      - link "Watch on YouTube" [ref=f1e44] [cursor=pointer]:
+                        - /url: https://www.youtube.com/watch?v=zOQYlfMqPZ4
+                        - generic [ref=f1e45]: Watch on
+    - generic [ref=e123]:
+      - generic [ref=e126]:
+        - generic [ref=e127]: Our Testimonies
+        - heading "What God is Doing in Our Church" [level=2] [ref=e129]
+      - generic [ref=e133]:
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - generic [ref=e139]: 
+            - paragraph [ref=e141]: “Dear Beloved, it is with great joy that I welcome you to our parish website. Here, you will find spiritual resources, information about our programs,...”
+          - generic [ref=e142]:
+            - img "Member Photo" [ref=e144]
+            - generic [ref=e145]:
+              - heading "test name" [level=5] [ref=e146]
+              - paragraph [ref=e147]: Member
+        - text:  
+    - generic [ref=e149]:
+      - generic [ref=e150]:
+        - generic [ref=e151]: Messages of Faith
+        - heading "Recent Sermons" [level=2] [ref=e153]
+        - paragraph [ref=e155]: Stay inspired and spiritually nourished with our most recent sermons.
+      - generic [ref=e157]:
+        - generic [ref=e158]:
+          - generic [ref=e160]:
+            - generic [ref=e162]:
+              - img "Sermon Image" [ref=e164]
+              - generic [ref=e165]:
+                - heading [level=3] [ref=e166]:
+                  - link "Title" [ref=e167] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/sermons/title
+                - paragraph [ref=e168]: "Preacher: Zonal Pastor Date: Nov 06, 2026"
+            - generic [ref=e170]:
+              - img "Sermon Image" [ref=e172]
+              - generic [ref=e173]:
+                - heading [level=3] [ref=e174]:
+                  - link "Test" [ref=e175] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/sermons/test
+                - paragraph [ref=e176]: "Preacher: Parish Pastor Date: Nov 06, 2026"
+          - text:  
+        - link "View All Sermons" [ref=e178] [cursor=pointer]:
+          - /url: http://127.0.0.1:8000/sermons
+    - generic [ref=e186]:
+      - paragraph [ref=e187]: Captured Church Moments
+      - heading "Latest Gallery Highlights" [level=2] [ref=e189]:
+        - text: Latest
+        - generic [ref=e190]: Gallery
+        - text: Highlights
+      - link [ref=e195] [cursor=pointer]:
+        - /url: http://127.0.0.1:8000/media#gallery
+        - img "Gallery Image" [ref=e196]
+      - link "View Full Gallery" [ref=e198] [cursor=pointer]:
+        - /url: http://127.0.0.1:8000/media#gallery
+    - generic [ref=e200]:
+      - generic [ref=e201]:
+        - generic [ref=e202]: Join Us
+        - heading "Upcoming Events" [level=2] [ref=e204]
+        - paragraph [ref=e206]: Stay updated with our church activities and mark your calendar for these inspiring events.
+      - link "View All Events" [ref=e209] [cursor=pointer]:
+        - /url: http://127.0.0.1:8000/events
+    - contentinfo [ref=e210]:
+      - generic [ref=e219]:
+        - paragraph [ref=e220]:
+          - text: © Copyright 2026 by
+          - link "The Redeemed Christian Church of God, GOALS Parish" [ref=e221] [cursor=pointer]:
+            - /url: "#"
+        - generic [ref=e222]:
+          - link "" [ref=e223] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e225] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e227] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e229] [cursor=pointer]:
+            - /url: https://www.instagram.com/rccggoalsparish/
+          - link "" [ref=e231] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@rccggoalsparish
+          - link "" [ref=e233] [cursor=pointer]:
+            - /url: https://www.youtube.com/@rccggoalsparish
+  - generic [ref=e235]:
+    - generic [ref=e236] [cursor=pointer]
+    - generic [ref=e238]:
+      - generic [ref=e239]: search here
+      - textbox "search here" [ref=e240]:
+        - /placeholder: Search Here...
+      - button "search submit" [ref=e241] [cursor=pointer]:
+        - generic [ref=e242]: 
+  - text: 

@@ -14,6 +14,7 @@ use App\Models\Event;
 use App\Models\Media;
 use App\Models\Sermon;
 use App\Models\User;
+use App\Services\CroppedImageUploadService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -64,7 +65,7 @@ class PublicSeoTest extends TestCase
         $response->assertOk();
         $response->assertSee('Disallow: /dashboard');
         $response->assertSee('Disallow: /login');
-        $response->assertSee('Sitemap: ' . route('sitemap'));
+    $response->assertSee('Sitemap: ' . route('sitemap'));
     }
 
     public function test_sermon_detail_page_renders_canonical_meta_and_schema(): void
@@ -162,5 +163,157 @@ class PublicSeoTest extends TestCase
         $response->assertOk();
         $response->assertSee('Visible Media');
         $response->assertDontSee('Hidden Media');
+    }
+
+    public function test_events_page_uses_uploaded_event_image_before_legacy_image(): void
+    {
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
+        $media = new Media([
+            'title' => 'Uploaded Event Image',
+            'file_name' => 'uploaded-event.jpg',
+            'file_path' => 'https://res.cloudinary.com/example/image/upload/events/uploaded-event.jpg',
+            'size' => 100,
+            'media_type' => MediaType::IMAGE,
+            'category' => MediaCategory::EVENT,
+            'is_public' => true,
+            'upload_status' => MediaUploadStatus::READY,
+        ]);
+        $user->media()->save($media);
+
+        Event::factory()->create([
+            'title' => 'Uploaded Image Event',
+            'department_id' => null,
+            'image' => 'https://example.com/legacy-event.jpg',
+            'image_media_id' => $media->id,
+            'status' => EventStatus::UPCOMING->value,
+        ]);
+
+        $response = $this->get(route('events'));
+
+        $response->assertOk();
+        $response->assertSee($media->file_path, false);
+        $response->assertDontSee('https://example.com/legacy-event.jpg', false);
+    }
+
+    public function test_events_page_keeps_legacy_and_placeholder_image_fallbacks(): void
+    {
+        Event::factory()->create([
+            'title' => 'Legacy Image Event',
+            'department_id' => null,
+            'image' => 'https://example.com/legacy-event.jpg',
+            'status' => EventStatus::UPCOMING->value,
+        ]);
+        Event::factory()->create([
+            'title' => 'No Image Event',
+            'department_id' => null,
+            'image' => null,
+            'image_media_id' => null,
+            'status' => EventStatus::UPCOMING->value,
+        ]);
+
+        $response = $this->get(route('events'));
+
+        $response->assertOk();
+        $response->assertSee('https://example.com/legacy-event.jpg', false);
+        $response->assertSee(asset('assets/images/resources/events-img-1.jpg'), false);
+    }
+
+    public function test_creating_event_from_confirmed_crop_links_uploaded_image(): void
+    {
+        $user = User::factory()->create(['role' => UserRole::ADMIN]);
+        $uploadedUrl = 'https://res.cloudinary.com/example/image/upload/events/created-event.jpg';
+
+        $this->mock(CroppedImageUploadService::class, function ($mock) use ($uploadedUrl) {
+            $mock->shouldReceive('storeFromDataUrl')
+                ->once()
+                ->andReturn([
+                    'url' => $uploadedUrl,
+                    'original_name' => 'created-event.jpg',
+                    'size' => 100,
+                ]);
+        });
+
+        $response = $this->actingAs($user)->post(route('dashboard.events.store'), [
+            'title' => 'Created Image Event',
+            'event_date' => now()->addDay()->format('Y-m-d H:i:s'),
+            'location' => 'Main Auditorium',
+            'department_id' => null,
+            'status' => EventStatus::UPCOMING->value,
+            'image_cropped' => 'data:image/jpeg;base64,ZmFrZQ==',
+        ]);
+
+        $response->assertRedirect(route('dashboard.events.index'));
+
+        $event = Event::query()->where('title', 'Created Image Event')->firstOrFail();
+        $this->assertSame($uploadedUrl, $event->image);
+        $this->assertNotNull($event->image_media_id);
+        $this->assertSame($uploadedUrl, $event->image_url);
+    }
+
+    public function test_sermon_public_pages_use_current_uploaded_cover_image(): void
+    {
+        $speaker = User::factory()->create(['role' => UserRole::PASTOR]);
+        $mediaOwner = User::factory()->create(['role' => UserRole::ADMIN]);
+        $media = new Media([
+            'title' => 'Current Sermon Cover',
+            'file_name' => 'current-sermon-cover.jpg',
+            'file_path' => 'https://res.cloudinary.com/example/image/upload/sermons/current-cover.jpg',
+            'size' => 100,
+            'media_type' => MediaType::IMAGE,
+            'category' => MediaCategory::SERMON,
+            'is_public' => true,
+            'upload_status' => MediaUploadStatus::READY,
+        ]);
+        $mediaOwner->media()->save($media);
+        $sermon = Sermon::factory()->create([
+            'speaker_id' => $speaker->id,
+            'status' => SermonStatus::PUBLISHED->value,
+            'video_url' => 'https://www.youtube.com/watch?v=abc123xyz89',
+            'audio_url' => 'https://example.com/sermon.mp3',
+            'cover_image' => 'https://example.com/old-sermon-cover.jpg',
+            'cover_media_id' => $media->id,
+        ]);
+
+        foreach ([route('home'), route('sermons'), route('sermons.show', $sermon->slug)] as $url) {
+            $response = $this->get($url);
+
+            $response->assertOk();
+            $response->assertSee($media->file_path, false);
+            $response->assertDontSee('https://example.com/old-sermon-cover.jpg', false);
+        }
+    }
+
+    public function test_creating_sermon_from_confirmed_crop_saves_uploaded_cover_image(): void
+    {
+        $admin = User::factory()->create(['role' => UserRole::ADMIN]);
+        $speaker = User::factory()->create(['role' => UserRole::PASTOR]);
+        $uploadedUrl = 'https://res.cloudinary.com/example/image/upload/sermons/created-cover.jpg';
+
+        $this->mock(CroppedImageUploadService::class, function ($mock) use ($uploadedUrl) {
+            $mock->shouldReceive('storeFromDataUrl')
+                ->once()
+                ->andReturn([
+                    'url' => $uploadedUrl,
+                    'original_name' => 'created-cover.jpg',
+                    'size' => 100,
+                ]);
+        });
+
+        $response = $this->actingAs($admin)->post(route('dashboard.sermons.store'), [
+            'title' => 'Created Cover Sermon',
+            'description' => 'A sermon with an uploaded cover.',
+            'sermon_date' => now()->format('Y-m-d'),
+            'speaker_id' => $speaker->id,
+            'status' => SermonStatus::PUBLISHED->value,
+            'video_url' => 'https://www.youtube.com/watch?v=abc123xyz89',
+            'cover_image_cropped' => 'data:image/jpeg;base64,ZmFrZQ==',
+        ]);
+
+        $response->assertRedirect(route('dashboard.sermons.index'));
+
+        $sermon = Sermon::query()->where('title', 'Created Cover Sermon')->firstOrFail();
+        $this->assertSame($uploadedUrl, $sermon->cover_image);
+        $this->assertNull($sermon->cover_media_id);
+        $this->assertSame($uploadedUrl, $sermon->cover_image_url);
     }
 }

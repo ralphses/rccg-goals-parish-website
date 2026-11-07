@@ -30,7 +30,7 @@ class GuestViewController extends Controller
         $theme = YearlyDetail::latest()->first();
         $stream = Stream::where('is_live', true)->first();
         $testimonies = Testimony::with('media')->where('is_approved', true)->latest()->take(3)->get();
-        $sermons = Sermon::with('speaker')
+        $sermons = Sermon::with(['speaker', 'coverMedia'])
             ->where('status', \App\enums\SermonStatus::PUBLISHED->value)
             ->latest('published_at')
             ->take(3)
@@ -74,12 +74,12 @@ class GuestViewController extends Controller
 
     public function sermons()
     {
-        $videoSermons = Sermon::with('speaker')
+        $videoSermons = Sermon::with(['speaker', 'coverMedia'])
             ->where('status', \App\enums\SermonStatus::PUBLISHED->value)
             ->whereNotNull('video_url')
             ->latest('published_at')
             ->paginate(3, ['*'], 'video_page');
-        $audioSermons = Sermon::with('speaker')
+        $audioSermons = Sermon::with(['speaker', 'coverMedia'])
             ->where('status', \App\enums\SermonStatus::PUBLISHED->value)
             ->whereNotNull('audio_url')
             ->latest('published_at')
@@ -96,7 +96,7 @@ class GuestViewController extends Controller
             404
         );
 
-        $sermon->load('speaker');
+        $sermon->load(['speaker', 'coverMedia']);
         $seo = $this->seoService->sermon($sermon);
 
         return view('guest.sermon', compact('sermon', 'seo'));
@@ -142,6 +142,7 @@ class GuestViewController extends Controller
         }
 
         $events = $query
+            ->with('imageMedia')
             ->where('status', '!=', \App\enums\EventStatus::CANCELLED->value)
             ->paginate(6)
             ->withQueryString();

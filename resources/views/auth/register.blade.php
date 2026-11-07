@@ -40,16 +40,17 @@
         }
     </style>
 
-    <section class="contact-page login-page register-page">
+    <section class="contact-page contact-page--pack login-page login-page--pack register-page register-page--pack">
         <div class="container">
             <div class="row justify-content-center align-items-center">
 
                 <!-- Left Info -->
                 <div class="col-xl-4 col-lg-5 mb-4 mb-lg-0">
                     <div class="contact-page__left text-center text-lg-start">
-                        <div class="section-title text-left">
-                            <span class="section-title__tagline">Member Access</span>
+                        <div class="section-title text-left contact-page__heading">
+                            <span class="section-title__tagline contact-page__eyebrow"><span aria-hidden="true"></span>Member Access</span>
                             <h2 class="section-title__title">Join Us</h2>
+                            <span class="contact-page__accent" aria-hidden="true"></span>
                         </div>
 
                         <p class="contact-page__text">
@@ -60,7 +61,7 @@
 
                 <!-- Register Form -->
                 <div class="col-xl-6 col-lg-7">
-                    <div class="contact-page__right login-card">
+                    <div class="contact-page__right login-card contact-page__form-card">
                         <!-- Display Validation Errors -->
                         @if($errors->any())
                             <div class="alert alert-danger mb-3">

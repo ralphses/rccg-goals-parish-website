@@ -237,10 +237,13 @@
 
   // Causes One Carousel
   if ($(".causes-one__carousel").length) {
-    $(".causes-one__carousel").owlCarousel({
-      loop: true,
+    const sermonCarousel = $(".causes-one__carousel");
+    const sermonCount = sermonCarousel.children().length;
+
+    sermonCarousel.owlCarousel({
+      loop: sermonCount > 3,
       margin: 30,
-      nav: true,
+      nav: sermonCount > 3,
       smartSpeed: 500,
       autoHeight: false,
       autoplay: false,
@@ -271,11 +274,15 @@
   }
 
   // Testimonial Two Carousel
-  if ($(".testimonial-two__carousel").length) {
-    $(".testimonial-two__carousel").owlCarousel({
-      loop: true,
+  if ($(".testimonial-two__carousel:not(.about-values__carousel)").length) {
+    $(".testimonial-two__carousel:not(.about-values__carousel)").each(function () {
+      const testimonialCarousel = $(this);
+      const testimonialCount = Number(testimonialCarousel.data("items-count")) || testimonialCarousel.children().length;
+
+      testimonialCarousel.owlCarousel({
+      loop: testimonialCount > 1,
       margin: 30,
-      nav: true,
+      nav: testimonialCount > 1,
       smartSpeed: 500,
       autoHeight: false,
       autoplay: false,
@@ -287,21 +294,22 @@
       ],
       responsive: {
         0: {
-          items: 1
+          items: Math.min(1, testimonialCount)
         },
         600: {
-          items: 1
+          items: Math.min(1, testimonialCount)
         },
         800: {
-          items: 2
+          items: Math.min(2, testimonialCount)
         },
         1024: {
-          items: 2
+          items: Math.min(2, testimonialCount)
         },
         1200: {
-          items: 2
+          items: Math.min(2, testimonialCount)
         }
       }
+      });
     });
   }
 
@@ -538,8 +546,24 @@
   if ($(".mobile-nav__toggler").length) {
     $(".mobile-nav__toggler").on("click", function (e) {
       e.preventDefault();
-      $(".mobile-nav__wrapper").toggleClass("expanded");
+      var isExpanded = $(".mobile-nav__wrapper").hasClass("expanded");
+      $(".mobile-nav__wrapper").toggleClass("expanded", !isExpanded);
+      $(".mobile-nav__toggler").attr("aria-expanded", String(!isExpanded));
       $("body").toggleClass("locked");
+    });
+
+    $(".mobile-nav__wrapper a").on("click", function () {
+      $(".mobile-nav__wrapper").removeClass("expanded");
+      $(".mobile-nav__toggler").attr("aria-expanded", "false");
+      $("body").removeClass("locked");
+    });
+
+    $(document).on("keydown", function (e) {
+      if (e.key === "Escape" && $(".mobile-nav__wrapper").hasClass("expanded")) {
+        $(".mobile-nav__wrapper").removeClass("expanded");
+        $(".mobile-nav__toggler").attr("aria-expanded", "false");
+        $("body").removeClass("locked");
+      }
     });
   }
 
@@ -870,12 +894,19 @@
     }
   }
 
+  function hidePreloader() {
+    if ($(".preloader").length) {
+      $(".preloader").fadeOut(250);
+    }
+  }
+
+  // Do not make the first paint wait for every external image or iframe.
+  setTimeout(hidePreloader, 350);
+
   // window load event
 
   $(window).on("load", function () {
-    if ($(".preloader").length) {
-      $(".preloader").fadeOut();
-    }
+    hidePreloader();
     thmSwiperInit();
     thmOwlInit();
     projectMasonaryLayout();

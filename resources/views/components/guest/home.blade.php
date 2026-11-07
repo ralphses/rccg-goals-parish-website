@@ -4,6 +4,53 @@
     <div class="sticky-header__content"></div><!-- /.sticky-header__content -->
 </div><!-- /.stricky-header -->
 
+<section class="rccg-pack-hero" aria-labelledby="rccg-pack-hero-title">
+    <div class="rccg-pack-hero__image" role="img" aria-label="RCCG Glory of All Lands Parish church building"></div>
+    <div class="rccg-pack-hero__overlay"></div>
+    <div class="rccg-pack-hero__content">
+        <p class="rccg-pack-hero__eyebrow"><span></span>Welcome to</p>
+        <h1 id="rccg-pack-hero-title">RCCG<br><strong>Glory of All Lands</strong><br>Parish</h1>
+        <div class="rccg-pack-hero__accent" aria-hidden="true"></div>
+        <p class="rccg-pack-hero__description">
+            A place to worship God, grow in His Word, find family, and fulfill your God-given purpose.
+        </p>
+        <div class="rccg-pack-hero__actions">
+            <a href="{{ route('events') }}" class="rccg-pack-button rccg-pack-button--gold">
+                <i class="far fa-calendar-alt" aria-hidden="true"></i> Join a Service
+            </a>
+            <a href="{{ route('home') }}#live-stream" class="rccg-pack-button rccg-pack-button--outline">
+                <i class="far fa-play-circle" aria-hidden="true"></i> Watch Online
+            </a>
+            <a href="https://chat.whatsapp.com/IaH0ZO2WcurJEoQMvhnMTW"
+                class="rccg-pack-button rccg-pack-button--whatsapp"
+                target="_blank"
+                rel="noopener noreferrer">
+                <i class="fab fa-whatsapp" aria-hidden="true"></i> Join Our WhatsApp Community
+            </a>
+        </div>
+    </div>
+
+    <div class="rccg-pack-services" aria-label="Weekly service schedule">
+        <div class="rccg-pack-service">
+            <i class="fas fa-users" aria-hidden="true"></i>
+            <span><strong>Sunday Service</strong><b>8:00 AM</b></span>
+        </div>
+        <div class="rccg-pack-service">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            <span><strong>House Fellowship</strong><b>5:00 PM</b></span>
+        </div>
+        <div class="rccg-pack-service">
+            <i class="fas fa-book-open" aria-hidden="true"></i>
+            <span><strong>Digging Deep <small>(Tuesday)</small></strong><b>6:30 PM</b></span>
+        </div>
+        <div class="rccg-pack-service">
+            <i class="fas fa-plus-circle" aria-hidden="true"></i>
+            <span><strong>Faith Clinic <small>(Thursday)</small></strong><b>6:30 PM</b></span>
+        </div>
+    </div>
+</section>
+
+@if (false)
 <!--Main Slider Start-->
 <section class="main-slider main-slider--refined">
     <div class="main-slider-ripped-paper">
@@ -129,141 +176,70 @@
     </div>
 </section>
 <!--Main Slider End-->
-
-<!--Weekly Activities Start-->
-<section class="we-believe we-believe--full">
-    <div class="we-believe-map" style="background-image: url(assets/images/shapes/we-believe-map.png);"></div>
-
-    <div class="container-fluid px-5">
-        <div class="section-title text-center">
-            <span class="section-title__tagline">our weekly gatherings</span>
-            <h2 class="section-title__title">
-                Major Church Weekly Activities
-            </h2>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <ul class="list-unstyled we-believe__list we-believe__list--wide">
-
-                    <!-- Tuesday -->
-                    <li class="we-believe__single wow fadeInUp" data-wow-delay="100ms">
-                        <div class="we-believe__icon">
-                            <img src="{{ asset('assets/images/icons/bible-study.png') }}" alt="Bible Study">
-                        </div>
-                        <h3 class="we-believe__title">Digging Deep (Bible Study)</h3>
-                        <p class="we-believe__text">
-                            Join us every Tuesday for an in-depth study of God’s Word.
-                            <br><strong>Time:</strong> 6:30 PM
-                        </p>
-                    </li>
-
-                    <!-- Wednesday -->
-                    <li class="we-believe__single wow fadeInUp" data-wow-delay="200ms">
-                        <div class="we-believe__icon">
-                            <img src="{{ asset('assets/images/icons/prayer-fasting.png') }}" alt="Prayer and Fasting">
-                        </div>
-                        <h3 class="we-believe__title">General Prayer & Fasting</h3>
-                        <p class="we-believe__text">
-                            A dedicated time of corporate prayer and fasting for the church.
-                            <br><strong>Time:</strong> As Announced
-                        </p>
-                    </li>
-
-                    {{-- Wednesday (Youth Fellowship) --}}
-                    <li class="we-believe__single wow fadeInUp" data-wow-delay="300ms">
-                        <div class="we-believe__icon">
-                            <img src="{{ asset('assets/images/icons/youth-fellowship.png') }}" alt="Youth Fellowship">
-                        </div>
-                        <h3 class="we-believe__title">Youth Fellowship</h3>
-                        <p class="we-believe__text">
-                            Holds on Wednesdays. A time for youth to fellowship, grow in faith, and build
-                            relationships.
-                            <br><strong>Time:</strong> 7:00 PM
-                        </p>
-                    </li>
-
-                    <!-- Thursday -->
-                    <li class="we-believe__single wow fadeInUp" data-wow-delay="300ms">
-                        <div class="we-believe__icon">
-                            <img src="{{ asset('assets/images/icons/faith-clinic.png') }}" alt="Faith Clinic">
-                        </div>
-                        <h3 class="we-believe__title">Faith Clinic</h3>
-                        <p class="we-believe__text">
-                            A powerful prayer meeting focused on faith, healing, and breakthroughs.
-                            <br><strong>Time:</strong> 6:30 PM
-                        </p>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-<!--Weekly Activities End-->
+@endif
 
 <!--Pastor Welcome Start-->
-<section class="welcome-one">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-6">
-                <div class="welcome-one__left">
-                    <div class="welcome-one__img-box wow slideInLeft" data-wow-delay="100ms"
-                        data-wow-duration="2500ms">
-                        <div class="welcome-one__img"> <img src="assets/images/resources/pastor.jpg"
-                                alt=""> </div>
-                        <div class="welcome-one-shape-1"> <img src="assets/images/shapes/welcome-one-shape-1.png"
-                                alt=""> </div>
-                    </div>
+<section class="welcome-one welcome-one--pack">
+    <div class="welcome-one__pack-layout">
+        <div class="welcome-one__pack-heading">
+            <h2 class="section-title__title">Welcome to<br>RCCG Glory of All Lands Parish</h2>
+            <div class="welcome-one__pack-accent" aria-hidden="true"></div>
+        </div>
+
+        <div class="welcome-one__pack-portrait">
+            <div class="welcome-one__img-box">
+                <div class="welcome-one__img">
+                    <img src="{{ asset('assets/images/resources/pastor.jpg') }}"
+                        alt="Pastor Adekunle Omotimirin">
                 </div>
             </div>
-            <div class="col-xl-6">
-                <div class="welcome-one__right">
-                    <div class="section-title text-left">
-                        <span class="welcome-one__eyebrow">A Warm Welcome</span>
-                        <h2 class="section-title__title">Welcome to<br>RCCG Glory of All Lands Parish</h2>
-                        <div class="welcome-one__copy">
-                            <p class="welcome-one__text-2 mb-0">
-                                Dear Beloved, it is with great joy that I welcome you to our parish website. Here,
-                                you will find spiritual resources, information about our programs, and ways to
-                                connect with our church family. We pray that your experience with us will bring
-                                encouragement, faith, and hope.
-                            </p>
-                            <p class="welcome-one__text-2 welcome-one__text-2--muted mb-0">
-                                Whether you are new to our church or have been with us for a while, we invite you
-                                to explore our website and discover all that RCCG Glory of All Lands has to offer.
-                                May God bless you abundantly as you navigate through our online home.
-                            </p>
-                            <p class="welcome-one__signature mb-0">
-                                Pastor Adekunle Omotimirin
-                                <span>Zonal Pastor</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
+
+        <div class="welcome-one__copy welcome-one__pack-copy">
+            <p class="welcome-one__text-2 mb-0">
+                Dear Beloved, it is with great joy that I welcome you to our parish website. Here,
+                you will find spiritual resources, information about our programs, and ways to
+                connect with our church family. We pray that your experience with us will bring
+                encouragement, faith, and hope.
+            </p>
+            <p class="welcome-one__text-2 welcome-one__text-2--muted mb-0">
+                Whether you are new to our church or have been with us for a while, we invite you
+                to explore our website and discover all that RCCG Glory of All Lands has to offer.
+                May God bless you abundantly as you navigate through our online home.
+            </p>
+            <p class="welcome-one__signature mb-0">
+                Pastor Adekunle Omotimirin
+                <span>Zonal Pastor</span>
+            </p>
         </div>
     </div>
 </section>
 <!--Pastor Welcome End-->
 
 <!--Theme of the Month Section Start-->
-<section class="quality-work theme-of-the-month">
+<section class="quality-work theme-of-the-month theme-of-the-month--pack">
     {{-- <div class="container"> --}}
     <div class="row justify-content-center">
         <div class="col-xl-12 col-lg-4">
-            <div class="theme-card theme-card--refined text-center">
+            <div class="theme-card theme-card--refined theme-card--pack text-center">
                 <!-- Section Title -->
-                <span class="section-title__tagline theme-card__tagline">Theme for This
-                    Month</span>
+                <span class="section-title__tagline theme-card__tagline theme-card__eyebrow">
+                    <span class="theme-card__eyebrow-dot" aria-hidden="true"></span>
+                    Theme for This Month
+                </span>
                 <h3 class="section-title__title theme-card__title">
                     {{ $theme->current_month_theme ?? 'Walking in Faith and Purpose' }}
                 </h3>
 
+                <span class="theme-card__accent" aria-hidden="true"></span>
+
                 <!-- Scriptural Quotation -->
                 <p class="theme-quote theme-card__quote">
-                    "{{ $theme->current_month_scripture_content ?? 'For we walk by faith, not by sight.' }}" –
-                    <strong>{{ $theme->current_month_scripture ?? '2 Corinthians 5:7' }}</strong>
+                    <span class="theme-card__quote-mark" aria-hidden="true">“</span>
+                    <span>
+                        {{ $theme->current_month_scripture_content ?? 'For we walk by faith, not by sight.' }}”
+                        <strong>{{ $theme->current_month_scripture ?? '2 Corinthians 5:7' }}</strong>
+                    </span>
                 </p>
             </div>
         </div>
@@ -311,15 +287,19 @@
 
 
 <!--Live Streaming Section Start-->
-<section class="quality-work live-streaming" id="live-stream">
+<section class="quality-work live-streaming live-streaming--pack" id="live-stream">
     <div class="quality-work-shape" style="background-image: url(assets/images/shapes/quality-work--shape.png);">
     </div>
     <div class="container">
         <!-- Section Title -->
         <div class="row">
-            <div class="col-xl-12 text-center mb-4">
-                <span class="section-title__tagline">Stay Connected</span>
+            <div class="col-xl-12 text-center live-streaming__heading">
+                <span class="section-title__tagline live-streaming__eyebrow">
+                    <span class="live-streaming__eyebrow-dot" aria-hidden="true"></span>
+                    Stay Connected
+                </span>
                 <h2 class="section-title__title">Currently Streaming</h2>
+                <span class="live-streaming__accent" aria-hidden="true"></span>
                 <p class="section-title__text">Watch live services and special events from the comfort of your home.
                 </p>
             </div>
@@ -330,11 +310,14 @@
                 <div class="quality-work__tab-box tabs-box">
                     <div class="tabs-content">
                         @if ($stream)
-                            <div class="tab active-tab animated fadeInUp" id="stream-content">
+                            <div class="tab active-tab animated fadeInUp live-streaming__panel" id="stream-content">
                                 <div class="tab-content__inner">
                                     <div class="row align-items-center">
                                         <div class="col-xl-6 col-lg-6">
                                             <div class="tab-content__inner-left">
+                                                <span class="live-streaming__live-pill">
+                                                    <span aria-hidden="true"></span> Live from RCCG Glory of All Lands
+                                                </span>
                                                 <h3 class="tab-content__title tab-content__title--big">
                                                     {{ $stream->title }}
                                                 </h3>
@@ -346,10 +329,11 @@
                                         <div class="col-xl-6 col-lg-6">
                                             <div class="tab-content__inner-right">
                                                 <div class="tab-content__video-link">
-                                                    <div class="tab-content-video-bg" style="height: 360px;">
+                                                    <div class="tab-content-video-bg live-streaming__player" style="height: 360px;">
                                                         <iframe width="100%" height="100%"
                                                             src="{{ 'https://www.youtube.com/embed/' . Str::after($stream->youtube_url, 'https://www.youtube.com/watch?v=') }}"
                                                             title="YouTube video player" frameborder="0"
+                                                            loading="lazy"
                                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                                             referrerpolicy="strict-origin-when-cross-origin"
                                                             allowfullscreen></iframe>
@@ -361,7 +345,8 @@
                                 </div>
                             </div>
                         @else
-                            <div class="text-center">
+                            <div class="text-center live-streaming__empty">
+                                <span class="live-streaming__empty-icon" aria-hidden="true"><i class="far fa-play-circle"></i></span>
                                 <p>There is no live stream at the moment. Please check back later.</p>
                             </div>
                         @endif
@@ -374,7 +359,7 @@
 <!--Live Streaming Section End-->
 
 <!--Testimonies Section Start-->
-<section class="testimonial-two">
+<section class="testimonial-two testimonial-two--pack">
     <div class="testimonial-two-bg" style="background-image: url(assets/images/backgrounds/testimonial-two-bg.png);">
     </div>
     <div class="container">
@@ -382,9 +367,13 @@
             <!-- Section Title -->
             <div class="col-xl-4">
                 <div class="testimonial-two__left">
-                    <div class="section-title text-left">
-                        <span class="section-title__tagline">Our Testimonies</span>
+                    <div class="section-title text-left testimonial-two__heading">
+                        <span class="section-title__tagline testimonial-two__eyebrow">
+                            <span class="testimonial-two__eyebrow-dot" aria-hidden="true"></span>
+                            Our Testimonies
+                        </span>
                         <h2 class="section-title__title">What God is Doing in Our Church</h2>
+                        <span class="testimonial-two__accent" aria-hidden="true"></span>
                     </div>
                 </div>
             </div>
@@ -392,9 +381,9 @@
             <!-- Testimonies Carousel -->
             <div class="col-xl-8">
                 <div class="testimonial-two__right">
-                    <div class="testimonial-two__carousel owl-carousel owl-theme">
-
-                        @forelse ($testimonies as $testimony)
+                    @if ($testimonies->isNotEmpty())
+                        <div class="testimonial-two__carousel owl-carousel owl-theme" data-items-count="{{ $testimonies->count() }}">
+                            @foreach ($testimonies as $testimony)
                             <div class="testimonial-two__single">
                                 <div class="testimonial-two__content">
                                     <div class="testimonial-two__quote">
@@ -407,7 +396,7 @@
                                 <div class="testimonial-two__client-info">
                                     <div class="testimonial-two__client-img">
                                         <img src="{{ $testimony->image_url }}"
-                                            alt="Member Photo">
+                                            alt="Member Photo" loading="lazy">
                                     </div>
                                     <div class="testimonial-two__client-details">
                                         <h5 class="testimonial-two__client-name">{{ $testimony->testifier_name }}</h5>
@@ -415,26 +404,11 @@
                                     </div>
                                 </div>
                             </div>
-                        @empty
-                            <div class="testimonial-two__single">
-                                <div class="testimonial-two__content">
-                                    <div class="testimonial-two__quote">
-                                        <span class="icon-quote"></span>
-                                    </div>
-                                    <p class="testimonial-two__text">
-                                        “No testimonies available at the moment. Check back soon for what God is doing
-                                        in our midst!”
-                                    </p>
-                                </div>
-                                <div class="testimonial-two__client-info">
-                                    <div class="testimonial-two__client-details">
-                                        <h5 class="testimonial-two__client-name">Church Admin</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforelse
-
-                    </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="testimonial-two__empty mb-0">No testimony at the moment.</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -443,11 +417,16 @@
 <!--Testimonies Section End-->
 
 <!--Latest Sermons Section Start-->
-<section class="causes-one">
+<section class="causes-one causes-one--pack">
     <div class="container">
         <!-- Section Title -->
-        <div class="section-title text-left">
+        <div class="section-title text-left causes-one__heading">
+            <span class="section-title__tagline causes-one__eyebrow">
+                <span class="causes-one__eyebrow-dot" aria-hidden="true"></span>
+                Messages of Faith
+            </span>
             <h2 class="section-title__title">Recent Sermons</h2>
+            <span class="causes-one__accent" aria-hidden="true"></span>
             <p class="section-title__description">
                 Stay inspired and spiritually nourished with our most recent sermons.
             </p>
@@ -456,14 +435,14 @@
 
         <div class="row">
             <div class="col-xl-12">
-                <div class="causes-one__carousel owl-theme owl-carousel">
-
-                    @forelse ($sermons as $sermon)
+                @if ($sermons->isNotEmpty())
+                    <div class="causes-one__carousel owl-theme owl-carousel">
+                        @foreach ($sermons as $sermon)
                         <!-- Sermon Card -->
                         <div class="causes-one__single">
                             <div class="causes-one__img">
                                 <img src="{{ $sermon->cover_image_url ?? asset('assets/images/causes/causes-1-1.jpg') }}"
-                                    alt="Sermon Image">
+                                    alt="Sermon Image" loading="lazy">
                             </div>
                             <div class="causes-one__content">
                                 <h3 class="causes-one__title">
@@ -475,17 +454,15 @@
                                 </p>
                             </div>
                         </div>
-                    @empty
-                        <div class="text-center">
-                            <p>No recent sermons are available at the moment. Please check back later.</p>
-                        </div>
-                    @endforelse
-
-                </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="causes-one__empty mb-0">No recent sermons are available at the moment. Please check back later.</p>
+                @endif
 
                 <!-- View All Button -->
-                <div class="text-center mt-4">
-                    <a href="{{ route('sermons') }}" class="thm-btn">View All Sermons</a>
+                <div class="text-center causes-one__cta">
+                    <a href="{{ route('sermons') }}" class="thm-btn causes-one__view-all">View All Sermons</a>
                 </div>
             </div>
         </div>
@@ -494,7 +471,7 @@
 <!--Latest Sermons Section End-->
 
 <!--Latest Gallery Start-->
-<section class="fundraishing">
+<section class="fundraishing fundraishing--pack">
     <div class="fundraishing-bg-box">
         <div class="fundraishing-bg jarallax" data-jarallax data-speed="0.2" data-imgPosition="50% 0%"
             style="background-image: url(assets/images/backgrounds/fundraishing-bg.jpg);"></div>
@@ -503,12 +480,17 @@
         <div class="row justify-content-center text-center">
             <div class="col-xl-12">
                 <div class="fundraishing__inner">
-                    <p class="fundraishing__sub-title">Captured Church Moments</p>
+                    <p class="fundraishing__sub-title fundraishing__eyebrow">
+                        <span class="fundraishing__eyebrow-dot" aria-hidden="true"></span>
+                        Captured Church Moments
+                    </p>
                     <h2 class="fundraishing__title">Latest <span>Gallery</span> Highlights</h2>
+                    <span class="fundraishing__accent" aria-hidden="true"></span>
 
                     <!-- Gallery Images Row -->
-                    <div class="row mt-4">
-                        @forelse ($galleries as $gallery)
+                    @if ($galleries->isNotEmpty())
+                        <div class="row fundraishing__gallery-row">
+                            @foreach ($galleries as $gallery)
                             <div class="col-md-4 mb-3">
                                 <div class="fundraishing__gallery-item">
                                     <a href="{{ route('media') }}#gallery">
@@ -517,15 +499,14 @@
                                     </a>
                                 </div>
                             </div>
-                        @empty
-                            <div class="col-12">
-                                <p style="color: white;">No gallery images available at the moment.</p>
-                            </div>
-                        @endforelse
-                    </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="fundraishing__empty mb-0">No gallery images available at the moment.</p>
+                    @endif
 
                     <!-- Button to View All Gallery -->
-                    <div class="fundraishing__btn-box mt-4">
+                    <div class="fundraishing__btn-box">
                         <a href="{{ route('media') }}#gallery" class="thm-btn fundraishing__btn">View Full Gallery</a>
                     </div>
                 </div>
@@ -536,23 +517,28 @@
 <!--Latest Gallery End-->
 
 <!--Upcoming Events Start-->
-<section class="blog-one">
+<section class="blog-one blog-one--pack">
     <div class="container">
         <!-- Section Title -->
-        <div class="section-title text-center">
-            <span class="section-title__tagline">Join Us</span>
+        <div class="section-title text-center blog-one__heading">
+            <span class="section-title__tagline blog-one__eyebrow">
+                <span class="blog-one__eyebrow-dot" aria-hidden="true"></span>
+                Join Us
+            </span>
             <h2 class="section-title__title">Upcoming Events</h2>
+            <span class="blog-one__accent" aria-hidden="true"></span>
             <p class="section-title__description">Stay updated with our church activities and mark your
                 calendar for these inspiring events.</p>
         </div>
 
-        <div class="row">
-            @forelse ($events as $event)
+        @if ($events->isNotEmpty())
+            <div class="row blog-one__events-row">
+                @foreach ($events as $event)
                 <!-- Event -->
                 <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="100ms">
                     <div class="blog-one__single">
                         <div class="blog-one__img">
-                            <img src="{{ $event->image_url ?? 'assets/images/blog/blog-1-1.jpg' }}" alt="">
+                            <img src="{{ $event->image_url ?? 'assets/images/blog/blog-1-1.jpg' }}" alt="" loading="lazy">
                         </div>
                         <div class="blog-one__content">
                             <ul class="list-unstyled blog-one__meta">
@@ -573,16 +559,15 @@
                         </div>
                     </div>
                 </div>
-            @empty
-                <div class="col-12 text-center">
-                    <p>No upcoming events scheduled. Please check back later.</p>
-                </div>
-            @endforelse
-        </div>
+                @endforeach
+            </div>
+        @else
+            <p class="blog-one__empty mb-0">No upcoming events scheduled. Please check back later.</p>
+        @endif
 
         <!-- View All Events Button -->
-        <div class="text-center mt-4">
-            <a href="{{ route('events') }}" class="thm-btn">View All Events</a>
+        <div class="text-center blog-one__cta">
+            <a href="{{ route('events') }}" class="thm-btn blog-one__view-all">View All Events</a>
         </div>
     </div>
 </section>

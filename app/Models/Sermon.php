@@ -71,7 +71,7 @@ class Sermon extends Model
 
     public function getCoverImageUrlAttribute(): ?string
     {
-        return MediaUrl::toPublicUrl($this->cover_image);
+        return $this->coverMedia?->file_url ?? MediaUrl::toPublicUrl($this->cover_image);
     }
 
     public function getPublicVideoUrlAttribute(): ?string

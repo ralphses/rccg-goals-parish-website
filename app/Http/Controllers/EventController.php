@@ -200,7 +200,7 @@ class EventController extends Controller
         $imageMedia = !empty($validated['image_media_id']) ? Media::find($validated['image_media_id']) : null;
         $videoMedia = !empty($validated['video_media_id']) ? Media::find($validated['video_media_id']) : null;
 
-        if ($request->hasFile('image_source')) {
+        if ($request->hasFile('image_source') || filled($request->input('image_cropped'))) {
             $request->validate([
                 'image_cropped' => ['required', 'string'],
             ]);

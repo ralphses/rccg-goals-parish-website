@@ -289,7 +289,7 @@ class SermonController extends Controller
         $audioMedia = !empty($validated['audio_media_id']) ? Media::find($validated['audio_media_id']) : null;
         $videoMedia = !empty($validated['video_media_id']) ? Media::find($validated['video_media_id']) : null;
 
-        if ($request->hasFile('cover_image_source')) {
+        if ($request->hasFile('cover_image_source') || filled($request->input('cover_image_cropped'))) {
             $request->validate([
                 'cover_image_cropped' => ['required', 'string'],
             ]);

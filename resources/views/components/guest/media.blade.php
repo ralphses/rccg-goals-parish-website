@@ -1,18 +1,18 @@
 @props(['galleryMedia', 'testimonyMedia'])
 
 <!-- Media Page Start -->
-<section class="gallery-page">
+<section class="gallery-page media-page--pack">
     <div class="container">
 
-        <div class="media-section mb-5" id="gallery">
-            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                <div class="section-title mb-0">
-                    <span class="section-sub-title">Our Moments</span>
+        <div class="media-section media-section--pack" id="gallery">
+            <div class="section-title media-page__heading">
+                    <span class="section-sub-title media-page__eyebrow"><span aria-hidden="true"></span>Our Moments</span>
                     <h2 class="section-title__title">Church Gallery</h2>
-                </div>
+                    <span class="media-page__accent" aria-hidden="true"></span>
+                    <p class="media-page__intro">A collection of moments, memories, and celebrations from our church family.</p>
             </div>
 
-            <div class="row">
+            <div class="row media-page__grid">
                 @forelse ($galleryMedia as $item)
                     @php
                         $galleryLinkClass = match ($item->media_type) {
@@ -22,33 +22,35 @@
                         };
                         $galleryHref = $item->media_type === \App\enums\MediaType::VIDEO ? $item->youtube_embed_url : $item->file_url;
                     @endphp
-                    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-                        <div class="two-section__gallery-single">
-                            <div class="two-section__gallery-img-inner">
+                    <div class="col-xl-3 col-lg-4 col-md-6 media-page__item">
+                        <article class="two-section__gallery-single media-page__card">
+                            <div class="two-section__gallery-img-inner media-page__image">
                                 <a class="{{ $galleryLinkClass }} guest-media-link" href="{{ $galleryHref }}" @if ($item->media_type === \App\enums\MediaType::IMAGE) data-group="1" @endif>
                                     <img src="{{ $item->visual_url }}" alt="{{ $item->title }}" class="guest-media-thumb" loading="lazy">
+                                    <span class="media-page__type"><i class="{{ $item->media_type === \App\enums\MediaType::VIDEO ? 'fas fa-play' : 'fas fa-expand' }}" aria-hidden="true"></i>{{ $item->media_type === \App\enums\MediaType::VIDEO ? 'Watch' : 'View' }}</span>
                                 </a>
                             </div>
-                        </div>
+                            <div class="media-page__card-body"><h3>{{ $item->title }}</h3><span>{{ $item->media_type === \App\enums\MediaType::VIDEO ? 'Video' : 'Photo' }}</span></div>
+                        </article>
                     </div>
                 @empty
                     <div class="col-12">
-                        <p>No images found in the gallery at the moment.</p>
+                        <div class="media-page__empty"><i class="far fa-images" aria-hidden="true"></i><p>No images found in the gallery at the moment.</p></div>
                     </div>
                 @endforelse
             </div>
             {{ $galleryMedia->links('vendor.pagination.modern') }}
         </div>
 
-        <div class="media-section mb-5" id="testimonies">
-            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                <div class="section-title mb-0">
-                    <span class="section-sub-title">Faith Stories</span>
+        <div class="media-section media-section--pack" id="testimonies">
+            <div class="section-title media-page__heading">
+                    <span class="section-sub-title media-page__eyebrow"><span aria-hidden="true"></span>Faith Stories</span>
                     <h2 class="section-title__title">Testimonies</h2>
-                </div>
+                    <span class="media-page__accent" aria-hidden="true"></span>
+                    <p class="media-page__intro">See how God is moving through the lives and stories of our church community.</p>
             </div>
 
-            <div class="row">
+            <div class="row media-page__grid">
                 @forelse ($testimonyMedia as $item)
                     @php
                         $testimonyLinkClass = match ($item->media_type) {
@@ -58,18 +60,20 @@
                         };
                         $testimonyHref = $item->media_type === \App\enums\MediaType::VIDEO ? $item->youtube_embed_url : $item->file_url;
                     @endphp
-                    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-                        <div class="two-section__gallery-single">
-                            <div class="two-section__gallery-img-inner">
+                    <div class="col-xl-3 col-lg-4 col-md-6 media-page__item">
+                        <article class="two-section__gallery-single media-page__card">
+                            <div class="two-section__gallery-img-inner media-page__image">
                                 <a class="{{ $testimonyLinkClass }} guest-media-link" href="{{ $testimonyHref }}" @if ($item->media_type === \App\enums\MediaType::IMAGE) data-group="2" @endif>
                                     <img src="{{ $item->visual_url }}" alt="{{ $item->title }}" class="guest-media-thumb" loading="lazy">
+                                    <span class="media-page__type"><i class="{{ $item->media_type === \App\enums\MediaType::VIDEO ? 'fas fa-play' : 'fas fa-expand' }}" aria-hidden="true"></i>{{ $item->media_type === \App\enums\MediaType::VIDEO ? 'Watch' : 'View' }}</span>
                                 </a>
                             </div>
-                        </div>
+                            <div class="media-page__card-body"><h3>{{ $item->title }}</h3><span>{{ $item->media_type === \App\enums\MediaType::VIDEO ? 'Video' : 'Photo' }}</span></div>
+                        </article>
                     </div>
                 @empty
                     <div class="col-12">
-                        <p>No testimonies available at the moment.</p>
+                        <div class="media-page__empty"><i class="far fa-images" aria-hidden="true"></i><p>No testimonies available at the moment.</p></div>
                     </div>
                 @endforelse
             </div>

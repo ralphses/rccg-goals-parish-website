@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Media;
+use App\Support\MediaUrl;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Support\MediaUrl;
 
 class Event extends Model
 {
@@ -64,6 +63,6 @@ class Event extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        return MediaUrl::toPublicUrl($this->image);
+        return $this->imageMedia?->file_url ?? MediaUrl::toPublicUrl($this->image);
     }
 }

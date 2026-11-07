@@ -66,7 +66,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=DM+Serif+Display&family=Fredoka+One&display=swap"
         rel="stylesheet" />
 
     <!-- Vendor CSS -->
@@ -105,112 +105,63 @@
             alt="" />
     </div>
     <!-- /.preloader -->
+    <script>
+        (function () {
+            function dismissPreloader() {
+                var preloader = document.querySelector('.preloader');
+
+                if (!preloader) {
+                    return;
+                }
+
+                preloader.style.opacity = '0';
+                preloader.style.pointerEvents = 'none';
+                preloader.style.transition = 'opacity 250ms ease';
+
+                window.setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 300);
+            }
+
+            window.setTimeout(dismissPreloader, 700);
+        })();
+    </script>
     <div class="page-wrapper">
-        <header class="main-header clearfix">
-            <div class="main-header__top">
-                <div class="main-header__top-left">
-                    <p class="main-header__top-text">Welcome to The Redeemed Christian Church, Glory of All Lands Parish
-                    </p>
-                    <div class="main-header__top-social">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="main-header__top-right">
-                    <ul class="list-unstyled main-header__top-address">
-                        <li>
-                            <div class="icon">
-                                <span class="icon-pin"></span>
-                            </div>
-                            <div class="text">
-                                <p>Plot 27 Mobil Road, Off Ilaje Bustop, Ajah, Lagos</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="icon">
-                                <span class="icon-email"></span>
-                            </div>
-                            <div class="text">
-                                <p><a href="mailto:info@rccggoalsparish.com">info@rccggoalsparish.com</a></p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <nav class="main-menu clearfix">
-                <div class="main-menu-wrapper clearfix">
-
-                    <!-- Logo (Extreme Left) -->
-                    <div class="main-menu-wrapper__logo">
-                        <a href="{{ route('home') }}" class="logo-link">
-                            <img src="{{ asset('assets/images/resources/goals_logo_real.png') }}"
+        <header class="main-header main-header--pack clearfix">
+            <nav class="main-menu main-menu--pack clearfix" aria-label="Primary navigation">
+                <div class="main-menu-wrapper main-menu-wrapper--pack clearfix">
+                    <div class="main-menu-wrapper__logo main-menu-wrapper__logo--pack">
+                        <a href="{{ route('home') }}" class="logo-link logo-link--pack">
+                            <img src="{{ asset('assets/images/hero-pack/rccg-logo-original.png') }}"
                                 alt="RCCG Glory of All Lands Parish Logo">
+                            <span class="logo-wordmark">
+                                <strong>The Redeemed<br>Christian Church of God</strong>
+                                <small>Glory of All Lands Parish</small>
+                            </span>
                         </a>
                     </div>
 
-                    <!-- Right Side: Menu + CTA -->
-                    <div class="main-menu-wrapper__right-content">
-
-                        <!-- Main Menu -->
+                    <div class="main-menu-wrapper__right-content main-menu-wrapper__right-content--pack">
                         <div class="main-menu-wrapper__main-menu">
-                            <a href="#" class="mobile-nav__toggler" aria-label="Open mobile menu">
-                                <i class="fa fa-bars"></i>
+                            <a href="#" class="mobile-nav__toggler mobile-nav__toggler--pack"
+                                aria-label="Open mobile menu" aria-expanded="false" aria-controls="mobile-menu">
+                                <i class="fa fa-bars" aria-hidden="true"></i>
                             </a>
 
-                            <ul class="main-menu__list">
-                                <li><a href="{{ route('home') }}">Home</a></li>
-
-                                <li class="dropdown">
-                                    <a href="{{ route('about') }}">About Us</a>
-                                    <ul>
-                                        <li><a href="{{ route('about') }}#history">Church History</a></li>
-                                        <li><a href="{{ route('about') }}#mission">Mission & Vision</a></li>
-                                        <li><a href="{{ route('about') }}#pastorate">Pastorate</a></li>
-                                    </ul>
+                            <ul class="main-menu__list main-menu__list--pack">
+                                <li class="{{ request()->routeIs('home') ? 'is-active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
+                                <li class="{{ request()->routeIs('about') ? 'is-active' : '' }}"><a href="{{ route('about') }}">About</a></li>
+                                <li class="{{ request()->routeIs('events', 'event') ? 'is-active' : '' }}"><a href="{{ route('events') }}">Services</a></li>
+                                <li class="{{ request()->routeIs('about') && request()->getRequestUri() === route('about') . '#pastorate' ? 'is-active' : '' }}"><a href="{{ route('about') }}#pastorate">Ministries</a></li>
+                                <li class="{{ request()->routeIs('media', 'sermons', 'sermons.show') ? 'is-active' : '' }}"><a href="{{ route('media') }}">Resources</a></li>
+                                <li class="{{ request()->routeIs('contact') ? 'is-active' : '' }}"><a href="{{ route('contact') }}">Get Involved</a></li>
+                                <li class="main-menu__watch-live">
+                                    <a href="{{ auth()->check() ? route('dashboard') : route('login') }}" class="main-menu__action">
+                                        <i class="far fa-user-circle" aria-hidden="true"></i> {{ auth()->check() ? 'Dashboard' : 'Login' }}
+                                    </a>
                                 </li>
-
-                                <li class="dropdown">
-                                    <a href="{{ route('sermons') }}">Sermons</a>
-                                    <ul>
-                                        <li><a href="{{ route('sermons') }}#video">Video Sermons</a></li>
-                                        <li><a href="{{ route('sermons') }}#audio">Audio Sermons</a></li>
-                                    </ul>
-                                </li>
-
-                                <li class="dropdown">
-                                    <a href="{{ route('media') }}">Media</a>
-                                    <ul>
-                                        <li><a href="{{ route('media') }}#gallery">Gallery</a></li>
-                                        <li><a href="{{ route('media') }}#testimonies">Testimonies</a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a href="{{ route('events') }}">Events</a></li>
-                                {{-- <li><a href="{{ route('departments') }}">Departments</a></li> --}}
-                                <li><a href="{{ route('contact') }}">Contact</a></li>
-
-                                <!-- Auth Button -->
-                                @guest
-                                    <li class="main-menu__login">
-                                        <a href="{{ route('login') }}" class="main-menu__action">
-                                            Login
-                                        </a>
-                                    </li>
-                                @endguest
-
-                                @auth
-                                    <li class="main-menu__login">
-                                        <a href="{{ route('dashboard') }}" class="main-menu__action">
-                                            Dashboard
-                                        </a>
-                                    </li>
-                                @endauth
                             </ul>
                         </div>
-
                     </div>
                 </div>
             </nav>
@@ -220,7 +171,7 @@
         {{ $slot }}
 
         <!--Site Footer Start-->
-        <footer class="site-footer">
+        <footer class="site-footer site-footer--pack">
             <div class="site-footer-bg"
                 style="background-image: url('{{ asset('assets/images/backgrounds/site-footer-bg.jpg') }}');">
             </div>
@@ -234,9 +185,6 @@
                                     <p class="footer-widget__about-text">Your Support Can Help Transform Lives and
                                         Empower Our Church Community</p>
                                 </div>
-                                <a href="donate-now.html" class="donate-btn footer-donate__btn">
-                                    <i class="fa fa-heart"></i> Donate Now
-                                </a>
                             </div>
                         </div>
 
@@ -313,7 +261,9 @@
                                     <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
                                     <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
                                     <a href="#" target="_blank"><i class="fab fa-pinterest-p"></i></a>
-                                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://www.instagram.com/rccggoalsparish/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://www.tiktok.com/@rccggoalsparish" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+                                    <a href="https://www.youtube.com/@rccggoalsparish" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -372,8 +322,9 @@
             <div class="mobile-nav__top">
                 <div class="mobile-nav__social">
                     <a href="#" class="fab fa-facebook-square"></a>
-                    <a href="#" class="fab fa-instagram"></a>
-                    <a href="#" class="fab fa-youtube"></a>
+                    <a href="https://www.instagram.com/rccggoalsparish/" target="_blank" rel="noopener" class="fab fa-instagram"></a>
+                    <a href="https://www.tiktok.com/@rccggoalsparish" target="_blank" rel="noopener" class="fab fa-tiktok"></a>
+                    <a href="https://www.youtube.com/@rccggoalsparish" target="_blank" rel="noopener" class="fab fa-youtube"></a>
                 </div>
             </div>
         </div>

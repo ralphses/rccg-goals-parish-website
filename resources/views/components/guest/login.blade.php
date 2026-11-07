@@ -1,14 +1,15 @@
 <!-- Login Page Start -->
-<section class="contact-page login-page">
+<section class="contact-page contact-page--pack login-page login-page--pack">
     <div class="container">
         <div class="row justify-content-center align-items-center">
 
             <!-- Left Info -->
             <div class="col-xl-4 col-lg-5 mb-4 mb-lg-0">
                 <div class="contact-page__left text-center text-lg-start">
-                    <div class="section-title text-left">
-                        <span class="section-title__tagline">Member Access</span>
+                    <div class="section-title text-left contact-page__heading">
+                        <span class="section-title__tagline contact-page__eyebrow"><span aria-hidden="true"></span>Member Access</span>
                         <h2 class="section-title__title">Welcome Back</h2>
+                        <span class="contact-page__accent" aria-hidden="true"></span>
                     </div>
 
                     <p class="contact-page__text">
@@ -17,15 +18,16 @@
 
                     <div class="contact-page__social">
                         <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/rccggoalsparish/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@rccggoalsparish" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.youtube.com/@rccggoalsparish" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
 
             <!-- Login Form -->
             <div class="col-xl-6 col-lg-7">
-                <div class="contact-page__right login-card">
+                <div class="contact-page__right login-card contact-page__form-card">
                     <!-- Display Status Messages -->
                     @if(session('status'))
                         <div class="alert alert-success mb-3">
