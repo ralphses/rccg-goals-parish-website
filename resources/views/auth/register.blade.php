@@ -4,7 +4,43 @@
     keywords="Register, Create Account, RCCG GOALS Parish, Church Member Registration"
 >
     <!-- Register Page Start -->
-    <section class="contact-page login-page">
+    <style>
+        .register-page .comment-form__input-box,
+        .register-page .register-phone-input {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        .register-page .register-phone-input {
+            display: block;
+            height: 64px;
+            border: 0;
+            border-radius: var(--pifoxen-bdr-radius);
+            background-color: var(--pifoxen-extra-two);
+            color: var(--pifoxen-gray);
+            font-size: 14px;
+            line-height: 1.2;
+            padding: 0 30px;
+            outline: none;
+        }
+
+        .register-page .register-phone-input::placeholder {
+            color: var(--pifoxen-gray);
+            opacity: 1;
+        }
+
+        @media (max-width: 575.98px) {
+            .register-page .register-phone-input {
+                height: 58px;
+                padding: 0 18px;
+                font-size: 15px;
+            }
+        }
+    </style>
+
+    <section class="contact-page login-page register-page">
         <div class="container">
             <div class="row justify-content-center align-items-center">
 
@@ -56,7 +92,7 @@
 
                                 <div class="col-12">
                                     <div class="comment-form__input-box">
-                                        <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="Nigerian Phone Number (e.g. 0803 000 0000)">
+                                        <input class="register-phone-input" type="tel" name="phone" value="{{ old('phone') }}" placeholder="Phone Number (0803 000 0000)">
                                     </div>
                                     <small class="text-muted d-block mt-1">Provide an email address, a Nigerian phone number, or both.</small>
                                 </div>
