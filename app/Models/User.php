@@ -21,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
         'role',
         'phone',
@@ -35,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'hobbies',
         'favourite_quote',
         'birthday',
-        'can_login'
+        'can_login',
     ];
 
     /**
@@ -53,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'password' => 'hashed',
+            'email_verified_at' => 'datetime',
             'role' => UserRole::class,
             'status' => UserStatus::class,
             'last_login_at' => 'datetime',
@@ -73,6 +75,16 @@ class User extends Authenticatable implements MustVerifyEmail
             ->withTimestamps();
     }
 
+    public function ledDepartments()
+    {
+        return $this->hasMany(Department::class, 'leader_id');
+    }
+
+    public function leadsActiveDepartment(): bool
+    {
+        return $this->ledDepartments()->where('status', UserStatus::ACTIVE->value)->exists();
+    }
+
     public function events()
     {
         return $this->belongsToMany(Event::class)
@@ -82,6 +94,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function appNotifications()
     {
         return $this->hasMany(AppNotification::class);
+    }
+
+    public function birthdayBoardComments()
+    {
+        return $this->hasMany(BirthdayBoardComment::class);
     }
 
     /*

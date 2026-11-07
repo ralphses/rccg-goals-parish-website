@@ -77,6 +77,16 @@ class SeoService
         ]);
     }
 
+    public function birthdays(): array
+    {
+        return $this->page([
+            'title' => "Today's Birthday Celebrants | RCCG GOALS Parish",
+            'description' => 'Celebrate today\'s birthday celebrants with the RCCG GOALS Parish family in Ajah, Lagos.',
+            'keywords' => 'RCCG GOALS Parish birthdays, birthday celebrants, church family birthday wishes, Ajah Lagos church',
+            'canonical' => route('birthdays'),
+        ]);
+    }
+
     public function sermonsIndex(LengthAwarePaginator $videoSermons, LengthAwarePaginator $audioSermons): array
     {
         return $this->page(array_filter([

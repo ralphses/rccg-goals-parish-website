@@ -1,0 +1,122 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - paragraph [ref=e7]: Welcome to The Redeemed Christian Church, Glory of All Lands Parish
+          - generic [ref=e8]:
+            - link "" [ref=e9] [cursor=pointer]:
+              - /url: "#"
+            - link "" [ref=e11] [cursor=pointer]:
+              - /url: "#"
+            - link "" [ref=e13] [cursor=pointer]:
+              - /url: "#"
+            - link "" [ref=e15] [cursor=pointer]:
+              - /url: "#"
+        - list [ref=e18]:
+          - listitem [ref=e19]:
+            - generic [ref=e20]: 
+            - paragraph [ref=e23]: Plot 27 Mobil Road, Off Ilaje Bustop, Ajah, Lagos
+          - listitem [ref=e24]:
+            - generic [ref=e25]: 
+            - paragraph [ref=e28]:
+              - link "info@rccggoalsparish.com" [ref=e29] [cursor=pointer]:
+                - /url: mailto:info@rccggoalsparish.com
+      - navigation [ref=e30]:
+        - generic [ref=e31]:
+          - link [ref=e33] [cursor=pointer]:
+            - /url: http://127.0.0.1:8000
+            - img "RCCG Glory of All Lands Parish Logo" [ref=e34]
+          - generic [ref=e36]:
+            - text: 
+            - list [ref=e37]:
+              - listitem [ref=e38]:
+                - link "Home" [ref=e39] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8000
+              - listitem [ref=e40]:
+                - link "About Us" [ref=e41] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8000/about
+              - listitem [ref=e42]:
+                - link "Sermons" [ref=e43] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8000/sermons
+              - listitem [ref=e44]:
+                - link "Media" [ref=e45] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8000/media
+              - listitem [ref=e46]:
+                - link "Events" [ref=e47] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8000/events
+              - listitem [ref=e48]:
+                - link "Contact" [ref=e49] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8000/contact
+              - listitem [ref=e50]:
+                - link "Login" [ref=e51] [cursor=pointer]:
+                  - /url: http://127.0.0.1:8000/login
+    - generic [ref=e54]:
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - generic [ref=e58]: Member Access
+          - heading "Join Us" [level=2] [ref=e59]
+        - paragraph [ref=e60]: Register today to connect with departments, stream sermons, and get involved in church events.
+      - generic [ref=e63]:
+        - generic [ref=e64]:
+          - textbox "Full Name" [active] [ref=e67]
+          - textbox "Email Address" [ref=e70]
+          - generic [ref=e71]:
+            - textbox "Nigerian Phone Number (e.g. 0803 000 0000)" [ref=e73]
+            - generic [ref=e74]: Provide an email address, a Nigerian phone number, or both.
+          - textbox "Password" [ref=e77]
+          - textbox "Confirm Password" [ref=e80]
+        - button "Register" [ref=e82] [cursor=pointer]
+        - paragraph [ref=e83]:
+          - text: Already have an account?
+          - link "Login here" [ref=e84] [cursor=pointer]:
+            - /url: http://127.0.0.1:8000/login
+    - contentinfo [ref=e85]:
+      - generic [ref=e89]:
+        - link "About Us" [ref=e90] [cursor=pointer]:
+          - /url: http://127.0.0.1:8000/about
+        - link "Sermons" [ref=e91] [cursor=pointer]:
+          - /url: http://127.0.0.1:8000/sermons
+        - link "Events" [ref=e92] [cursor=pointer]:
+          - /url: http://127.0.0.1:8000/events
+        - link "Media" [ref=e93] [cursor=pointer]:
+          - /url: http://127.0.0.1:8000/media
+        - link "Contact" [ref=e94] [cursor=pointer]:
+          - /url: http://127.0.0.1:8000/contact
+        - link "Children Ministry" [ref=e95] [cursor=pointer]:
+          - /url: "#"
+        - link "Youth Ministry" [ref=e96] [cursor=pointer]:
+          - /url: "#"
+        - link "Women Ministry" [ref=e97] [cursor=pointer]:
+          - /url: "#"
+        - link "Men Ministry" [ref=e98] [cursor=pointer]:
+          - /url: "#"
+        - link "Community Service" [ref=e99] [cursor=pointer]:
+          - /url: "#"
+        - link "info@rccggoalsparish.com" [ref=e100] [cursor=pointer]:
+          - /url: mailto:info@rccggoalsparish.com
+        - link "+234 806 579 9999" [ref=e101] [cursor=pointer]:
+          - /url: tel:+2348065799999
+      - generic [ref=e106]:
+        - paragraph [ref=e107]:
+          - text: © Copyright 2026 by
+          - link "The Redeemed Christian Church of God, GOALS Parish" [ref=e108] [cursor=pointer]:
+            - /url: "#"
+        - generic [ref=e109]:
+          - link "" [ref=e110] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e112] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e114] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e116] [cursor=pointer]:
+            - /url: "#"
+  - generic [ref=e118]:
+    - generic [ref=e119] [cursor=pointer]
+    - generic [ref=e121]:
+      - generic [ref=e122]: search here
+      - textbox "search here" [ref=e123]:
+        - /placeholder: Search Here...
+      - button "search submit" [ref=e124] [cursor=pointer]:
+        - generic [ref=e125]: 
+  - text: 

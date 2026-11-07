@@ -151,6 +151,15 @@
                         </li>
                         @endif
 
+                        @if (auth()->user()->isAdmin() || auth()->user()->isMedia() || auth()->user()->leadsActiveDepartment())
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard.birthdays.index') }}">
+                                <i class="fas fa-birthday-cake"></i>
+                                <p>Birthdays</p>
+                            </a>
+                        </li>
+                        @endif
+
                         <li class="nav-item">
                             <a href="{{ route('settings.index') }}">
                                 <i class="fas fa-cog"></i>

@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             'role' => UserRole::ADMIN,
             'status' => UserStatus::ACTIVE,
             'phone' => '08000000000',
+            'email_verified_at' => now(),
         ]);
 
         // Pastor
@@ -32,6 +33,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('@@Password2026'),
             'role' => UserRole::PASTOR,
             'status' => UserStatus::ACTIVE,
+            'email_verified_at' => now(),
         ]);
 
         // Editor
@@ -41,6 +43,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('@@Password2026'),
             'role' => UserRole::PASTOR,
             'status' => UserStatus::ACTIVE,
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -49,6 +52,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('@@Password2026'),
             'role' => UserRole::EDITOR,
             'status' => UserStatus::ACTIVE,
+            'email_verified_at' => now(),
         ]);
 
         // Media
@@ -58,6 +62,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('@@Password2026'),
             'role' => UserRole::MEDIA,
             'status' => UserStatus::ACTIVE,
+            'email_verified_at' => now(),
         ]);
     }
 }

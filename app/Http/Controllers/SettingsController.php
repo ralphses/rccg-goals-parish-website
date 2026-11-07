@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\YouTubeIntegration;
 use App\Models\YearlyDetail;
+use App\Models\YouTubeIntegration;
+use App\Rules\NigerianPhone;
 use App\Services\CloudinaryUploadService;
 use App\Services\CroppedImageUploadService;
 use App\Services\YouTubeService;
+use App\Support\UserIdentifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class SettingsController extends Controller
@@ -18,9 +21,8 @@ class SettingsController extends Controller
         private CloudinaryUploadService $cloudinaryUploadService,
         private CroppedImageUploadService $croppedImageUploadService,
         private YouTubeService $youTubeService
-    )
-    {
-    }
+    ) {}
+
     /**
      * Display the settings page.
      *
@@ -31,7 +33,7 @@ class SettingsController extends Controller
         $user = User::find(auth()->id());
         $yearlyDetail = YearlyDetail::first();
 
-        if (!$yearlyDetail) {
+        if (! $yearlyDetail) {
             $yearlyDetail = YearlyDetail::create([
                 'current_year' => now()->year,
                 'year_theme' => 'Theme of the Year',
@@ -48,11 +50,11 @@ class SettingsController extends Controller
         });
 
         $settings = [
-            "user" => $user,
-            "yearlyDetail" => $yearlyDetail,
-            "years" => $years,
-            "months" => $months,
-            "youtubeIntegration" => YouTubeIntegration::query()->first(),
+            'user' => $user,
+            'yearlyDetail' => $yearlyDetail,
+            'years' => $years,
+            'months' => $months,
+            'youtubeIntegration' => YouTubeIntegration::query()->first(),
         ];
 
         return view('dashboard.settings.index', compact('settings'));
@@ -61,16 +63,17 @@ class SettingsController extends Controller
     /**
      * Update the settings.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateUserProfile(Request $request)
     {
         $user = $request->user();
+        $request->merge(UserIdentifier::forValidation($request->input('email'), $request->input('phone')));
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:255',
+            'email' => ['nullable', 'required_without:phone', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'phone' => ['nullable', 'required_without:email', 'string', new NigerianPhone, 'max:20', Rule::unique('users', 'phone')->ignore($user->id)],
             'avatar_source' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'avatar_cropped' => 'nullable|string',
             'address' => 'nullable|string|max:255',
@@ -107,13 +110,12 @@ class SettingsController extends Controller
 
         $request->validate([
             'old_password' => ['required', function ($attribute, $value, $fail) use ($user) {
-                if (!Hash::check($value, $user->password)) {
+                if (! Hash::check($value, $user->password)) {
                     $fail('The provided password does not match your current password.');
                 }
             }],
             'new_password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols(), 'confirmed'],
         ]);
-        
 
         $user->update([
             'password' => Hash::make($request->new_password),
@@ -124,7 +126,7 @@ class SettingsController extends Controller
 
     public function updateYearlyDetails(Request $request)
     {
-        if (!auth()->user()->isAdmin() && !auth()->user()->isPastor()) {
+        if (! auth()->user()->isAdmin() && ! auth()->user()->isPastor()) {
             return back()->with('error', 'You are not authorized to update yearly details.');
         }
 
@@ -161,7 +163,7 @@ class SettingsController extends Controller
 
         $expectedState = $request->session()->pull('youtube_oauth_state');
 
-        if (!$expectedState || $expectedState !== $request->string('state')->toString()) {
+        if (! $expectedState || $expectedState !== $request->string('state')->toString()) {
             return redirect()->route('settings.index')->with('error', 'Unable to verify the YouTube connection request.');
         }
 

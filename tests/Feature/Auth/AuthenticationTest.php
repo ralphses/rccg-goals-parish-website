@@ -22,7 +22,7 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->post('/login', [
-            'email' => $user->email,
+            'identifier' => $user->email,
             'password' => 'password',
         ]);
 
@@ -35,11 +35,36 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         $this->post('/login', [
-            'email' => $user->email,
+            'identifier' => $user->email,
             'password' => 'wrong-password',
         ]);
 
         $this->assertGuest();
+    }
+
+    public function test_users_can_authenticate_with_a_nigerian_phone_number(): void
+    {
+        $user = User::factory()->create(['phone' => '+2348030000000']);
+
+        $response = $this->post('/login', [
+            'identifier' => '0803 000 0000',
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $response->assertRedirect(route('dashboard', absolute: false));
+    }
+
+    public function test_users_can_authenticate_with_an_unmodified_legacy_phone_number(): void
+    {
+        $user = User::factory()->create(['phone' => '0803-000-0000']);
+
+        $this->post('/login', [
+            'identifier' => '0803-000-0000',
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticatedAs($user);
     }
 
     public function test_users_can_logout(): void
@@ -50,5 +75,12 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
         $response->assertRedirect('/');
+    }
+
+    public function test_unverified_legacy_users_can_access_the_dashboard(): void
+    {
+        $user = User::factory()->unverified()->create();
+
+        $this->actingAs($user)->get(route('dashboard'))->assertOk();
     }
 }

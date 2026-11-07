@@ -48,10 +48,10 @@
                         @csrf
 
                         <div class="row">
-                            <!-- Email -->
+                            <!-- Email or phone -->
                             <div class="col-12">
                                 <div class="comment-form__input-box">
-                                    <input type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Email Address">
+                                    <input type="text" name="identifier" value="{{ old('identifier') }}" required autofocus placeholder="Email Address or Phone Number">
                                 </div>
                             </div>
 

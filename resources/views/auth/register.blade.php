@@ -47,11 +47,18 @@
                                     </div>
                                 </div>
 
-                                <!-- Email -->
+                                <!-- Identifiers -->
                                 <div class="col-12">
                                     <div class="comment-form__input-box">
-                                        <input type="email" name="email" value="{{ old('email') }}" required placeholder="Email Address">
+                                        <input type="email" name="email" value="{{ old('email') }}" placeholder="Email Address">
                                     </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="comment-form__input-box">
+                                        <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="Nigerian Phone Number (e.g. 0803 000 0000)">
+                                    </div>
+                                    <small class="text-muted d-block mt-1">Provide an email address, a Nigerian phone number, or both.</small>
                                 </div>
 
                                 <!-- Password -->

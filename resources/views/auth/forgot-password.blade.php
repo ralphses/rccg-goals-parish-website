@@ -52,6 +52,7 @@
                                     <div class="comment-form__input-box">
                                         <input type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Email Address">
                                     </div>
+                                    <small class="text-muted d-block mt-1">Password reset is currently available for email accounts only. Phone-only members should contact the church administrator.</small>
                                 </div>
                             </div>
 

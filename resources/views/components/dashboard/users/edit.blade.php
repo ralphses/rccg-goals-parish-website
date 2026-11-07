@@ -23,8 +23,8 @@
                     />
                 </div>
                 <div class="col-md-6 mb-3"><label class="form-label">Name</label><input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control" required></div>
-                <div class="col-md-6 mb-3"><label class="form-label">Email</label><input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" required></div>
-                <div class="col-md-6 mb-3"><label class="form-label">Phone</label><input type="text" name="phone" value="{{ old('phone', $user->phone) }}" class="form-control"></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Email</label><input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control"></div>
+                <div class="col-md-6 mb-3"><label class="form-label">Phone</label><input type="tel" name="phone" value="{{ old('phone', $user->phone) }}" class="form-control" placeholder="0803 000 0000"><small class="form-text text-muted">Email, phone, or both is required.</small></div>
                 <div class="col-md-6 mb-3"><label class="form-label">Address</label><input type="text" name="address" value="{{ old('address', $user->address) }}" class="form-control"></div>
                 <div class="col-md-6 mb-3"><label class="form-label">Role</label><select name="role" class="form-select" required>@foreach ($roles as $role)<option value="{{ $role->value }}" {{ $user->role->value == $role->value ? 'selected' : '' }}>{{ ucfirst($role->value) }}</option>@endforeach</select></div>
                 <div class="col-md-6 mb-3"><label class="form-label">Status</label><select name="status" class="form-select"><option value="active" {{ $user->status->value == 'active' ? 'selected' : '' }}>Active</option><option value="created" {{ $user->status->value == 'created' ? 'selected' : '' }}>Created</option><option value="suspended" {{ $user->status->value == 'suspended' ? 'selected' : '' }}>Suspended</option></select></div>

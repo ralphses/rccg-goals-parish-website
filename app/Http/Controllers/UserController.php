@@ -2,25 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Constants\Constants;
+use App\enums\UserRole;
+use App\enums\UserStatus;
 use App\Models\Department;
+use App\Models\User;
+use App\Rules\NigerianPhone;
+use App\Services\CloudinaryUploadService;
+use App\Services\CroppedImageUploadService;
+use App\Support\UserIdentifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\enums\UserRole;
-use App\enums\UserStatus;
-use App\Constants\Constants;
-use App\Services\CloudinaryUploadService;
-use App\Services\CroppedImageUploadService;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     public function __construct(
         private CloudinaryUploadService $cloudinaryUploadService,
         private CroppedImageUploadService $croppedImageUploadService
-    )
-    {
-    }
+    ) {}
+
     /**
      * Display a listing of users
      */
@@ -30,8 +32,9 @@ class UserController extends Controller
 
         if ($request->search) {
             $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                    ->orWhere('email', 'like', '%' . $request->search . '%');
+                $q->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%')
+                    ->orWhere('phone', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -60,7 +63,6 @@ class UserController extends Controller
         $departments = Department::all();
         $states = Constants::nigerianStates();
 
-
         return view('dashboard.users.create', compact('roles', 'departments', 'states'));
     }
 
@@ -69,26 +71,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(UserIdentifier::forValidation($request->input('email'), $request->input('phone')));
+
         // Validation
         $request->validate([
-            'name'                  => ['required', 'string', 'max:255'],
-            'email'                 => ['required', 'email', 'unique:users,email'],
-            'role'                  => ['required', 'in:' . implode(',', array_map(fn($case) => $case->value, UserRole::cases()))],
-            'phone'                 => ['nullable', 'string'],
-            'avatar_source'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:10240'],
-            'avatar_cropped'        => ['nullable', 'string'],
-            'address'               => ['nullable', 'string', 'max:255'],
-            'status'                => ['required', 'in:' . implode(',', array_map(fn($case) => $case->value, UserStatus::cases()))],
-            'departments'           => ['nullable', 'array'],
-            'departments.*'         => ['integer', 'exists:departments,id'],
-            'day_joined'            => ['nullable', 'date'],
-            'birthday'              => ['nullable', 'date'],
-            'what_attracted_you'    => ['nullable', 'string'],
-            'state_of_origin'       => ['nullable', 'string'],
-            'occupation'            => ['nullable', 'string'],
-            'hobbies'               => ['nullable', 'string'],
-            'favourite_quote'       => ['nullable', 'string'],
-            'can_login'             => ['required', 'boolean']
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'required_without:phone', 'email', 'max:255', 'unique:users,email'],
+            'role' => ['required', 'in:'.implode(',', array_map(fn ($case) => $case->value, UserRole::cases()))],
+            'phone' => ['nullable', 'required_without:email', 'string', new NigerianPhone, 'max:20', 'unique:users,phone'],
+            'avatar_source' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:10240'],
+            'avatar_cropped' => ['nullable', 'string'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'status' => ['required', 'in:'.implode(',', array_map(fn ($case) => $case->value, UserStatus::cases()))],
+            'departments' => ['nullable', 'array'],
+            'departments.*' => ['integer', 'exists:departments,id'],
+            'day_joined' => ['nullable', 'date'],
+            'birthday' => ['nullable', 'date'],
+            'what_attracted_you' => ['nullable', 'string'],
+            'state_of_origin' => ['nullable', 'string'],
+            'occupation' => ['nullable', 'string'],
+            'hobbies' => ['nullable', 'string'],
+            'favourite_quote' => ['nullable', 'string'],
+            'can_login' => ['required', 'boolean'],
         ]);
 
         $avatarPath = null;
@@ -106,23 +110,24 @@ class UserController extends Controller
 
         // Create user
         $user = User::create([
-            'name'                  => $request->name,
-            'email'                 => $request->email,
-            'role'                  => $request->role,
-            'phone'                 => $request->phone,
-            'avatar'                => $avatarPath,
-            'address'               => $request->address,
-            'status'                => $request->status,
-            'day_joined'            => $request->day_joined,
-            'birthday'              => $request->birthday,
-            'what_attracted_you'    => $request->what_attracted_you,
-            'state_of_origin'       => $request->state_of_origin,
-            'occupation'            => $request->occupation,
-            'hobbies'               => $request->hobbies,
-            'favourite_quote'       => $request->favourite_quote,
-            'password'              => Hash::make($defaultPassword),
-            'must_change_password'  => true,
-            'can_login'             => $request->can_login,
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'phone' => $request->phone,
+            'avatar' => $avatarPath,
+            'address' => $request->address,
+            'status' => $request->status,
+            'day_joined' => $request->day_joined,
+            'birthday' => $request->birthday,
+            'what_attracted_you' => $request->what_attracted_you,
+            'state_of_origin' => $request->state_of_origin,
+            'occupation' => $request->occupation,
+            'hobbies' => $request->hobbies,
+            'favourite_quote' => $request->favourite_quote,
+            'password' => Hash::make($defaultPassword),
+            'must_change_password' => true,
+            'can_login' => $request->can_login,
+            'email_verified_at' => now(),
         ]);
 
         // Sync departments if provided
@@ -132,7 +137,7 @@ class UserController extends Controller
 
         $message = $request->can_login
             ? "User created successfully. Default password: $defaultPassword"
-            : "User created successfully.";
+            : 'User created successfully.';
 
         return redirect()
             ->route('dashboard.users.index')
@@ -166,25 +171,27 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $request->merge(UserIdentifier::forValidation($request->input('email'), $request->input('phone')));
+
         $request->validate([
-            'name'                  => ['required', 'string', 'max:255'],
-            'email'                 => ['required', 'email', 'unique:users,email,' . $user->id],
-            'role'                  => ['required', 'in:' . implode(',', array_map(fn($case) => $case->value, UserRole::cases()))],
-            'phone'                 => ['nullable', 'string'],
-            'avatar_source'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:10240'],
-            'avatar_cropped'        => ['nullable', 'string'],
-            'address'               => ['nullable', 'string', 'max:255'],
-            'status'                => ['required', 'in:' . implode(',', array_map(fn($case) => $case->value, UserStatus::cases()))],
-            'departments'           => ['nullable', 'array'],
-            'departments.*'         => ['integer', 'exists:departments,id'],
-            'day_joined'            => ['nullable', 'date'],
-            'birthday'              => ['nullable', 'date'],
-            'what_attracted_you'    => ['nullable', 'string'],
-            'state_of_origin'       => ['nullable', 'string'],
-            'occupation'            => ['nullable', 'string'],
-            'hobbies'               => ['nullable', 'string'],
-            'favourite_quote'       => ['nullable', 'string'],
-            'can_login'             => ['required', 'boolean']
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'required_without:phone', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'role' => ['required', 'in:'.implode(',', array_map(fn ($case) => $case->value, UserRole::cases()))],
+            'phone' => ['nullable', 'required_without:email', 'string', new NigerianPhone, 'max:20', Rule::unique('users', 'phone')->ignore($user->id)],
+            'avatar_source' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:10240'],
+            'avatar_cropped' => ['nullable', 'string'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'status' => ['required', 'in:'.implode(',', array_map(fn ($case) => $case->value, UserStatus::cases()))],
+            'departments' => ['nullable', 'array'],
+            'departments.*' => ['integer', 'exists:departments,id'],
+            'day_joined' => ['nullable', 'date'],
+            'birthday' => ['nullable', 'date'],
+            'what_attracted_you' => ['nullable', 'string'],
+            'state_of_origin' => ['nullable', 'string'],
+            'occupation' => ['nullable', 'string'],
+            'hobbies' => ['nullable', 'string'],
+            'favourite_quote' => ['nullable', 'string'],
+            'can_login' => ['required', 'boolean'],
         ]);
 
         $data = $request->except(['avatar_source', 'avatar_cropped', 'departments']);

@@ -1,4 +1,4 @@
-@props(['theme', 'stream', 'testimonies', 'sermons', 'galleries', 'events'])
+@props(['theme', 'stream', 'testimonies', 'sermons', 'galleries', 'events', 'birthdayGreetings'])
 
 <div class="stricky-header stricked-menu main-menu">
     <div class="sticky-header__content"></div><!-- /.sticky-header__content -->
@@ -271,6 +271,43 @@
     </div>
 </section>
 <!--Theme of the Month Section End-->
+
+@if ($birthdayGreetings->isNotEmpty())
+    @php
+        $birthdayCarouselOptions = [
+            'loop' => false,
+            'margin' => 24,
+            'nav' => true,
+            'dots' => true,
+            'autoplay' => false,
+            'smartSpeed' => 500,
+            'responsive' => [
+                0 => ['items' => 1],
+                768 => ['items' => 1],
+                1200 => ['items' => $birthdayGreetings->count() === 1 ? 1 : 2],
+            ],
+        ];
+    @endphp
+    <section class="birthday-celebrants py-5">
+        <div class="container">
+            <div class="section-title text-center">
+                <span class="section-title__tagline">Celebrating with joy</span>
+                <h2 class="section-title__title">Today's Birthday Celebrants</h2>
+            </div>
+            <div class="birthday-celebrants__carousel thm-owl__carousel owl-carousel owl-theme {{ $birthdayGreetings->count() === 1 ? 'birthday-celebrants__carousel--single' : '' }}"
+                data-owl-options='@json($birthdayCarouselOptions)'>
+                @foreach ($birthdayGreetings as $greeting)
+                    <div class="birthday-celebrants__card">
+                        <img src="{{ $greeting->media->file_url }}" alt="Happy birthday {{ $greeting->user->name }}" loading="lazy">
+                    </div>
+                @endforeach
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ route('birthdays') }}" class="thm-btn birthday-celebrants__view-all">Celebrate with the family <i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+@endif
 
 
 <!--Live Streaming Section Start-->

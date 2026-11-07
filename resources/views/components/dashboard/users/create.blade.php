@@ -22,8 +22,8 @@
                             />
                         </div>
                         <div class="col-md-6 mb-3"><label class="form-label">Name</label><input type="text" name="name" value="{{ old('name') }}" class="form-control" required></div>
-                        <div class="col-md-6 mb-3"><label class="form-label">Email</label><input type="email" name="email" value="{{ old('email') }}" class="form-control" required></div>
-                        <div class="col-md-6 mb-3"><label class="form-label">Phone</label><input type="text" name="phone" value="{{ old('phone') }}" class="form-control"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Email</label><input type="email" name="email" value="{{ old('email') }}" class="form-control"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Phone</label><input type="tel" name="phone" value="{{ old('phone') }}" class="form-control" placeholder="0803 000 0000"><small class="form-text text-muted">Email, phone, or both is required.</small></div>
                         <div class="col-md-6 mb-3"><label class="form-label">Address</label><input type="text" name="address" value="{{ old('address') }}" class="form-control"></div>
                         <div class="col-md-4 mb-3"><label class="form-label">Role</label><select name="role" class="form-select" required><option value="">Select Role</option>@foreach($roles as $role)<option value="{{ $role->value }}" {{ old('role') == $role->value ? 'selected' : '' }}>{{ ucfirst($role->value) }}</option>@endforeach</select></div>
                         <div class="col-md-4 mb-3"><label class="form-label">Status</label><select name="status" class="form-select"><option value="active" {{ old('status')=='active' ? 'selected' : '' }}>Active</option><option value="created" {{ old('status')=='created' ? 'selected' : '' }}>Created</option><option value="suspended" {{ old('status')=='suspended' ? 'selected' : '' }}>Suspended</option></select></div>

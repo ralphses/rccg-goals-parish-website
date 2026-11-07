@@ -1,18 +1,20 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\BirthdayGreetingController;
+use App\Http\Controllers\BirthdayBoardCommentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GuestViewController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PasswordChangeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SermonAttachmentController;
 use App\Http\Controllers\SermonController;
-use App\Http\Controllers\TestimonyController;
-use App\Http\Controllers\AnnouncementController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\GuestViewController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StreamController;
+use App\Http\Controllers\TestimonyController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +22,13 @@ use Illuminate\Support\Facades\URL;
 
 // PUBLIC ROUTES
 Route::get('/', [GuestViewController::class, 'home'])->name('home');
+Route::get('/birthdays', [GuestViewController::class, 'birthdays'])->name('birthdays');
+Route::post('/birthdays/comments', [BirthdayBoardCommentController::class, 'store'])
+    ->middleware('auth')
+    ->name('birthdays.comments.store');
+Route::delete('/birthdays/comments/{birthdayBoardComment}', [BirthdayBoardCommentController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('birthdays.comments.destroy');
 
 Route::get('/login', function () {
     return view('guest/login');
@@ -30,34 +39,40 @@ Route::get('/about', [GuestViewController::class, 'about'])->name('about');
 Route::get('/sermons', [GuestViewController::class, 'sermons'])->name('sermons');
 Route::get('/sermons/{sermon:slug}', [GuestViewController::class, 'sermon'])->name('sermons.show');
 
-Route::get("/contact", [GuestViewController::class, 'contact'])->name('contact');
-Route::post("/contact", [GuestViewController::class, 'store'])->name('contact.store');
+Route::get('/contact', [GuestViewController::class, 'contact'])->name('contact');
+Route::post('/contact', [GuestViewController::class, 'store'])->name('contact.store');
 
-Route::get("/blog", [GuestViewController::class, 'blog'])->name('blog');
+Route::get('/blog', [GuestViewController::class, 'blog'])->name('blog');
 
-Route::get("/events", [GuestViewController::class, 'events'])->name('events');
+Route::get('/events', [GuestViewController::class, 'events'])->name('events');
 
-Route::get("/events/{event}", [GuestViewController::class, 'event'])->name('event');
+Route::get('/events/{event}', [GuestViewController::class, 'event'])->name('event');
 
 // Route::get("/departments", [GuestViewController::class, 'departments'])->name('departments');
 
 // Route::get("/departments/{department}", [GuestViewController::class, 'department'])->name('department');
 
-Route::get("/media", [GuestViewController::class, 'media'])->name('media');
+Route::get('/media', [GuestViewController::class, 'media'])->name('media');
 Route::get('/sitemap.xml', [GuestViewController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [GuestViewController::class, 'robots'])->name('robots');
 
 // AUTHENTICATED ROUTES
-Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
+Route::middleware('auth')->prefix('dashboard')->group(function () {
+
+    Route::get('/birthdays', [BirthdayGreetingController::class, 'index'])->name('dashboard.birthdays.index');
+    Route::post('/birthdays/{user}/generate', [BirthdayGreetingController::class, 'generate'])->name('dashboard.birthdays.generate');
+    Route::get('/birthdays/{birthdayGreeting}/download', [BirthdayGreetingController::class, 'download'])->name('dashboard.birthdays.download');
+    Route::patch('/birthdays/{birthdayGreeting}/publish', [BirthdayGreetingController::class, 'publish'])->name('dashboard.birthdays.publish');
+    Route::patch('/birthdays/{birthdayGreeting}/unpublish', [BirthdayGreetingController::class, 'unpublish'])->name('dashboard.birthdays.unpublish');
 
     // Add this inside the 'auth' middleware group for the dashboard
-    Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->group(function () {
+    Route::middleware([RoleMiddleware::class.':admin,pastor,media'])->group(function () {
         Route::get('/stream', [StreamController::class, 'index'])->name('dashboard.stream.index');
         Route::patch('/stream', [StreamController::class, 'update'])->name('dashboard.stream.update');
     });
 
     // USERS ROUTES
-    Route::middleware([RoleMiddleware::class . ':admin,pastor'])->prefix("users")->group(function () {
+    Route::middleware([RoleMiddleware::class.':admin,pastor'])->prefix('users')->group(function () {
         Route::delete('/bulk-delete', [UserController::class, 'bulkDestroy'])
             ->name('dashboard.users.bulk-destroy');
 
@@ -70,7 +85,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
                 'show' => 'dashboard.users.show',
                 'edit' => 'dashboard.users.edit',
                 'update' => 'dashboard.users.update',
-                'destroy' => 'dashboard.users.destroy'
+                'destroy' => 'dashboard.users.destroy',
             ]);
 
         Route::get('/{user}/departments', [UserController::class, 'departments'])
@@ -86,9 +101,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
             ->name('dashboard.users.message');
     });
 
-
     // EVENTS ROUTES
-    Route::prefix("events")->group(function () {
+    Route::prefix('events')->group(function () {
         Route::delete('/bulk-delete', [EventController::class, 'bulkDestroy'])
             ->name('dashboard.events.bulk-destroy');
 
@@ -101,13 +115,12 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
                 'show' => 'dashboard.events.show',
                 'edit' => 'dashboard.events.edit',
                 'update' => 'dashboard.events.update',
-                'destroy' => 'dashboard.events.destroy'
+                'destroy' => 'dashboard.events.destroy',
             ]);
     });
 
-
     // DEPARTMENTS ROUTES
-    Route::prefix("departments")->group(function () {
+    Route::prefix('departments')->group(function () {
         Route::delete('/bulk-delete', [DepartmentController::class, 'bulkDestroy'])
             ->name('dashboard.departments.bulk-destroy');
 
@@ -120,13 +133,12 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
                 'show' => 'dashboard.departments.show',
                 'edit' => 'dashboard.departments.edit',
                 'update' => 'dashboard.departments.update',
-                'destroy' => 'dashboard.departments.destroy'
+                'destroy' => 'dashboard.departments.destroy',
             ]);
     });
 
-
     // SERMONS ROUTES
-    Route::prefix("sermons")->group(function () {
+    Route::prefix('sermons')->group(function () {
         Route::delete('/bulk-delete', [SermonController::class, 'bulkDestroy'])
             ->name('dashboard.sermons.bulk-destroy');
 
@@ -139,10 +151,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
                 'show' => 'dashboard.sermons.show',
                 'edit' => 'dashboard.sermons.edit',
                 'update' => 'dashboard.sermons.update',
-                'destroy' => 'dashboard.sermons.destroy'
+                'destroy' => 'dashboard.sermons.destroy',
             ]);
     });
-
 
     Route::delete('sermon-attachments/{attachment}', [SermonAttachmentController::class, 'destroy'])
         ->name('dashboard.sermon-attachments.destroy');
@@ -150,9 +161,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::get('sermon-attachments/{attachment}/download', [SermonController::class, 'downloadAttachment'])
         ->name('dashboard.sermon-attachments.download');
 
-
     // MEDIA ROUTES
-    Route::middleware([RoleMiddleware::class . ':admin,pastor,media,editor'])->prefix("media")->group(function () {
+    Route::middleware([RoleMiddleware::class.':admin,pastor,media,editor'])->prefix('media')->group(function () {
         Route::delete('/bulk-delete', [MediaController::class, 'bulkDestroy'])
             ->name('dashboard.media.bulk-destroy');
 
@@ -165,7 +175,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
                 'show' => 'dashboard.media.show',
                 'edit' => 'dashboard.media.edit',
                 'update' => 'dashboard.media.update',
-                'destroy' => 'dashboard.media.destroy'
+                'destroy' => 'dashboard.media.destroy',
             ]);
 
         Route::post('/{media}/youtube/retry', [MediaController::class, 'retryYouTubePublish'])
@@ -174,10 +184,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
             ->name('dashboard.media.upload.retry');
     });
 
-
     // TESTIMONIES ROUTES
-    Route::prefix("testimonies")->group(function () {
-        Route::middleware([RoleMiddleware::class . ':admin,pastor'])->group(function () {
+    Route::prefix('testimonies')->group(function () {
+        Route::middleware([RoleMiddleware::class.':admin,pastor'])->group(function () {
             Route::delete('/bulk-delete', [TestimonyController::class, 'bulkDestroy'])
                 ->name('dashboard.testimonies.bulk-destroy');
         });
@@ -190,10 +199,10 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
                 'create' => 'dashboard.testimonies.create',
                 'store' => 'dashboard.testimonies.store',
                 'show' => 'dashboard.testimonies.show',
-                'destroy' => 'dashboard.testimonies.destroy'
+                'destroy' => 'dashboard.testimonies.destroy',
             ]);
 
-        Route::middleware([RoleMiddleware::class . ':admin,pastor'])->group(function () {
+        Route::middleware([RoleMiddleware::class.':admin,pastor'])->group(function () {
             Route::get('/{testimony}/edit', [TestimonyController::class, 'edit'])
                 ->name('dashboard.testimonies.edit');
 
@@ -205,10 +214,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
         });
     });
 
-
     // ANNOUNCEMENTS ROUTES
-    Route::prefix("announcements")->group(function () {
-        Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->group(function () {
+    Route::prefix('announcements')->group(function () {
+        Route::middleware([RoleMiddleware::class.':admin,pastor,media'])->group(function () {
             Route::delete('/bulk-delete', [AnnouncementController::class, 'bulkDestroy'])
                 ->name('dashboard.announcements.bulk-destroy');
         });
@@ -221,10 +229,10 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
                 'create' => 'dashboard.announcements.create',
                 'store' => 'dashboard.announcements.store',
                 'show' => 'dashboard.announcements.show',
-                'destroy' => 'dashboard.announcements.destroy'
+                'destroy' => 'dashboard.announcements.destroy',
             ]);
 
-        Route::middleware([RoleMiddleware::class . ':admin,pastor,media'])->group(function () {
+        Route::middleware([RoleMiddleware::class.':admin,pastor,media'])->group(function () {
             Route::get('/{announcement}/edit', [AnnouncementController::class, 'edit'])
                 ->name('dashboard.announcements.edit');
 
@@ -239,7 +247,6 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
         });
     });
 
-
     Route::get('/settings', [SettingsController::class, 'index'])
         ->name('settings.index');
 
@@ -252,13 +259,12 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::patch('/settings/yearly-details', [SettingsController::class, 'updateYearlyDetails'])
         ->name('settings.yearly-details.update');
 
-    Route::middleware([RoleMiddleware::class . ':admin'])->group(function () {
+    Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
         Route::get('/settings/youtube/connect', [SettingsController::class, 'connectYouTube'])
             ->name('settings.youtube.connect');
         Route::delete('/settings/youtube', [SettingsController::class, 'disconnectYouTube'])
             ->name('settings.youtube.disconnect');
     });
-
 
     Route::get('/', [DashboardController::class, 'index'])
         ->name('dashboard');
@@ -270,20 +276,17 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
         ->name('password.change.update');
 });
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::middleware([RoleMiddleware::class . ':admin'])->group(function () {
+    Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
         Route::get('/integrations/youtube/callback', [SettingsController::class, 'handleYouTubeCallback'])
-            ->middleware('verified')
             ->name('settings.youtube.callback');
-        Route::get('/dashboard/settings/youtube/callback', [SettingsController::class, 'handleYouTubeCallback'])
-            ->middleware('verified');
+        Route::get('/dashboard/settings/youtube/callback', [SettingsController::class, 'handleYouTubeCallback']);
     });
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 // URL::forceScheme('https');

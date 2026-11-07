@@ -3,27 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\enums\MediaCategory;
-use App\Models\YearlyDetail;
-use App\Models\Stream;
-use App\Models\Testimony;
-use App\Models\Sermon;
-use App\Models\Media;
-use App\Models\Event;
 use App\enums\MediaType;
 use App\enums\MediaUploadStatus;
 use App\enums\YouTubePublishStatus;
 use App\Mail\ContactFormMail;
+use App\Models\BirthdayGreeting;
+use App\Models\BirthdayBoardComment;
+use App\Models\Event;
+use App\Models\Media;
+use App\Models\Sermon;
+use App\Models\Stream;
+use App\Models\Testimony;
+use App\Models\YearlyDetail;
 use App\Services\SeoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use StreamBucket;
 
 class GuestViewController extends Controller
 {
     public function __construct(
         private SeoService $seoService
-    ) {
-    }
+    ) {}
 
     public function home()
     {
@@ -36,18 +36,33 @@ class GuestViewController extends Controller
             ->take(3)
             ->get();
         $galleries = Media::where([
-                'category' => MediaCategory::CHURCH_GALLERY,
-                'media_type' => 'image',
-                'is_public' => true,
-            ])
+            'category' => MediaCategory::CHURCH_GALLERY,
+            'media_type' => 'image',
+            'is_public' => true,
+        ])
             ->where('upload_status', \App\enums\MediaUploadStatus::READY)
             ->latest()
             ->take(6)
             ->get();
         $events = Event::where('event_date', '>=', now())->orderBy('event_date', 'asc')->take(3)->get();
+        $birthdayGreetings = $this->publicBirthdayGreetingsFor(now('Africa/Lagos'));
         $seo = $this->seoService->home();
 
-        return view('guest.home', compact('theme', 'stream', 'testimonies', 'sermons', 'galleries', 'events', 'seo'));
+        return view('guest.home', compact('theme', 'stream', 'testimonies', 'sermons', 'galleries', 'events', 'birthdayGreetings', 'seo'));
+    }
+
+    public function birthdays()
+    {
+        $today = now('Africa/Lagos')->startOfDay();
+        $birthdayGreetings = $this->publicBirthdayGreetingsFor($today);
+        $comments = BirthdayBoardComment::with('user')
+            ->whereDate('celebration_date', $today)
+            ->latest()
+            ->take(5)
+            ->get();
+        $seo = $this->seoService->birthdays();
+
+        return view('guest.birthdays', compact('today', 'birthdayGreetings', 'comments', 'seo'));
     }
 
     public function about()
@@ -249,5 +264,13 @@ class GuestViewController extends Controller
         return response($this->seoService->robotsTxt(), 200, [
             'Content-Type' => 'text/plain; charset=UTF-8',
         ]);
+    }
+
+    private function publicBirthdayGreetingsFor(\Carbon\CarbonInterface $date)
+    {
+        return BirthdayGreeting::with(['user', 'media'])
+            ->publicForDate($date)
+            ->latest('published_at')
+            ->get();
     }
 }

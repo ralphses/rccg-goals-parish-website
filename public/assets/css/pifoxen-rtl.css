@@ -9667,6 +9667,7 @@ ul {
 
 .comment-form__input-box input[type="text"],
 .comment-form__input-box input[type="password"],
+.comment-form__input-box input[type="tel"],
 .comment-form__input-box select,
 .comment-form__input-box input[type="search"],
 .comment-form__input-box input[type="email"] {
@@ -9691,6 +9692,23 @@ ul {
   background-repeat: no-repeat;
   background-position: left 30px top 50%;
   background-size: .65em auto;
+}
+
+.birthday-celebrants {
+  background: #f8f5ef;
+}
+
+.birthday-celebrants__card {
+  padding: 8px;
+}
+
+.birthday-celebrants__card img {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
 }
 
 .comment-form__input-box textarea {

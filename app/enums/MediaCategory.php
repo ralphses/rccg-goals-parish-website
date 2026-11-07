@@ -9,4 +9,5 @@ enum MediaCategory: string
     case PROJECT = 'project';
     case SERMON = 'sermon';
     case EVENT = 'event';
+    case BIRTHDAY = 'birthday';
 }
