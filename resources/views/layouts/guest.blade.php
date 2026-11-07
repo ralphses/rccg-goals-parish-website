@@ -92,8 +92,16 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/timepicker/timePicker.css') }}" />
 
     <!-- Template Styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/pifoxen.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/pifoxen-responsive.css') }}" />
+    @php
+        $guestStylesheet = static function (string $path): string {
+            $absolutePath = public_path($path);
+            $version = is_file($absolutePath) ? filemtime($absolutePath) : config('app.asset_version', '1');
+
+            return asset($path) . '?v=' . $version;
+        };
+    @endphp
+    <link rel="stylesheet" href="{{ $guestStylesheet('assets/css/pifoxen.css') }}" />
+    <link rel="stylesheet" href="{{ $guestStylesheet('assets/css/pifoxen-responsive.css') }}" />
     @foreach ($schemaPayloads as $schemaPayload)
         <script type="application/ld+json">{!! json_encode($schemaPayload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     @endforeach
