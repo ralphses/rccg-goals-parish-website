@@ -1,0 +1,80 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Primary navigation" [ref=e4]:
+        - generic [ref=e5]:
+          - link "RCCG Glory of All Lands Parish Logo The Redeemed Christian Church of God Glory of All Lands Parish" [ref=e7] [cursor=pointer]:
+            - /url: http://127.0.0.1:8000
+            - img "RCCG Glory of All Lands Parish Logo" [ref=e8]
+            - generic [ref=e9]:
+              - strong [ref=e10]: The RedeemedChristian Church of God
+              - generic [ref=e11]: Glory of All Lands Parish
+          - generic [ref=e12]:
+            - generic:
+              - text: 
+              - list:
+                - listitem [ref=e13]:
+                  - link "Home" [ref=e14] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000
+                - listitem [ref=e15]:
+                  - link "About" [ref=e16] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/about
+                - listitem [ref=e17]:
+                  - link "Services" [ref=e18] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/events
+                - listitem [ref=e19]:
+                  - link "Ministries" [ref=e20] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/about#pastorate
+                - listitem [ref=e21]:
+                  - link "Resources" [ref=e22] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/media
+                - listitem [ref=e23]:
+                  - link "Get Involved" [ref=e24] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/contact
+                - listitem [ref=e25]:
+                  - link "Login" [ref=e26] [cursor=pointer]:
+                    - /url: http://127.0.0.1:8000/login
+                    - generic [aria-hidden] [ref=e27]: 
+                    - text: Login
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Celebrate our church family
+        - heading "Today's Birthday Celebrants" [level=1] [ref=e33]
+        - generic [ref=e35]:
+          - generic [aria-hidden] [ref=e36]: 
+          - text: Saturday, 7 November 2026
+        - paragraph [ref=e37]: Join us in celebrating the people who make our church family brighter, warmer, and stronger.
+      - generic [ref=e38]:
+        - generic [aria-hidden] [ref=e40]: 
+        - generic [ref=e41]:
+          - generic [ref=e42]: A little celebration is coming
+          - heading "No published birthday cards today" [level=2] [ref=e43]
+          - paragraph [ref=e44]: Please join us again to celebrate the next members of our church family.
+    - contentinfo [ref=e45]:
+      - generic [ref=e54]:
+        - paragraph [ref=e55]:
+          - text: © Copyright 2026 by
+          - link "The Redeemed Christian Church of God, GOALS Parish" [ref=e56] [cursor=pointer]:
+            - /url: "#"
+        - generic [ref=e57]:
+          - link "" [ref=e58] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e60] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e62] [cursor=pointer]:
+            - /url: "#"
+          - link "" [ref=e64] [cursor=pointer]:
+            - /url: https://www.instagram.com/rccggoalsparish/
+          - link "" [ref=e66] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@rccggoalsparish
+          - link "" [ref=e68] [cursor=pointer]:
+            - /url: https://www.youtube.com/@rccggoalsparish
+  - generic [ref=e70]:
+    - generic [ref=e71] [cursor=pointer]
+    - generic [ref=e73]:
+      - generic [ref=e74]: search here
+      - textbox "search here" [ref=e75]:
+        - /placeholder: Search Here...
+      - button "search submit" [ref=e76] [cursor=pointer]:
+        - generic [ref=e77]: 
+  - text: 
